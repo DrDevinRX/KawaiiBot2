@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KawaiiBot2", "KawaiiBot2\KawaiiBot2.csproj", "{61DEA434-C04B-4272-B09D-56FC094E0A14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61DEA434-C04B-4272-B09D-56FC094E0A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61DEA434-C04B-4272-B09D-56FC094E0A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61DEA434-C04B-4272-B09D-56FC094E0A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61DEA434-C04B-4272-B09D-56FC094E0A14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBACE6AE-B79A-4B6E-BB06-105368216EB4}
+	EndGlobalSection
+EndGlobal
