@@ -11,6 +11,12 @@ namespace KawaiiBot2.Modules
     {
         private static readonly Random Rng = new Random();
         private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒" };
+        private static readonly string[] EightBallResponses = 
+        {   "Yes", "No", "Take a wild guess...",
+            "Very doubtful", "Sure", "Without a doubt",
+            "senpai, pls no ;-;", "Most likely", "Might be possible",
+            "You'll be the judge", "no... (╯°□°）╯︵ ┻━┻", "no... baka"
+        };
 
         [Command("hi")]
         public Task Hi()
@@ -97,6 +103,19 @@ namespace KawaiiBot2.Modules
             }
 
             return ReplyAsync($"I choose this: **{choices[Rng.Next(choices.Length)].Trim()}**");
+        }
+
+        [Command("8ball")]
+        public Task EightBall([Remainder]string question = null)
+        {
+            if (string.IsNullOrWhiteSpace(question))
+            {
+                return ReplyAsync("I need a question, please");
+            }
+
+            return ReplyAsync(
+                            $"🎱 **Question: **{question.Trim()}\n" +
+                            $"**Answer: ** {EightBallResponses[Rng.Next(EightBallResponses.Length)]}");
         }
     }
 }
