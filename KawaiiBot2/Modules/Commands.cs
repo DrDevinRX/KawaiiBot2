@@ -85,5 +85,18 @@ namespace KawaiiBot2.Modules
             var guildUser = user ?? (Context.Message.Author as IGuildUser);
             return ReplyAsync($"**{guildUser.Nickname ?? guildUser.Username}** joined on {guildUser.JoinedAt}");
         }
+
+        [Command("choose")]
+        public Task Choose([Remainder]string choiceString = null)
+        {
+            string[] choices = choiceString?.Split('|');
+
+            if (choices?.Length < 2 || choices == null)
+            {
+                return ReplyAsync("Separate your choices (at least 2) with \"|\"");
+            }
+
+            return ReplyAsync($"I choose this: **{choices[Rng.Next(choices.Length)].Trim()}**");
+        }
     }
 }
