@@ -2,26 +2,37 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using System.IO;
+using KawaiiBot2.Services;
 
 namespace KawaiiBot2
 {
     class Program
     {
         private DiscordSocketClient discord;
-        private 
 
-        static void Main()
+
+        private static void Main()
             => new Program().MainAsync().GetAwaiter().GetResult();
 
         private async Task MainAsync()
         {
-            // This can be changed to a config file
-            string token = "NzQwOTc2MTU5NjkyNDIzMjgw.Xyw10w.KJxaG_CAaepwhnoNuR2bf041x3U";
-            if (string.IsNullOrWhiteSpace(token))
+
+            var confdef = new { token = "", prefix = "" };
+
+            var config = JsonConvert.DeserializeAnonymousType(File.ReadAllText("conf.json"), confdef);
+
+            if (!string.IsNullOrWhiteSpace(config.prefix))
             {
-                throw new NotSupportedException("Bot token not found in environment variable \"KAWAII_BOT_TOKEN\"");
+                CommandHandlerService.Prefix = config.prefix;
+            }
+
+            if (string.IsNullOrWhiteSpace(config.token))
+            {
+                throw new NotSupportedException("Bot token not found in config file");
             }
 
             discord = new DiscordSocketClient();
@@ -29,7 +40,7 @@ namespace KawaiiBot2
             services.GetRequiredService<Services.LoggingService>();
             await services.GetRequiredService<Services.CommandHandlerService>().InitializeAsync(services);
 
-            await discord.LoginAsync(TokenType.Bot, token);
+            await discord.LoginAsync(TokenType.Bot, config.token);
             await discord.StartAsync();
 
             await Task.Delay(-1);
