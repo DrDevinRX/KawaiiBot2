@@ -18,7 +18,7 @@ namespace KawaiiBot2
         private async Task MainAsync()
         {
             // This can be changed to a config file
-            string token = Environment.GetEnvironmentVariable("KAWAII_BOT_TOKEN");
+            string token = "NzQwOTc2MTU5NjkyNDIzMjgw.Xyw10w.KJxaG_CAaepwhnoNuR2bf041x3U";
             if (string.IsNullOrWhiteSpace(token))
             {
                 throw new NotSupportedException("Bot token not found in environment variable \"KAWAII_BOT_TOKEN\"");

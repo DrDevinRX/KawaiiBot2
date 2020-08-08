@@ -12,7 +12,7 @@ namespace KawaiiBot2.Services
         private readonly CommandService _commands;
         private IServiceProvider _provider;
 
-        public string Prefix { private get; set; } = "+";
+        public string Prefix { private get; set; } = "-";
 
         public CommandHandlerService(DiscordSocketClient discord, CommandService commands, IServiceProvider provider)
         {

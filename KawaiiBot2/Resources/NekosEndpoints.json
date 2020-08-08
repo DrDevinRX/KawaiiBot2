@@ -1,0 +1,12 @@
+{
+    "baseURL": "https://api.nekos.dev/api/v3/images/sfw/",
+    "baka": "gif/baka",
+    "cat": "img/cat",
+    "cuddle": "gif/cuddle",
+    "hug": "gif/hug",
+    "kiss": "gif/kiss",
+    "pat": "gif/pat",
+    "poke": "gif/poke",
+    "slap": "gif/slap",
+    "tickle": "gif/tickle"
+}
