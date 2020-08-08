@@ -18,11 +18,6 @@ namespace KawaiiBot2.Modules
         [Command("hi")]
         public Task Hi()
         {
-            if (Context.Message.Author.IsBot)
-            {
-                return Task.CompletedTask;
-            }
-
             return ReplyAsync($"Hi, {Context.Message.Author.Mention}");
         }
 
@@ -75,11 +70,6 @@ namespace KawaiiBot2.Modules
         [Command("joinedat")]
         public Task JoinedAt(IGuildUser user = null)
         {
-            if (Context.Message.Author.IsBot)
-            {
-                return Task.CompletedTask;
-            }
-
             // TODO
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
