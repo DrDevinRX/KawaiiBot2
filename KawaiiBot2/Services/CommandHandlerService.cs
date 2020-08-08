@@ -12,6 +12,8 @@ namespace KawaiiBot2.Services
         private readonly CommandService _commands;
         private IServiceProvider _provider;
 
+        public string Prefix { private get; set; } = "+";
+
         public CommandHandlerService(DiscordSocketClient discord, CommandService commands, IServiceProvider provider)
         {
             _discord = discord;
@@ -33,10 +35,15 @@ namespace KawaiiBot2.Services
                 return;
             }
 
+            if (message.Author.IsBot)
+            {
+                return;
+            }
+
             int argPos = 0;
 
             // We can add this to a config file
-            if (!message.HasStringPrefix("+", ref argPos))
+            if (!message.HasStringPrefix(Prefix, ref argPos))
             {
                 return;
             }
