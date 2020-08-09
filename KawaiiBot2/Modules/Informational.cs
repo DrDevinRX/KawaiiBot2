@@ -110,7 +110,7 @@ namespace KawaiiBot2.Modules
 
             Process proc = Process.GetCurrentProcess();
             var uptime = DateTime.Now - proc.StartTime;
-            var cph = CommandHandlerService.CommandsExecuted / ((uptime.TotalHours) / 3600 / 1000);
+            var cph = CommandHandlerService.CommandsExecuted / ((uptime.TotalHours));
             var mbpriv = proc.PrivateMemorySize64 / 1_000_000d;
             var mbwork = proc.WorkingSet64 / 1_000_000d;
 
