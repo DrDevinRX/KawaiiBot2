@@ -14,6 +14,7 @@ namespace KawaiiBot2.Modules
         private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒" };
 
         [Command("slots")]
+        [Summary("Roll the slot machine. may rngesus guide your path.")]
         public Task SlotsCmd()
         {
             string[] finalSlots = Enumerable.Range(0, 3).Select(i => Helpers.ChooseRandom(SlotIcons)).ToArray();

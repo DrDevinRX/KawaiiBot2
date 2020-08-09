@@ -18,6 +18,7 @@ namespace KawaiiBot2.Modules
 
         [Command("f")]
         [Alias("F")]
+        [Summary("Press F to pay respects")]
         public Task F(IGuildUser user)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -28,6 +29,7 @@ namespace KawaiiBot2.Modules
 
         [Command("f")]
         [Alias("F")]
+        [Summary("Press F to pay respects")]
         public Task F(String s = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -42,6 +44,7 @@ namespace KawaiiBot2.Modules
 
         [Command("flip")]
         [Alias("coin")]
+        [Summary("Flip a coin!")]
         public Task Flip()
         {
             var chosen = Helpers.ChooseRandom(CoinSides);
@@ -53,6 +56,7 @@ namespace KawaiiBot2.Modules
     JsonConvert.DeserializeObject<string[]>(File.ReadAllText("Resources/BootResponses.json"));
 
         [Command("boot")]
+        [Summary("Throw a boot at someone")]
         public Task Boot(IGuildUser user = null)
         {
             if (user == null)
@@ -71,6 +75,7 @@ namespace KawaiiBot2.Modules
 
 
         [Command("beer")]
+        [Summary("Give someone a beer!")]
         public Task Beer(IGuildUser user = null, string reason = null)
         {
             if (user == null || user.Id == Context.User.Id)
@@ -98,6 +103,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("cookie")]
+        [Summary("Give someone a cookie \uD83C\uDF6A")]
         public Task Cookie(IGuildUser user = null, string reason = null)
         {
             if (user == null)

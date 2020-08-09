@@ -12,6 +12,7 @@ namespace KawaiiBot2.Modules
     public class Informational : ModuleBase<SocketCommandContext>
     {
         [Command("about")]
+        [Summary("About me~ You want to know more~?")]
         public Task About()
         {
             EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -28,6 +29,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("avatar")]
+        [Summary("Displays your avatar")]
         public Task Avatar(IGuildUser user = null)
         {
             var guildUser = user ?? (Context.Message.Author as IGuildUser);
@@ -39,6 +41,8 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("joinedat")]
+        [Summary("Check when a user joined the current server")]
+        [RequireContext(ContextType.Guild)]
         public Task JoinedAt(IGuildUser user = null)
         {
             var guildUser = user ?? (Context.Message.Author as IGuildUser);
@@ -67,6 +71,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("user")]
+        [Summary("Get user information")]
         public Task User(IGuildUser user = null)
         {
             user ??= (Context.User as IGuildUser);
@@ -90,5 +95,20 @@ namespace KawaiiBot2.Modules
 
             return Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
         }
+
+        [Command("stats")]
+        [DevOnlyCmd]
+        [Summary("View internal information")]
+        public Task Stats()
+        {
+            if (!Program.devIDs.Contains(Context.User.Id))
+            {
+                return Task.Run(() => { });
+            }
+            return ReplyAsync($"```   ===  Awooo v2 Statistics  ===\n" +
+                $"{Helpers.Pad("Uptime", 23)}:: {Program.uptime.Elapsed}```");
+
+        }
+
     }
 }

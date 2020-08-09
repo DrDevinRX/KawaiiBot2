@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using System.IO;
 using KawaiiBot2.Services;
+using System.Diagnostics;
 
 namespace KawaiiBot2
 {
@@ -14,12 +15,16 @@ namespace KawaiiBot2
     {
         private DiscordSocketClient discord;
 
+        public  static ulong[] devIDs = { 173529942431236096L };
+        public static Stopwatch uptime = new Stopwatch();
+
 
         private static void Main()
             => new Program().MainAsync().GetAwaiter().GetResult();
 
         private async Task MainAsync()
         {
+            uptime.Start();
 
             var confdef = new { token = "", prefix = "" };
 

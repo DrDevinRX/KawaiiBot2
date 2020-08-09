@@ -17,6 +17,7 @@ namespace KawaiiBot2.Modules
     {
 
         [Command("cat", RunMode = RunMode.Async)]
+        [Summary("cats. Cats. CATS!")]
         public async Task Cat(IGuildUser user = null)
         {
             (bool success, string url) = await NekosLifeInterface.TryGetEndpoint("cat");
@@ -30,6 +31,7 @@ namespace KawaiiBot2.Modules
 
         [Command("birb", RunMode = RunMode.Async)]
         [Alias("bird")]
+        [Summary("Cute birbs :2")]
         public async Task Birb()
         {
             (bool success, string url) = await AlexFlipnoteInterface.TryGetEndpoint("birb");
@@ -43,6 +45,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("coffee", RunMode = RunMode.Async)]
+        [Summary("Coffee images to wake you up!")]
         public async Task Coffee()
         {
             (bool success, string url) = await AlexFlipnoteInterface.TryGetEndpoint("coffee");
@@ -56,6 +59,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("dog", RunMode = RunMode.Async)]
+        [Summary("Random dogs. mustpatmustpat")]
         public async Task Dog()
         {
             Request req = await Helpers.Client.SendRequest("https://random.dog/woof");
@@ -68,6 +72,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("duck", RunMode = RunMode.Async)]
+        [Summary("Positively Quack-y random ducks!")]
         public async Task Duck()
         {
             Request req = await Helpers.Client.SendRequest("https://random-d.uk/api/v1/quack");

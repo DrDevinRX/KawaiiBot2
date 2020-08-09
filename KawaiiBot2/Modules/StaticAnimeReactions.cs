@@ -43,6 +43,7 @@ namespace KawaiiBot2.Modules
 
         private string[] flowers = { "\uD83C\uDF37", "\uD83C\uDF3C", "\uD83C\uDF38", "\uD83C\uDF3A", "\uD83C\uDF3B", "\uD83C\uDF39" };
         [Command("flower", RunMode = RunMode.Async)]
+        [Summary("Give someone a flower! 🌸")]
         public async Task Flower(IGuildUser user = null)
         {
             if (user == null)
@@ -69,6 +70,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("lick", RunMode = RunMode.Async)]
+        [Summary("Lick someone o///o")]
         public async Task Lick(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -95,6 +97,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("highfive", RunMode = RunMode.Async)]
+        [Summary("High-five someone! o/\\o")]
         public async Task Highfive(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -123,6 +126,8 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("bite")]
+        [HiddenCmd]
+        [Summary("Bite someone :3c      I'm secretly a vampire too! hush-hush.")]
         public Task Bite(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -140,6 +145,7 @@ namespace KawaiiBot2.Modules
 
 
         [Command("handhold")]
+        [Summary("Hold someone's hand. o///////o oh my how lewd")]
         public Task Handhold(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -156,6 +162,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("nom")]
+        [Summary("Nom someone :3")]
         public Task Nom(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -173,6 +180,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("dab")]
+        [Summary("Dab on haters")]
         public Task Dab()
         {
             var url = Helpers.ChooseRandom(urlDictionary["dab"]);
@@ -181,30 +189,35 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("blush")]
+        [Summary("Posts a girl blushing o////o")]
         public Task Blush()
         {
             return ReplyAsync(Helpers.ChooseRandom(urlDictionary["blush"]));
         }
 
         [Command("cry")]
+        [Summary("Posts a crying picture when you're sad ;-;")]
         public Task Cry()
         {
             return ReplyAsync(Helpers.ChooseRandom(urlDictionary["cry"]));
         }
 
         [Command("dance")]
+        [Summary("Posts a dancing image!")]
         public Task Dance()
         {
             return ReplyAsync(Helpers.ChooseRandom(urlDictionary["dance"]));
         }
 
         [Command("lewd")]
+        [Summary("How lewd!")]
         public Task Lewd()
         {
             return ReplyAsync(Helpers.ChooseRandom(urlDictionary["lewd"]));
         }
 
         [Command("wag")]
+        [Summary("Wag your tail!")]
         public Task Wag()
         {
             return ReplyAsync(Helpers.ChooseRandom(urlDictionary["wag"]));

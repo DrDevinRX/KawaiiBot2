@@ -63,6 +63,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("baka", RunMode = RunMode.Async)]
+        [Summary("Call someone a baka")]
         public Task Baka(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -83,6 +84,7 @@ namespace KawaiiBot2.Modules
 
 
         [Command("cuddle", RunMode = RunMode.Async)]
+        [Summary("Cuddle someone :3")]
         public Task Cuddle(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -103,6 +105,7 @@ namespace KawaiiBot2.Modules
 
 
         [Command("hug", RunMode = RunMode.Async)]
+        [Summary("Give someone a hug o////o")]
         public Task Hug(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -123,6 +126,7 @@ namespace KawaiiBot2.Modules
 
 
         [Command("kiss", RunMode = RunMode.Async)]
+        [Summary("Kiss someone :3")]
         public Task Kiss(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -142,6 +146,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("pat", RunMode = RunMode.Async)]
+        [Summary("Give someone a pat! o//o")]
         public Task Pat(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -161,6 +166,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("poke", RunMode = RunMode.Async)]
+        [Summary("Poke someone :3")]
         public Task Poke(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -181,6 +187,7 @@ namespace KawaiiBot2.Modules
 
 
         [Command("slap", RunMode = RunMode.Async)]
+        [Summary("Slap someone ~(>_<。)＼")]
         public Task Slap(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -200,6 +207,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("tickle", RunMode = RunMode.Async)]
+        [Summary("Tickle someone! (●'◡'●)")]
         public Task Tickle(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);

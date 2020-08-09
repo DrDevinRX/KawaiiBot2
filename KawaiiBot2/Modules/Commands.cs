@@ -16,6 +16,7 @@ namespace KawaiiBot2.Modules
             JsonConvert.DeserializeObject<string[]>(File.ReadAllText("Resources/ChooseResponses.json"));
 
         [Command("choose")]
+        [Summary("Picks from a list of choices")]
         public Task Choose([Remainder] string choiceString = null)
         {
             string[] choices = choiceString?.Split('|');
@@ -33,6 +34,7 @@ namespace KawaiiBot2.Modules
 
         [Command("8ball")]
         [Alias("eightball")]
+        [Summary("Consult 8ball to receive an answer")]
         public Task EightBall([Remainder] string question = null)
         {
             if (string.IsNullOrWhiteSpace(question))
