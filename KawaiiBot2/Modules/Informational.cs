@@ -105,7 +105,7 @@ namespace KawaiiBot2.Modules
         {
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
-                return Task.Run(() => { });
+                return ReplyAsync("You must be a developer to use this command");
             }
 
             Process proc = Process.GetCurrentProcess();
@@ -116,20 +116,20 @@ namespace KawaiiBot2.Modules
 
             Dictionary<string, string> stats = new Dictionary<string, string>()
             {
-                {"\nPROCESS STATISTICS","ヾ(•ω•`)o ::\n" },
+                {"\nPROCESS STATISTICS\u200b\u200b","ヾ(•ω•`)o ::\n" },
                 { "☆Uptime☆",uptime.ToString()},
                 {"☆Private Memory☆",mbpriv.ToString("f2")+"MB" },
                 {"☆Working set☆",mbwork.ToString("f2")+"MB" },
                 {"☆Threads☆",proc.Threads.Count.ToString() },
-                {"\nBOT STATISTICS","§(*￣▽￣*)§ ::\n" },
+                {"\nBOT STATISTICS\u200b\u200b","§(*￣▽￣*)§ ::\n" },
                 {"☆Commands☆", CommandHandlerService.CommandsExecuted.ToString() },
-                {"☆Commands Per Hour☆", cph.ToString() }
+                {"☆Commands Per Hour☆", cph.ToString("f3") }
             };
 
             var q = from stat in stats
                     select $"{Helpers.Pad(stat.Key, 23)}:: {stat.Value}";
 
-            return ReplyAsync($"```   ===  Awooo v2 Statistics  === {string.Join('\n', q)}```");
+            return ReplyAsync($"```   ===  Awooo v2 Statistics  === \n{string.Join('\n', q)}```");
         }
 
 
