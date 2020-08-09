@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Discord;
+using Discord.WebSocket;
 using KawaiiBot2.APIInterfacing;
 
 
@@ -22,9 +23,17 @@ namespace KawaiiBot2
         public static string CleanGuildUserDisplayName(IGuildUser user)
             => (user?.Nickname ?? user?.Username ?? "User").Clean(); // If user is null, return User
 
+
         public static Embed ImgStrEmbed(string imageUrl, string comment)
             => new EmbedBuilder().WithDescription(comment).WithImageUrl(imageUrl).Build();
 
+
+        public static string Pad(string content, int padTo)
+        {
+            if (content.Length >= padTo)
+                return content;
+            return content + new string(' ', padTo - content.Length);
+        }
 
     }
 }

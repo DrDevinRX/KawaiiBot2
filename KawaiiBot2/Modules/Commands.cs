@@ -41,7 +41,7 @@ namespace KawaiiBot2.Modules
             }
 
             return ReplyAsync(
-                            $"🎱 **Question: **{question.Trim()}\n" +
+                            $"🎱 **Question: **{question.Trim().Clean()}\n" +
                             $"**Answer: ** {Helpers.ChooseRandom(EightBallResponses)}");
         }
     }

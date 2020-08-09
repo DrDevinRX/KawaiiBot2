@@ -51,6 +51,8 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("server")]
+        [RequireContext(ContextType.Guild)]
+        [Summary("Information about the current server")]
         public Task Server()
         {
             EmbedBuilder embedBuilder = new EmbedBuilder()

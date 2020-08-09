@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
+using KawaiiBot2.Modules;
 
 namespace KawaiiBot2.Services
 {
@@ -19,6 +20,8 @@ namespace KawaiiBot2.Services
             _discord = discord;
             _commands = commands;
             _provider = provider;
+
+            Help.commands = commands;
 
             _discord.MessageReceived += MessageReceived;
         }
@@ -41,8 +44,7 @@ namespace KawaiiBot2.Services
             }
 
             int argPos = 0;
-
-            // We can add this to a config file
+            
             if (!message.HasStringPrefix(Prefix, ref argPos))
             {
                 return;
