@@ -20,7 +20,7 @@ namespace KawaiiBot2.Modules
 
         public async Task GetHelp()
         {
-            bool isDeveloper = Program.devIDs.Contains(Context.User.Id);
+            bool isDeveloper = Helpers.devIDs.Contains(Context.User.Id);
             var commandDescs = (from command in commands.Commands
                                 where isDeveloper || !command.Attributes.Any(a => a.GetType() == typeof(HiddenCmdAttribute))
                                 where isDeveloper || !command.Attributes.Any(async => async.GetType() == typeof(DevOnlyCmdAttribute))

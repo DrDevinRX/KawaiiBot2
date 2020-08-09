@@ -15,6 +15,8 @@ namespace KawaiiBot2.Services
 
         public static string Prefix { private get; set; } = "-";
 
+        public static int CommandsExecuted { get; private set; } = 0;
+
         public CommandHandlerService(DiscordSocketClient discord, CommandService commands, IServiceProvider provider)
         {
             _discord = discord;
@@ -44,7 +46,7 @@ namespace KawaiiBot2.Services
             }
 
             int argPos = 0;
-            
+
             if (!message.HasStringPrefix(Prefix, ref argPos))
             {
                 return;
@@ -52,6 +54,9 @@ namespace KawaiiBot2.Services
 
             var context = new SocketCommandContext(_discord, message);
             var result = await _commands.ExecuteAsync(context, argPos, _provider);
+
+            if (!result.Error.HasValue)
+                CommandsExecuted++;
 
             if (result.Error.HasValue &&
                 result.Error.Value == CommandError.UnknownCommand)

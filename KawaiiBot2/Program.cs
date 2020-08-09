@@ -15,8 +15,7 @@ namespace KawaiiBot2
     {
         private DiscordSocketClient discord;
 
-        public  static ulong[] devIDs = { 173529942431236096L };
-        public static Stopwatch uptime = new Stopwatch();
+
 
 
         private static void Main()
@@ -24,7 +23,6 @@ namespace KawaiiBot2
 
         private async Task MainAsync()
         {
-            uptime.Start();
 
             var confdef = new { token = "", prefix = "" };
 

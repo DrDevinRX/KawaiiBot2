@@ -6,6 +6,8 @@ using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using Discord.WebSocket;
+using System.Diagnostics;
+using KawaiiBot2.Services;
 
 namespace KawaiiBot2.Modules
 {
@@ -19,7 +21,7 @@ namespace KawaiiBot2.Modules
 
             embedBuilder
                 .WithTitle("ℹ Awooo v2")
-                .AddField("Developers", "Yin, (not really hitoccchi)")
+                .AddField("Developers", "Hitoccchi (and Yin somewhat)")
                 .AddField("Base", "KawaiiiBot (now offline) and the nier speedruns Awooo")
                 .AddField("My Server!", "https://discord.nierspeedrun.com", true)
                 .WithThumbnailUrl(Context.Client.CurrentUser.GetAvatarUrl());
@@ -101,14 +103,35 @@ namespace KawaiiBot2.Modules
         [Summary("View internal information")]
         public Task Stats()
         {
-            if (!Program.devIDs.Contains(Context.User.Id))
+            if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return Task.Run(() => { });
             }
-            return ReplyAsync($"```   ===  Awooo v2 Statistics  ===\n" +
-                $"{Helpers.Pad("Uptime", 23)}:: {Program.uptime.Elapsed}```");
 
+            Process proc = Process.GetCurrentProcess();
+            var uptime = DateTime.Now - proc.StartTime;
+            var cph = CommandHandlerService.CommandsExecuted / ((uptime.TotalHours) / 3600 / 1000);
+            var mbpriv = proc.PrivateMemorySize64 / 1_000_000d;
+            var mbwork = proc.WorkingSet64 / 1_000_000d;
+
+            Dictionary<string, string> stats = new Dictionary<string, string>()
+            {
+                {"\nPROCESS STATISTICS","ヾ(•ω•`)o ::\n" },
+                { "☆Uptime☆",uptime.ToString()},
+                {"☆Private Memory☆",mbpriv.ToString("f2")+"MB" },
+                {"☆Working set☆",mbwork.ToString("f2")+"MB" },
+                {"☆Threads☆",proc.Threads.Count.ToString() },
+                {"\nBOT STATISTICS","§(*￣▽￣*)§ ::\n" },
+                {"☆Commands☆", CommandHandlerService.CommandsExecuted.ToString() },
+                {"☆Commands Per Hour☆", cph.ToString() }
+            };
+
+            var q = from stat in stats
+                    select $"{Helpers.Pad(stat.Key, 23)}:: {stat.Value}";
+
+            return ReplyAsync($"```   ===  Awooo v2 Statistics  === {string.Join('\n', q)}```");
         }
+
 
     }
 }
