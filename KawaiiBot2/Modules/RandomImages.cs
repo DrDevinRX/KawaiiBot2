@@ -18,7 +18,7 @@ namespace KawaiiBot2.Modules
 
         [Command("cat", RunMode = RunMode.Async)]
         [Summary("cats. Cats. CATS!")]
-        public async Task Cat(IGuildUser user = null)
+        public async Task Cat()
         {
             (bool success, string url) = await NekosLifeInterface.TryGetEndpoint("cat");
             if (!success)

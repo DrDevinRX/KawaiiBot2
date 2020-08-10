@@ -1,0 +1,24 @@
+{
+    "options": [
+        "rock",
+        "paper",
+        "scissors"
+    ],
+    "table": {
+        "rock": {
+            "beats": [
+                "scissors"
+            ]
+        },
+        "paper": {
+            "beats": [
+                "rock"
+            ]
+        },
+        "scissors": {
+            "beats": [
+                "paper"
+            ]
+        }
+    }
+}

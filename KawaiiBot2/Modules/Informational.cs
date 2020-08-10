@@ -30,6 +30,14 @@ namespace KawaiiBot2.Modules
             return Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
         }
 
+        [Command("source")]
+        [Summary("Source code link!")]
+        [HiddenCmd]
+        public Task Source()
+        {
+            return ReplyAsync("Build your own bot using this source code:\nhttps://github.com/DrDevinRX/Kawaiibot2");
+        }
+
         [Command("avatar")]
         [Summary("Displays your avatar")]
         public Task Avatar(IGuildUser user = null)

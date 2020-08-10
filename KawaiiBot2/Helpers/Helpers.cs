@@ -27,7 +27,7 @@ namespace KawaiiBot2
 
         public static string GetName(IUser user)
         {
-            return (user as IGuildUser)?.Nickname ?? (user as IGuildUser)?.Username ?? user?.Username ?? "User";
+            return ((user as IGuildUser)?.Nickname ?? (user as IGuildUser)?.Username ?? user?.Username ?? "User").Clean();
         }
 
 
