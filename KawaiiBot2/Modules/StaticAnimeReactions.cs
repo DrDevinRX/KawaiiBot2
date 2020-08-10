@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace KawaiiBot2.Modules
 {
+    [RequireContext(ContextType.Guild)]
     public class StaticAnimeReactions : ModuleBase<SocketCommandContext>
     {
         Dictionary<string, string[]> urlDictionary =

@@ -10,6 +10,7 @@ using KawaiiBot2.APIInterfacing.Interfaces;
 
 namespace KawaiiBot2.Modules
 {
+    [RequireContext(ContextType.Guild)]
     public class AnimeReactions : ModuleBase<SocketCommandContext>
     {
 

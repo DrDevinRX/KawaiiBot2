@@ -19,6 +19,7 @@ namespace KawaiiBot2.Modules
         [Command("f")]
         [Alias("F")]
         [Summary("Press F to pay respects")]
+        [RequireContext(ContextType.Guild)]
         public Task F(IGuildUser user)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);

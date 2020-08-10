@@ -25,6 +25,11 @@ namespace KawaiiBot2
         public static string CleanGuildUserDisplayName(IGuildUser user)
             => (user?.Nickname ?? user?.Username ?? "User").Clean(); // If user is null, return User
 
+        public static string GetName(IUser user)
+        {
+            return (user as IGuildUser)?.Nickname ?? (user as IGuildUser)?.Username ?? user?.Username ?? "User";
+        }
+
 
         public static Embed ImgStrEmbed(string imageUrl, string comment)
             => new EmbedBuilder().WithDescription(comment).WithImageUrl(imageUrl).Build();

@@ -34,10 +34,14 @@ namespace KawaiiBot2.Modules
         [Summary("Displays your avatar")]
         public Task Avatar(IGuildUser user = null)
         {
-            var guildUser = user ?? (Context.Message.Author as IGuildUser);
+
+            user ??= (Context.User as IGuildUser);
+
+            IUser baseUser = user ?? (Context.User as IUser);
+
             EmbedBuilder embedBuilder = new EmbedBuilder()
-                .WithDescription($"{Helpers.CleanGuildUserDisplayName(guildUser)}'s Avatar\n[Full Image]({guildUser.GetAvatarUrl()})")
-                .WithThumbnailUrl(guildUser.GetAvatarUrl());
+                .WithDescription($"{Helpers.GetName(baseUser)}'s Avatar\n[Full Image]({baseUser.GetAvatarUrl()})")
+                .WithThumbnailUrl(baseUser.GetAvatarUrl());
 
             return Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
         }
