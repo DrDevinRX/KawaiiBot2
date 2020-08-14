@@ -70,7 +70,7 @@ namespace KawaiiBot2.Modules
 
         [Command("echo")]
         [Summary("Echo               echo              *echo*")]
-        public Task Echo(string str = null)
+        public Task Echo([Remainder] string str = null)
         {
             if (str == null)
                 return ReplyAsync("Nothing will echo if you don't give me something to say");
