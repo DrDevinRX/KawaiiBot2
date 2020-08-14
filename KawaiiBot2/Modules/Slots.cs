@@ -34,10 +34,10 @@ namespace KawaiiBot2.Modules
             else if (finalSlots[0] == finalSlots[1] || finalSlots[1] == finalSlots[2] || finalSlots[0] == finalSlots[2])
                 winMessage = "and almost won (2/3)";
 
-            var guildUser = Context.Message.Author as IGuildUser;
+
 
             return ReplyAsync(
-                            $"**{Helpers.CleanGuildUserDisplayName(guildUser)}** rolled the slots...\n" +
+                            $"**{Helpers.GetName(Context.User)}** rolled the slots...\n" +
                             $"**[ {string.Join(" ", finalSlots)} ]**\n" +
                             $"{winMessage}");
         }
