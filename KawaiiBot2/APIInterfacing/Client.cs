@@ -48,7 +48,7 @@ namespace KawaiiBot2.APIInterfacing
         public async Task InitializeAsync(IServiceProvider provider)
         {
             var loggingService = provider.GetRequiredService<Services.LoggingService>();
-            loggingService.CreateLogger("API Client");
+            logger = loggingService.CreateLogger("API Client");
 
             await Task.CompletedTask;
         }
