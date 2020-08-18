@@ -10,7 +10,9 @@ namespace KawaiiBot2.APIInterfacing
 {
     class Client
     {
-        ILogger logger;
+#pragma warning disable 0649 // logger will be assigned when InitializeAsync is called
+        private ILogger logger;
+#pragma warning restore 0649
         public Client(string BotName)
         {
             client.DefaultRequestHeaders.Add("User-Agent", $"{BotName}");
