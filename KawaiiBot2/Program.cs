@@ -14,9 +14,8 @@ namespace KawaiiBot2
     class Program
     {
         private DiscordSocketClient discord;
-
-
-
+        const string ConfName = "conf.json";
+        readonly string ConfPath = Path.Combine(Directory.GetCurrentDirectory(), ConfName);
 
         private static void Main()
             => new Program().MainAsync().GetAwaiter().GetResult();
@@ -24,9 +23,14 @@ namespace KawaiiBot2
         private async Task MainAsync()
         {
 
+            if (!File.Exists(ConfPath))
+            {
+                CreateConf();
+            }
+
             var confdef = new { token = "", prefix = "" };
 
-            var config = JsonConvert.DeserializeAnonymousType(File.ReadAllText("conf.json"), confdef);
+            var config = JsonConvert.DeserializeAnonymousType(File.ReadAllText(ConfPath), confdef);
 
             if (!string.IsNullOrWhiteSpace(config.prefix))
             {
@@ -42,6 +46,9 @@ namespace KawaiiBot2
             var services = ConfigureServices();
             services.GetRequiredService<Services.LoggingService>();
             await services.GetRequiredService<Services.CommandHandlerService>().InitializeAsync(services);
+            Helpers.Client = services.GetRequiredService<APIInterfacing.Client>();
+
+            Console.WriteLine(Helpers.Client == null);
 
             await discord.LoginAsync(TokenType.Bot, config.token);
             await discord.StartAsync();
@@ -54,10 +61,23 @@ namespace KawaiiBot2
             return new ServiceCollection()
                 .AddSingleton(discord)
                 .AddSingleton<CommandService>()
-                .AddSingleton<Services.CommandHandlerService>()
+                .AddSingleton<CommandHandlerService>()
                 .AddLogging()
-                .AddSingleton<Services.LoggingService>()
+                .AddSingleton<LoggingService>()
+                .AddSingleton("Awooo v2")
+                .AddSingleton<APIInterfacing.Client>()
                 .BuildServiceProvider();
+        }
+
+        private void CreateConf()
+        {
+            Console.Write("Insert bot token: ");
+            var token = Console.ReadLine();
+            Console.Write("Insert command prefix (default is '-'): ");
+            var getPrefix = Console.ReadLine();
+            var prefix = string.IsNullOrWhiteSpace(getPrefix) ? "-" : getPrefix;
+
+            File.WriteAllText(ConfPath, JsonConvert.SerializeObject(new { token = token, prefix = prefix }));
         }
     }
 }

@@ -3,6 +3,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 
 namespace KawaiiBot2.Services
@@ -27,6 +28,9 @@ namespace KawaiiBot2.Services
             commandService.Log += LogCommandService;
 
         }
+
+        public ILogger CreateLogger(string loggerName)
+            => logger.CreateLogger(loggerName);
 
         private Task LogCommandService(LogMessage message)
         {

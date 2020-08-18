@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using System.Threading.Tasks;
-using Discord.WebSocket;
 using KawaiiBot2.APIInterfacing.Interfaces;
 using KawaiiBot2.APIInterfacing;
 using KawaiiBot2.APIInterfacing.ResultSchemas;

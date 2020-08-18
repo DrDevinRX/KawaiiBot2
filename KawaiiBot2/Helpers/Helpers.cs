@@ -14,10 +14,10 @@ namespace KawaiiBot2
 
         public static ulong[] devIDs = { 173529942431236096L, 132557773987643392L };
 
-        public static Client Client { get; private set; } = new Client("Awooo v2");
+        public static Client Client { get; set; } = null;
 
-        public static T ChooseRandom<T>(params T[] list)
-            => list[random.Next(list.Length)];
+        //public static T ChooseRandom<T>(params T[] list)
+        //    => list[random.Next(list.Length)];
 
         public static T ChooseRandom<T>(IEnumerable<T> items)
             => items.ElementAt(random.Next(items.Count()));

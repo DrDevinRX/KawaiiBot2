@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Discord;
+﻿using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
-using System.IO;
 using KawaiiBot2.APIInterfacing.Interfaces;
 
 namespace KawaiiBot2.Modules

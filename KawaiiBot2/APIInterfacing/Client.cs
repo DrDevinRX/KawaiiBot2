@@ -1,6 +1,7 @@
 ﻿//based off of https://github.com/Nekos-life/Nekos-Sharp/blob/master/NekosSharp/NekosClient.cs, but without the specific stuff
 
-
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace KawaiiBot2.APIInterfacing
 {
     class Client
     {
+        ILogger logger;
         public Client(string BotName)
         {
             client.DefaultRequestHeaders.Add("User-Agent", $"{BotName}");
@@ -36,11 +38,19 @@ namespace KawaiiBot2.APIInterfacing
                 else
                     Request = new Request(null, false, ex.Message, (int)Res.StatusCode);
                 if (LogType >= LogType.Info)
-                    Console.WriteLine($"[NekosSharp] Failed, {Request.ErrorMessage} {Request.ErrorCode}");
+                    logger.LogInformation($"[NekosSharp] Failed ({1}): {0}, {Request.ErrorMessage} {Request.ErrorCode}");
                 if (LogType == LogType.Debug)
-                    Console.WriteLine("[NekosSharp] Exception\n" + ex.ToString());
+                    logger.LogDebug(exception: ex, "[NekosSharp] Exception");
             }
             return Request;
+        }
+
+        public async Task InitializeAsync(IServiceProvider provider)
+        {
+            var loggingService = provider.GetRequiredService<Services.LoggingService>();
+            loggingService.CreateLogger("API Client");
+
+            await Task.CompletedTask;
         }
     }
     public enum LogType
