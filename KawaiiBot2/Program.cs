@@ -46,7 +46,9 @@ namespace KawaiiBot2
             var services = ConfigureServices();
             services.GetRequiredService<Services.LoggingService>();
             await services.GetRequiredService<Services.CommandHandlerService>().InitializeAsync(services);
-            Helpers.Client = services.GetRequiredService<APIInterfacing.Client>();
+            var apiClient = services.GetRequiredService<APIInterfacing.Client>();
+            await apiClient.InitializeAsync(services);
+            Helpers.Client = apiClient;
 
             Console.WriteLine(Helpers.Client == null);
 
