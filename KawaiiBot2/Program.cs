@@ -50,8 +50,6 @@ namespace KawaiiBot2
             await apiClient.InitializeAsync(services);
             Helpers.Client = apiClient;
 
-            Console.WriteLine(Helpers.Client == null);
-
             await discord.LoginAsync(TokenType.Bot, config.token);
             await discord.StartAsync();
 
