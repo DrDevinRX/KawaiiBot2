@@ -20,7 +20,7 @@ namespace KawaiiBot2.Modules
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
             embedBuilder
-                .WithTitle("ℹ Awooo v2")
+                .WithTitle($"ℹ {Program.BotName}")
                 .AddField("Developers", "Hitoccchi (and Yin somewhat)")
                 .AddField("Base", "KawaiiiBot (now offline) and the nier speedruns Awooo")
                 .AddField("My Server!", "https://discord.nierspeedrun.com", true)
@@ -141,7 +141,7 @@ namespace KawaiiBot2.Modules
             var q = from stat in stats
                     select $"{Helpers.Pad(stat.Key, 23)}:: {stat.Value}";
 
-            return ReplyAsync($"```   ===  Awooo v2 Statistics  === \n{string.Join('\n', q)}```");
+            return ReplyAsync($"```   ===  {Program.BotName} Statistics  === \n{string.Join('\n', q)}```");
         }
 
 

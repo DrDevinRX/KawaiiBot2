@@ -14,8 +14,9 @@ namespace KawaiiBot2
     class Program
     {
         private DiscordSocketClient discord;
-        const string ConfName = "conf.json";
-        readonly string ConfPath = Path.Combine(Directory.GetCurrentDirectory(), ConfName);
+        private const string ConfName = "conf.json";
+        private readonly string ConfPath = Path.Combine(Directory.GetCurrentDirectory(), ConfName);
+        public static readonly string BotName = "Awooo v2";
 
         private static void Main()
             => new Program().MainAsync().GetAwaiter().GetResult();
@@ -64,7 +65,7 @@ namespace KawaiiBot2
                 .AddSingleton<CommandHandlerService>()
                 .AddLogging()
                 .AddSingleton<LoggingService>()
-                .AddSingleton("Awooo v2")
+                .AddSingleton(BotName)
                 .AddSingleton<APIInterfacing.Client>()
                 .BuildServiceProvider();
         }
