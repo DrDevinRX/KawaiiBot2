@@ -14,6 +14,15 @@ namespace KawaiiBot2.Modules
 {
     public class Commands : ModuleBase<SocketCommandContext>
     {
+
+        [Command("hi")]
+        [Summary("Because Father Servo's always down.")]
+        public Task Hi()
+        {
+            return ReplyAsync(new Random().Next(10) == 7 ? "HEY" : "hi");
+        }
+
+
         [Command("ping", RunMode = RunMode.Async)]
         [Summary("Pong!")]
         public async Task Ping()

@@ -46,7 +46,7 @@ namespace KawaiiBot2.Modules
         private static ulong? riggedUserID = null;
         private static string[] riggedTo;
 
-        private void rig(string[] RiggedTo, ulong? RiggedUserID)
+        private void Rig(string[] RiggedTo, ulong? RiggedUserID)
         {
             rigged = true;
             riggedTo = RiggedTo;
@@ -58,7 +58,7 @@ namespace KawaiiBot2.Modules
 
             if (rigTo.Length == 2 && SlotIcons.Contains(rigTo))
             {
-                rig(new string[] { rigTo, rigTo, rigTo }, userID);
+                Rig(new string[] { rigTo, rigTo, rigTo }, userID);
                 return ReplyAsync($"*Bumps the slots* Feels {rigTo}.");
             }
             else if (rigTo.Length == 6)
@@ -66,7 +66,7 @@ namespace KawaiiBot2.Modules
                 var tmpRig = Enumerable.Range(0, 3).Select(i => rigTo.Substring(2 * i, 2)).Where(c => SlotIcons.Contains(c)).ToArray();
                 if (tmpRig.Length == 3)
                 {
-                    rig(tmpRig, userID);
+                    Rig(tmpRig, userID);
                     return ReplyAsync($"*Bumps the slots* Feels {rigTo}.");
                 }
                 else
