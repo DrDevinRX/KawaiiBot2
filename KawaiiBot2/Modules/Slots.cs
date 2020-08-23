@@ -42,6 +42,8 @@ namespace KawaiiBot2.Modules
                             $"{winMessage}");
         }
 
+        public static List<string> riggers = new List<string>();
+
         private static bool rigged = false;
         private static ulong? riggedUserID = null;
         private static string[] riggedTo;
@@ -55,7 +57,6 @@ namespace KawaiiBot2.Modules
 
         private Task RigCommon(string rigTo, ulong? userID = null)
         {
-
             if (rigTo.Length == 2 && SlotIcons.Contains(rigTo))
             {
                 Rig(new string[] { rigTo, rigTo, rigTo }, userID);
@@ -82,6 +83,9 @@ namespace KawaiiBot2.Modules
         [Summary("Rig the slots. Well, it does nothing.")]
         public Task RigSlots()
         {
+            var exeName = Helpers.GetName(Context.User);
+            if (!riggers.Contains(exeName) && Context.User.Id != 173529942431236096L)
+                riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return ReplyAsync("W-what! I would never!");
@@ -95,7 +99,10 @@ namespace KawaiiBot2.Modules
         [Summary("Rig the slots. The next time this person does it.")]
         public Task RigSlots(ulong UserID, string rigTo)
         {
-            if (!Helpers.devIDs.Contains(Context.User.Id))
+            var exeName = Helpers.GetName(Context.User);
+            if (!riggers.Contains(exeName) && Context.User.Id != 173529942431236096L)
+                riggers.Add(exeName);
+            if (!Helpers.devIDs.Contains(Context.User.Id) )
             {
                 return ReplyAsync("W-what! I would never!");
             }
@@ -108,6 +115,9 @@ namespace KawaiiBot2.Modules
         [Summary("Rig the slots. The next time this person does it.")]
         public Task RigSlots(IGuildUser User, string rigTo)
         {
+            var exeName = Helpers.GetName(Context.User);
+            if (!riggers.Contains(exeName) && Context.User.Id != 173529942431236096L)
+                riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return ReplyAsync("W-what! I would never!");
@@ -121,6 +131,9 @@ namespace KawaiiBot2.Modules
         [Summary("Rig the slots. Just for the next person.")]
         public Task RigSlots([Remainder] string rigTo)
         {
+            var exeName = Helpers.GetName(Context.User);
+            if (!riggers.Contains(exeName) && Context.User.Id!= 173529942431236096L)
+                riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return ReplyAsync("W-what! I would never!");

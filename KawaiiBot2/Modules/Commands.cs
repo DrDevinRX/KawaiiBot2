@@ -19,7 +19,32 @@ namespace KawaiiBot2.Modules
         [Summary("Because Father Servo's always down.")]
         public Task Hi()
         {
+            if (yesHey)
+            {
+                yesHey = false;
+                return ReplyAsync("HEY");
+            }
             return ReplyAsync(new Random().Next(10) == 7 ? "HEY" : "hi");
+        }
+
+        private static List<string> riggers = new List<string>();
+        private static bool yesHey;
+        [Command("righi")]
+        [Summary("Because some people need to win everything.")]
+        public Task RigHi()
+        {
+            var exeName = Helpers.GetName(Context.User);
+            if (!riggers.Contains(exeName) && Context.User.Id != 173529942431236096L)
+                riggers.Add(exeName);
+            yesHey = true;
+            return ReplyAsync("HEY!");
+        }
+        [Command("collusion")]
+        [Summary("Tell who's a member of the hi slots mafia")]
+        public Task Collusion()
+        {
+            return ReplyAsync($"```Hi riggers: \n{string.Join('\n', riggers)}\n" +
+                $"Slots riggers: \n{string.Join('\n', Slots.riggers)}```");
         }
 
 
