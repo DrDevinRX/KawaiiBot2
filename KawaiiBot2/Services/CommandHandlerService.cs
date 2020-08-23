@@ -66,7 +66,33 @@ namespace KawaiiBot2.Services
             if (result.Error.HasValue &&
                 result.Error.Value != CommandError.UnknownCommand)
             {
-                await context.Channel.SendMessageAsync(result.ToString());
+                switch (result.Error.Value)
+                {
+                    case CommandError.BadArgCount:
+                        await context.Channel.SendMessageAsync("T-that's not how you do that... You've got the number of things wrong!");
+                        break;
+                    case CommandError.Exception:
+                        await context.Channel.SendMessageAsync("Woopsies! Something went wrong@");
+                        break;
+                    case CommandError.MultipleMatches:
+                        await context.Channel.SendMessageAsync("T-There's too many of em...");
+                        break;
+                    case CommandError.ObjectNotFound:
+                        await context.Channel.SendMessageAsync("I-is that your invisible friend?");
+                        break;
+                    case CommandError.ParseFailed:
+                        await context.Channel.SendMessageAsync("h-hacker detected :\"(");
+                        break;
+                    case CommandError.UnmetPrecondition:
+                        await context.Channel.SendMessageAsync(result.ErrorReason);
+                        break;
+                    case CommandError.Unsuccessful:
+                        await context.Channel.SendMessageAsync("No u :(");
+                        break;
+                    default:
+                        await context.Channel.SendMessageAsync("I eat u :3 u did a woopsie");
+                        break;
+                }
             }
         }
 

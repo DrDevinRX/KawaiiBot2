@@ -17,6 +17,7 @@ namespace KawaiiBot2.Modules
 
         [Command("hi")]
         [Summary("Because Father Servo's always down.")]
+
         public Task Hi()
         {
             if (yesHey)
@@ -34,7 +35,7 @@ namespace KawaiiBot2.Modules
         public Task RigHi()
         {
             var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id != 173529942431236096L)
+            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
                 riggers.Add(exeName);
             yesHey = true;
             return ReplyAsync("HEY!");
@@ -43,7 +44,8 @@ namespace KawaiiBot2.Modules
         [Summary("Tell who's a member of the hi slots mafia")]
         public Task Collusion()
         {
-            return ReplyAsync($"```Hi riggers: \n{string.Join('\n', riggers)}\n" +
+            return ReplyAsync($"```Head mafiosa and bot code colluder: hitoccchi\n" +
+                $"Hi riggers: \n{string.Join('\n', riggers)}\n" +
                 $"Slots riggers: \n{string.Join('\n', Slots.riggers)}```");
         }
 
@@ -106,11 +108,11 @@ namespace KawaiiBot2.Modules
                 return;
             }
             var res = JsonConvert.DeserializeObject<NekosFactRes>(req.Content);
-            await ReplyAsync(res.Fact);
+            await ReplyAsync($":books: **Fun fact**:\n{ res.Fact}");
         }
 
         [Command("ship")]
-        [RequireContext(ContextType.Guild)]
+        [RequireContext(ContextType.Guild, ErrorMessage = "It's just the two of us here???")]
         [Summary("Make a lovely ship <3")]
         public Task Ship(IGuildUser user1 = null, IGuildUser user2 = null)
         {

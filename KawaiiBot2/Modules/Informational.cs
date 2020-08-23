@@ -56,7 +56,7 @@ namespace KawaiiBot2.Modules
 
         [Command("joinedat")]
         [Summary("Check when a user joined the current server")]
-        [RequireContext(ContextType.Guild)]
+        [RequireContext(ContextType.Guild, ErrorMessage = "W-what? I-I don't know when you joined because this is nowhere!")]
         public Task JoinedAt(IGuildUser user = null)
         {
             var guildUser = user ?? (Context.Message.Author as IGuildUser);
@@ -69,7 +69,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("server")]
-        [RequireContext(ContextType.Guild)]
+        [RequireContext(ContextType.Guild, ErrorMessage = "I-I dunno! There isn't one!")]
         [Summary("Information about the current server")]
         public Task Server()
         {

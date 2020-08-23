@@ -5,7 +5,7 @@ using KawaiiBot2.APIInterfacing.Interfaces;
 
 namespace KawaiiBot2.Modules
 {
-    [RequireContext(ContextType.Guild)]
+    [RequireContext(ContextType.Guild, ErrorMessage = "Y-You're the baka for trying that!")]
     public class AnimeReactions : ModuleBase<SocketCommandContext>
     {
 

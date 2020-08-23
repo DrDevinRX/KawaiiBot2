@@ -19,7 +19,7 @@ namespace KawaiiBot2.Modules
         private ThrowJson throwJson = JsonConvert.DeserializeObject<ThrowJson>(File.ReadAllText("Resources/ThrowResponses.json"));
         [Command("throw")]
         [Summary("Throw something at someone >:3")]
-        [RequireContext(ContextType.Guild)]
+        [RequireContext(ContextType.Guild, ErrorMessage = "I throw it right back at you!")]
         public Task Throw(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -56,7 +56,7 @@ namespace KawaiiBot2.Modules
         [Command("fruitsnacks")]
         [Alias("fruits", "fruit")]
         [Summary("Give someone a fruit")]
-        [RequireContext(ContextType.Guild)]
+        [RequireContext(ContextType.Guild, ErrorMessage = "Nom nom nom")]
         public Task FruitSnacks(IGuildUser user = null)
         {
             if (user == null) return ReplyAsync("*splat* the fruit lands on the floor.");
@@ -82,7 +82,7 @@ namespace KawaiiBot2.Modules
         [Command("lovecalc")]
         [Alias("love", "❤")]
         [Summary("Calculate love levels between two members")]
-        [RequireContext(ContextType.Guild)]
+        [RequireContext(ContextType.Guild, ErrorMessage = "We're not compatible at all!")]
         public Task LoveCalc(IGuildUser user1 = null, IGuildUser user2 = null)
         {
             if (user1 == null || user2 == null) return ReplyAsync("Mention two members, please");
@@ -150,7 +150,7 @@ namespace KawaiiBot2.Modules
         [Command("ratewaifu")]
         [Alias("rate", "waifu")]
         [Summary("Rates your waifu. She's trash, of course.")]
-        [RequireContext(ContextType.Guild)]
+        [RequireContext(ContextType.Guild, ErrorMessage = "Can't rate users where there are none?")]
         public Task RateWaifu(IGuildUser user)
         {
             user ??= (Context.User as IGuildUser);
@@ -188,7 +188,7 @@ namespace KawaiiBot2.Modules
         [Command("f")]
         [Alias("F")]
         [Summary("Press F to pay respects")]
-        [RequireContext(ContextType.Guild)]
+        [RequireContext(ContextType.Guild, ErrorMessage = "No users to pay respects for!")]
         public Task F(IGuildUser user)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -227,6 +227,7 @@ namespace KawaiiBot2.Modules
 
         [Command("boot")]
         [Summary("Throw a boot at someone")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "No throwing boots here, quiet time")]
         public Task Boot(IGuildUser user = null)
         {
             if (user == null)
@@ -246,6 +247,7 @@ namespace KawaiiBot2.Modules
 
         [Command("beer")]
         [Summary("Give someone a beer!")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "Sharing a beer in secret, hehehe~")]
         public Task Beer(IGuildUser user = null, [Remainder] string reason = null)
         {
             if (user == null || user.Id == Context.User.Id)
@@ -274,6 +276,7 @@ namespace KawaiiBot2.Modules
 
         [Command("cookie")]
         [Summary("Give someone a cookie \uD83C\uDF6A")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "I take your cookie :3")]
         public Task Cookie(IGuildUser user = null, [Remainder] string reason = null)
         {
             if (user == null)

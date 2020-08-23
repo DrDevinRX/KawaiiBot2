@@ -45,6 +45,7 @@ namespace KawaiiBot2.Modules
         private string[] flowers = { "\uD83C\uDF37", "\uD83C\uDF3C", "\uD83C\uDF38", "\uD83C\uDF3A", "\uD83C\uDF3B", "\uD83C\uDF39" };
         [Command("flower", RunMode = RunMode.Async)]
         [Summary("Give someone a flower! 🌸")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "There's flowers all around, just look!")]
         public async Task Flower(IGuildUser user = null)
         {
             if (user == null)
@@ -72,6 +73,7 @@ namespace KawaiiBot2.Modules
 
         [Command("lick", RunMode = RunMode.Async)]
         [Summary("Lick someone o///o")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "I don't give consent!")]
         public async Task Lick(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -99,6 +101,7 @@ namespace KawaiiBot2.Modules
 
         [Command("highfive", RunMode = RunMode.Async)]
         [Summary("High-five someone! o/\\o")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "*Secretively high-fives*")]
         public async Task Highfive(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -129,6 +132,7 @@ namespace KawaiiBot2.Modules
         [Command("bite")]
         [HiddenCmd]
         [Summary("Bite someone :3c      I'm secretly a vampire too! hush-hush.")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "*blood swap*! Vampire pals :3")]
         public Task Bite(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -147,6 +151,7 @@ namespace KawaiiBot2.Modules
 
         [Command("handhold")]
         [Summary("Hold someone's hand. o///////o oh my how lewd")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "Now that we're in private, hand hold is go~")]
         public Task Handhold(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
@@ -164,6 +169,7 @@ namespace KawaiiBot2.Modules
 
         [Command("nom")]
         [Summary("Nom someone :3")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "nomnomnom")]
         public Task Nom(IGuildUser user = null)
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);

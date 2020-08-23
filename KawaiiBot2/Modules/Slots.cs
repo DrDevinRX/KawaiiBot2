@@ -84,7 +84,7 @@ namespace KawaiiBot2.Modules
         public Task RigSlots()
         {
             var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id != 173529942431236096L)
+            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
                 riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
@@ -100,7 +100,7 @@ namespace KawaiiBot2.Modules
         public Task RigSlots(ulong UserID, string rigTo)
         {
             var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id != 173529942431236096L)
+            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
                 riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id) )
             {
@@ -116,7 +116,7 @@ namespace KawaiiBot2.Modules
         public Task RigSlots(IGuildUser User, string rigTo)
         {
             var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id != 173529942431236096L)
+            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
                 riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
@@ -132,7 +132,7 @@ namespace KawaiiBot2.Modules
         public Task RigSlots([Remainder] string rigTo)
         {
             var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id!= 173529942431236096L)
+            if (!riggers.Contains(exeName) && Context.User.Id!= 0x268809030820000)
                 riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
