@@ -69,7 +69,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("server")]
-        [RequireContext(ContextType.Guild, ErrorMessage = "I-I dunno! There isn't one!")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "I'm running on hitoccchi's custom 8 EPYC CPUs, 6tb ram server direct connected to the internet! It's so spacious!")]
         [Summary("Information about the current server")]
         public Task Server()
         {

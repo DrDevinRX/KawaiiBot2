@@ -16,7 +16,7 @@ namespace KawaiiBot2
         private DiscordSocketClient discord;
         private const string ConfName = "conf.json";
         private readonly string ConfPath = Path.Combine(Directory.GetCurrentDirectory(), ConfName);
-        public static readonly string BotName = "Awooo v2";
+        public static readonly string BotName = "Awooo v2 (Ver My愛)";
 
         private static void Main()
             => new Program().MainAsync().GetAwaiter().GetResult();
