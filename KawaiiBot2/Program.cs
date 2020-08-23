@@ -78,7 +78,7 @@ namespace KawaiiBot2
             var getPrefix = Console.ReadLine();
             var prefix = string.IsNullOrWhiteSpace(getPrefix) ? "-" : getPrefix;
 
-            File.WriteAllText(ConfPath, JsonConvert.SerializeObject(new { token = token, prefix = prefix }));
+            File.WriteAllText(ConfPath, JsonConvert.SerializeObject(new { token, prefix }));
         }
     }
 }

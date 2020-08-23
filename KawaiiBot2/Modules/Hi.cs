@@ -26,9 +26,10 @@ namespace KawaiiBot2.Modules
         }
 
         public static List<string> riggers = new List<string>();
-        private static bool yesHey;
+        private volatile static bool yesHey;
         [Command("righi")]
         [Summary("Because some people need to win everything.")]
+        [HiddenCmd]
         public Task RigHi()
         {
             var exeName = Helpers.GetName(Context.User);

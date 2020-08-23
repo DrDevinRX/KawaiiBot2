@@ -46,7 +46,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("8ball")]
-        [Alias("eightball")]
+        [Alias("eightball", "yball")]
         [Summary("Consult 8ball to receive an answer")]
         public Task EightBall([Remainder] string question = null)
         {
@@ -76,7 +76,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("ship")]
-        [RequireContext(ContextType.Guild, ErrorMessage = "It's just the two of us here???")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "*throws you overboard*")]
         [Summary("Make a lovely ship <3")]
         public Task Ship(IGuildUser user1 = null, IGuildUser user2 = null)
         {

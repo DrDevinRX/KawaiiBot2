@@ -22,6 +22,8 @@ namespace KawaiiBot2.Modules
         [RequireContext(ContextType.Guild, ErrorMessage = "I throw it right back at you!")]
         public Task Throw(IGuildUser user = null)
         {
+
+            if (user == null) return ReplyAsync("You need to throw stuff at someone...?");
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
 
@@ -175,7 +177,7 @@ namespace KawaiiBot2.Modules
         [Command("ratewaifu")]
         [Alias("rate", "waifu")]
         [Summary("Rates your waifu. She's trash, of course.")]
-        public Task RateWaifu(string str = null)
+        public Task RateWaifu([Remainder] string str = null)
         {
             if (str == null)
                 return ReplyAsync("You hhave to rate something..?");

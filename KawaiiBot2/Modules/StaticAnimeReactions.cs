@@ -10,10 +10,9 @@ using Newtonsoft.Json;
 
 namespace KawaiiBot2.Modules
 {
-    [RequireContext(ContextType.Guild)]
     public class StaticAnimeReactions : ModuleBase<SocketCommandContext>
     {
-        Dictionary<string, string[]> urlDictionary =
+        readonly Dictionary<string, string[]> urlDictionary =
             JsonConvert.DeserializeObject<Dictionary<string, string[]>>(File.ReadAllText("Resources/StaticUrlImages.json"));
 
         private Task StaticAnimeReactCommand(
@@ -42,7 +41,7 @@ namespace KawaiiBot2.Modules
         }
 
 
-        private string[] flowers = { "\uD83C\uDF37", "\uD83C\uDF3C", "\uD83C\uDF38", "\uD83C\uDF3A", "\uD83C\uDF3B", "\uD83C\uDF39" };
+        private readonly string[] flowers = { "\uD83C\uDF37", "\uD83C\uDF3C", "\uD83C\uDF38", "\uD83C\uDF3A", "\uD83C\uDF3B", "\uD83C\uDF39" };
         [Command("flower", RunMode = RunMode.Async)]
         [Summary("Give someone a flower! 🌸")]
         [RequireContext(ContextType.Guild, ErrorMessage = "There's flowers all around, just look!")]
@@ -65,7 +64,7 @@ namespace KawaiiBot2.Modules
             }
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-            await ReplyAsync($"**{mentionedUserName}** you got a {Helpers.ChooseRandom(flowers)} from **{AuthorName}**");
+            await ReplyAsync($"**{mentionedUserName}**, you got a {Helpers.ChooseRandom(flowers)} from **{AuthorName}**");
             await Context.Channel.SendFileAsync("Resources/images/flower.gif");
             return;
 
@@ -101,6 +100,7 @@ namespace KawaiiBot2.Modules
 
         [Command("highfive", RunMode = RunMode.Async)]
         [Summary("High-five someone! o/\\o")]
+        [Alias("five")]
         [RequireContext(ContextType.Guild, ErrorMessage = "*Secretively high-fives*")]
         public async Task Highfive(IGuildUser user = null)
         {

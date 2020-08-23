@@ -12,7 +12,7 @@ namespace KawaiiBot2.Modules
     public class Help : ModuleBase<SocketCommandContext>
     {
 
-        public static CommandService commands { private get; set; }
+        public static CommandService Commands { private get; set; }
 
         [Command("help", RunMode = RunMode.Async)]
         [Alias("commands")]
@@ -21,7 +21,7 @@ namespace KawaiiBot2.Modules
         public async Task GetHelp()
         {
             bool isDeveloper = Helpers.devIDs.Contains(Context.User.Id);
-            var commandDescs = (from command in commands.Commands
+            var commandDescs = (from command in Commands.Commands
                                 where isDeveloper || !command.Attributes.Any(a => a.GetType() == typeof(HiddenCmdAttribute))
                                 where isDeveloper || !command.Attributes.Any(async => async.GetType() == typeof(DevOnlyCmdAttribute))
                                 orderby command.Name

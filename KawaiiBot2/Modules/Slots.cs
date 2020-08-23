@@ -44,9 +44,9 @@ namespace KawaiiBot2.Modules
 
         public static List<string> riggers = new List<string>();
 
-        private static bool rigged = false;
+        private volatile static bool rigged = false;
         private static ulong? riggedUserID = null;
-        private static string[] riggedTo;
+        private volatile static string[] riggedTo;
 
         private void Rig(string[] RiggedTo, ulong? RiggedUserID)
         {
@@ -57,6 +57,7 @@ namespace KawaiiBot2.Modules
 
         private Task RigCommon(string rigTo, ulong? userID = null)
         {
+            rigTo = rigTo.Replace(" ", "");
             if (rigTo.Length == 2 && SlotIcons.Contains(rigTo))
             {
                 Rig(new string[] { rigTo, rigTo, rigTo }, userID);
@@ -81,6 +82,7 @@ namespace KawaiiBot2.Modules
 
         [Command("rigslots")]
         [Summary("Rig the slots. Well, it does nothing.")]
+        [DevOnlyCmd]
         public Task RigSlots()
         {
             var exeName = Helpers.GetName(Context.User);
@@ -97,12 +99,13 @@ namespace KawaiiBot2.Modules
 
         [Command("rigslots")]
         [Summary("Rig the slots. The next time this person does it.")]
+        [DevOnlyCmd]
         public Task RigSlots(ulong UserID, string rigTo)
         {
             var exeName = Helpers.GetName(Context.User);
             if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
                 riggers.Add(exeName);
-            if (!Helpers.devIDs.Contains(Context.User.Id) )
+            if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return ReplyAsync("W-what! I would never!");
             }
@@ -113,6 +116,7 @@ namespace KawaiiBot2.Modules
 
         [Command("rigslots")]
         [Summary("Rig the slots. The next time this person does it.")]
+        [DevOnlyCmd]
         public Task RigSlots(IGuildUser User, string rigTo)
         {
             var exeName = Helpers.GetName(Context.User);
@@ -129,10 +133,11 @@ namespace KawaiiBot2.Modules
 
         [Command("rigslots")]
         [Summary("Rig the slots. Just for the next person.")]
+        [DevOnlyCmd]
         public Task RigSlots([Remainder] string rigTo)
         {
             var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id!= 0x268809030820000)
+            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
                 riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
