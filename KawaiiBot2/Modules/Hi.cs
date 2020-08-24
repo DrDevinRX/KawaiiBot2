@@ -25,7 +25,6 @@ namespace KawaiiBot2.Modules
             return ReplyAsync(new Random().Next(10) == 7 ? "HEY" : "hi");
         }
 
-        public static List<string> riggers = new List<string>();
         private volatile static bool yesHey;
         [Command("righi")]
         [Summary("Because some people need to win everything.")]
@@ -33,8 +32,6 @@ namespace KawaiiBot2.Modules
         public Task RigHi()
         {
             var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
-                riggers.Add(exeName);
             yesHey = true;
             return ReplyAsync("HEY!");
         }

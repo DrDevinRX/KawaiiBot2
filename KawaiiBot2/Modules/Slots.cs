@@ -42,8 +42,6 @@ namespace KawaiiBot2.Modules
                             $"{winMessage}");
         }
 
-        public static List<string> riggers = new List<string>();
-
         private volatile static bool rigged = false;
         private static ulong? riggedUserID = null;
         private volatile static string[] riggedTo;
@@ -85,9 +83,6 @@ namespace KawaiiBot2.Modules
         [DevOnlyCmd]
         public Task RigSlots()
         {
-            var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
-                riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return ReplyAsync("W-what! I would never!");
@@ -102,9 +97,6 @@ namespace KawaiiBot2.Modules
         [DevOnlyCmd]
         public Task RigSlots(ulong UserID, string rigTo)
         {
-            var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
-                riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return ReplyAsync("W-what! I would never!");
@@ -119,9 +111,6 @@ namespace KawaiiBot2.Modules
         [DevOnlyCmd]
         public Task RigSlots(IGuildUser User, string rigTo)
         {
-            var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
-                riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return ReplyAsync("W-what! I would never!");
@@ -136,9 +125,6 @@ namespace KawaiiBot2.Modules
         [DevOnlyCmd]
         public Task RigSlots([Remainder] string rigTo)
         {
-            var exeName = Helpers.GetName(Context.User);
-            if (!riggers.Contains(exeName) && Context.User.Id != 0x268809030820000)
-                riggers.Add(exeName);
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return ReplyAsync("W-what! I would never!");
