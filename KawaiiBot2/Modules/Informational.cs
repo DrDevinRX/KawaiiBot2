@@ -125,6 +125,7 @@ namespace KawaiiBot2.Modules
             var cph = CommandHandlerService.CommandsExecuted / ((uptime.TotalHours));
             var mbpriv = proc.PrivateMemorySize64 / 1_000_000d;
             var mbwork = proc.WorkingSet64 / 1_000_000d;
+            var mbvirt = proc.VirtualMemorySize64 / 1_000_000d;
 
             Dictionary<string, string> stats = new Dictionary<string, string>()
             {
@@ -132,6 +133,7 @@ namespace KawaiiBot2.Modules
                 { "☆Uptime☆",uptime.ToString()},
                 {"☆Private Memory☆",mbpriv.ToString("f2")+"MB" },
                 {"☆Working set☆",mbwork.ToString("f2")+"MB" },
+                {"☆Virtual Memory☆",mbvirt.ToString("f2")+"MB" },
                 {"☆Threads☆",proc.Threads.Count.ToString() },
                 {"\nBOT STATISTICS\u200b\u200b","§(*￣▽￣*)§ ::\n" },
                 {"☆Commands☆", CommandHandlerService.CommandsExecuted.ToString() },
