@@ -20,6 +20,11 @@ namespace KawaiiBot2.Modules
 
         public async Task GetHelp()
         {
+
+            //post
+            await Context.Message.AddReactionAsync(new Emoji("✉"));
+
+            //get commands
             bool isDeveloper = Helpers.devIDs.Contains(Context.User.Id);
             var commandDescs = (from command in Commands.Commands
                                 where isDeveloper || !command.Attributes.Any(a => a.GetType() == typeof(HiddenCmdAttribute))
@@ -27,8 +32,18 @@ namespace KawaiiBot2.Modules
                                 orderby command.Name
                                 select Helpers.Pad(command.Name, 20) + command.Summary).ToArray();
             var halflen = commandDescs.Length / 2;
-            await ReplyAsync("```" + string.Join("\n", commandDescs[0..halflen]) + "```");
-            await ReplyAsync("```" + string.Join("\n", commandDescs[halflen..^1]) + "```");
+            var firstMsg = "```" + string.Join("\n", commandDescs[0..halflen]) + "```";
+            var secondMsg = "```" + string.Join("\n", commandDescs[halflen..^1]) + "```";
+
+            //get dms
+            var dms = await Context.User.GetOrCreateDMChannelAsync();
+
+            //send the help to DMs
+            await dms.SendMessageAsync("Thank you for consulting me to receive help~");
+            await dms.SendMessageAsync(firstMsg);
+            await dms.SendMessageAsync(secondMsg);
+
+
         }
 
     }
