@@ -13,7 +13,7 @@ namespace KawaiiBot2.Modules
     public class StaticAnimeReactions : ModuleBase<SocketCommandContext>
     {
         readonly Dictionary<string, string[]> urlDictionary =
-            JsonConvert.DeserializeObject<Dictionary<string, string[]>>(File.ReadAllText("Resources/StaticUrlImages.json"));
+            JsonConvert.DeserializeObject<Dictionary<string, string[]>>(File.ReadAllText("Resources/StaticURLImages.json"));
 
         private Task StaticAnimeReactCommand(
             string noUserReply,
