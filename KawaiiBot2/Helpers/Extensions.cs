@@ -9,7 +9,7 @@ namespace KawaiiBot2
     {
         public static string Clean(this string str)
         {
-            return str?.Replace("@", "@\u200b")?.Replace("`", "`\u200b");
+            return str?.Replace("@", "@\u200b")?.Replace("`", "ˋ");
         }
     }
 }

@@ -15,6 +15,14 @@ namespace KawaiiBot2.Modules
 {
     public class PureTextCmds : ModuleBase<SocketCommandContext>
     {
+        [Command("touchbutt")]
+        [Summary("Touch someone's butt. What a pervert!")]
+        [HiddenCmd]
+        public Task TouchButt([Remainder] string s = null)
+        {
+            return ReplyAsync("<:marbieAYAYAYES:747499302125043833>");
+        }
+
 
         private ThrowJson throwJson = JsonConvert.DeserializeObject<ThrowJson>(File.ReadAllText("Resources/ThrowResponses.json"));
         [Command("throw")]

@@ -16,11 +16,11 @@ namespace KawaiiBot2.Modules
         [DevOnlyCmd]
         public Task Clean([Remainder] string username)
         {
-            if (string.IsNullOrWhiteSpace(username)) return ReplyAsync("Huh? You need to clear *someone*...");
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return ReplyAsync("I-I don't know what you're talking about... :point_right: :point_left: ");
             }
+            if (string.IsNullOrWhiteSpace(username)) return ReplyAsync("Huh? You need to clear *someone*...");
             if (Hi.riggers.Contains(username)) Hi.riggers.RemoveAll(s => s == username);
             if (Slots.riggers.Contains(username)) Slots.riggers.RemoveAll(s => s == username);
             return ReplyAsync($"Cleaned the record for {username.Clean()}");
