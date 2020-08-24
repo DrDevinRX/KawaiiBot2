@@ -100,9 +100,9 @@ namespace KawaiiBot2.Modules
             EmbedBuilder embedBuilder = new EmbedBuilder()
                 .WithTitle($"ℹ About **{baseUser.Id}**")
                 .WithThumbnailUrl(baseUser.GetAvatarUrl())
-                .AddField("Full name", $"{baseUser.Username}#{baseUser.Discriminator}", true);
+                .AddField("Full name", $"{baseUser.Username.Clean()}#{baseUser.Discriminator}", true);
             if (user != null)
-                embedBuilder.AddField("Nickname", user.Nickname ?? "None", true);
+                embedBuilder.AddField("Nickname", user.Nickname?.Clean() ?? "None", true);
             embedBuilder.AddField("Account created", baseUser.CreatedAt, true);
             if (user != null)
                 embedBuilder.AddField("Joined this server", user.JoinedAt, true);

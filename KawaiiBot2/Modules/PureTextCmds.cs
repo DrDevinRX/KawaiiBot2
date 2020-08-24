@@ -181,7 +181,7 @@ namespace KawaiiBot2.Modules
         public Task RateWaifu([Remainder] string str = null)
         {
             if (str == null)
-                return ReplyAsync("You hhave to rate something..?");
+                return ReplyAsync("You have to rate something..?");
             Random rn = new Random(str.GetHashCode());
             return ReplyAsync($"I'd rate `{str.Clean()}` a **{rn.Next(100 - 1) + 1} / 100**");
         }
