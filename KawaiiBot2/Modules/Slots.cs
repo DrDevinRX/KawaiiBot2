@@ -11,7 +11,7 @@ namespace KawaiiBot2.Modules
     public class Slots : ModuleBase<SocketCommandContext>
     {
 
-        private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒" };
+        private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌" };
 
         [Command("slots")]
         [Summary("Roll the slot machine. may rngesus guide your path.")]
@@ -95,7 +95,7 @@ namespace KawaiiBot2.Modules
         [Command("rigslots")]
         [Summary("Rig the slots. The next time this person does it.")]
         [DevOnlyCmd]
-        public Task RigSlots(ulong UserID, string rigTo)
+        public Task RigSlots(ulong UserID, [Remainder] string rigTo)
         {
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
@@ -109,7 +109,7 @@ namespace KawaiiBot2.Modules
         [Command("rigslots")]
         [Summary("Rig the slots. The next time this person does it.")]
         [DevOnlyCmd]
-        public Task RigSlots(IGuildUser User, string rigTo)
+        public Task RigSlots(IGuildUser User, [Remainder] string rigTo)
         {
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
