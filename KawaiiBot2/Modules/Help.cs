@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord;
+using System.Diagnostics;
 
 namespace KawaiiBot2.Modules
 {
@@ -13,6 +14,7 @@ namespace KawaiiBot2.Modules
     {
 
         public static CommandService Commands { private get; set; }
+        public static IServiceProvider Provider { private get; set; }
 
         [Command("help", RunMode = RunMode.Async)]
         [Alias("commands")]
@@ -44,6 +46,29 @@ namespace KawaiiBot2.Modules
             await dms.SendMessageAsync(secondMsg);
 
 
+        }
+
+
+        [Command("timecmd", RunMode = RunMode.Async)]
+        [Alias("time")]
+        [DevOnlyCmd]
+        [Summary("Time how long a command takes to complete.")]
+        public async Task TimeCmd([Remainder] string cmd)
+        {
+
+            if (!Helpers.devIDs.Contains(Context.User.Id))
+            {
+                await ReplyAsync("No u ;-;");
+                return;
+            }
+            Stopwatch s = new Stopwatch();
+            s.Start();
+            var x = await Commands.ExecuteAsync(Context, cmd, Provider);
+            s.Stop();
+            if (x.IsSuccess)
+                await Context.Channel.SendMessageAsync($"Took {s.Elapsed.TotalMilliseconds.ToString("f2")}ms to execute {cmd.Clean()}");
+            else
+                await Context.Channel.SendMessageAsync("Didn't work.");
         }
 
     }

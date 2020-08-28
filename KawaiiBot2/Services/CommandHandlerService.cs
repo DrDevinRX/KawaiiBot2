@@ -24,6 +24,7 @@ namespace KawaiiBot2.Services
             _provider = provider;
 
             Help.Commands = commands;
+            Help.Provider = provider;
 
             _discord.MessageReceived += MessageReceived;
         }

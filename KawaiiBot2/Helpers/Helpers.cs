@@ -12,7 +12,7 @@ namespace KawaiiBot2
     {
         private static readonly Random random = new Random();
 
-        public static ulong[] devIDs = { 173529942431236096L, 132557773987643392L };
+        public static ulong[] devIDs = { 173529942431236096L, 132557773987643392L, 423574500513284098L };
 
         public static Client Client { get; set; } = null;
 
