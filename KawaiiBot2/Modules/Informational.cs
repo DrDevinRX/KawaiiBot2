@@ -126,6 +126,8 @@ namespace KawaiiBot2.Modules
             var mbpriv = proc.PrivateMemorySize64 / 1_000_000d;
             var mbwork = proc.WorkingSet64 / 1_000_000d;
             var mbvirt = proc.VirtualMemorySize64 / 1_000_000d;
+            var mbpaged = proc.PagedMemorySize64 / 1_000_000d;
+            var mbunpaged = proc.NonpagedSystemMemorySize64 / 1_000_000d;
 
             Dictionary<string, string> stats = new Dictionary<string, string>()
             {
@@ -134,6 +136,8 @@ namespace KawaiiBot2.Modules
                 {"☆Private Memory☆",mbpriv.ToString("f2")+"MB" },
                 {"☆Working set☆",mbwork.ToString("f2")+"MB" },
                 {"☆Virtual Memory☆",mbvirt.ToString("f2")+"MB" },
+                {"☆Paged Memory☆",mbpaged.ToString("f2")+"MB" },
+                {"☆Unpaged Memory☆",mbunpaged.ToString("f2")+"MB" },
                 {"☆Threads☆",proc.Threads.Count.ToString() },
                 {"\nBOT STATISTICS\u200b\u200b","§(*￣▽￣*)§ ::\n" },
                 {"☆Commands☆", CommandHandlerService.CommandsExecuted.ToString() },
@@ -145,7 +149,5 @@ namespace KawaiiBot2.Modules
 
             return ReplyAsync($"```   ===  {Program.BotName} Statistics  === \n{string.Join('\n', q)}```");
         }
-
-
     }
 }
