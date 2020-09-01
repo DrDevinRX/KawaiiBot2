@@ -11,7 +11,7 @@ namespace KawaiiBot2.Modules
     public class Slots : ModuleBase<SocketCommandContext>
     {
 
-        private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌" };
+        private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑" };
 
         [Command("slots")]
         [Summary("Roll the slot machine. may rngesus guide your path.")]
