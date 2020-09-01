@@ -10,6 +10,32 @@ namespace KawaiiBot2.Modules
 {
     public class Slots : ModuleBase<SocketCommandContext>
     {
+        [Command("aprilfruits")]
+        [Summary("Slots, but how many fruits there are are random. Because more RNG is better, right?")]
+        [HiddenCmd]
+        public Task AprilFruits()
+        {
+            var rand = new Random();
+            int n = rand.Next(3, 7);
+            int fromN = rand.Next(4, 14);
+            var slotsicons = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(fromN);
+
+            string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(slotsicons)).ToArray();
+            string winMessage = "and lost....";
+
+            if (finalSlots.All(s => s == finalSlots[0]))
+                winMessage = "and won! \uD83C\uDF89";
+            else if (finalSlots.Count(s => s == finalSlots[0]) == n - 1 || finalSlots.Count(s => s == finalSlots[1]) == n - 1)
+                winMessage = $"and almost won ({n - 1}/{n})";
+
+
+
+            return ReplyAsync(
+                            $"**{Helpers.GetName(Context.User)}** rolled the slots...\n" +
+                            $"**[ {string.Join(" ", finalSlots)} ]**\n" +
+                            $"{winMessage}");
+        }
+
 
         private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑" };
 
