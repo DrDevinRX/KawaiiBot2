@@ -15,6 +15,35 @@ namespace KawaiiBot2.Modules
 {
     public class PureTextCmds : ModuleBase<SocketCommandContext>
     {
+        [Command("death")]
+        [Alias("deathcount", "deaths", "youdied", "died")]
+        [Summary("Count the streamer's deaths")]
+        public Task DeathCount([Remainder] string s = null)
+        {
+            deathCount++;
+            var pluralize = deathCount == 1 ? "" : "s";
+            var number = deathCount == 0 ? "no" : deathCount.ToString();
+            return ReplyAsync($"{number} death{pluralize}");
+        }
+
+        [Command("resetdeathcount")]
+        [Alias("resetdeath", "resetdeaths")]
+        [Summary("Reset death count.")]
+        [DevOnlyCmd]
+
+        public Task ResetDeathCount([Remainder] string s = null)
+        {
+            if (!Helpers.devIDs.Contains(Context.User.Id))
+            {
+                return ReplyAsync("No u ;-;");
+            }
+            deathCount = 0;
+            return ReplyAsync("Reset death count.");
+        }
+
+        private static volatile uint deathCount = 0;
+
+
         [Command("touchbutt")]
         [Summary("Touch someone's butt. What a pervert!")]
         [HiddenCmd]
