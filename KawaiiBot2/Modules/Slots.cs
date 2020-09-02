@@ -119,8 +119,8 @@ namespace KawaiiBot2.Modules
             {
                 return ReplyAsync("W-what! I would never!");
             }
-
-            return ReplyAsync("*falls on the floor, missing the slot machine*");
+            RigCommon(Helpers.ChooseRandom(SlotIcons));
+            return ReplyAsync("(•̀ᴗ•́)و ̑̑  Got it.");
         }
 
 
