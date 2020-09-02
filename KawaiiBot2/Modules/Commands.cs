@@ -99,5 +99,42 @@ namespace KawaiiBot2.Modules
             return ReplyAsync($"Lovely shipping~\nShip name:**{shipName}**\n{shipUrl}");
 
         }
+
+        [Command("urban", RunMode = RunMode.Async)]
+        [Summary("Gets urban dictionary definitions. +lewd ;-;")]
+        public async Task Urban([Remainder] string word)
+        {
+            Request req = await Helpers.Client.SendRequest($"http://api.urbandictionary.com/v0/define?term={Uri.EscapeDataString(word)}");
+
+            if (!req.Success)
+            {
+                await ReplyAsync("*stands on tiptoes and reaches up, unable to reach the shelf where the dictionary is*");
+                return;
+            }
+
+            var res = JsonConvert.DeserializeObject<UrbanRes>(req.Content);
+            if (res.List.Length == 0)
+            {
+                await ReplyAsync("N-nothing to f-find...");
+                return;
+            }
+
+            //use urban's default ordering, could change
+            var bestDef = res.List[0];
+
+            if (bestDef.Definition.Length > 1024)
+            {
+                await ReplyAsync($"The definition is too big for discord, look here for it! {bestDef.Permalink}");
+                return;
+            }
+
+            var builder = new EmbedBuilder()
+                .WithTitle(bestDef.Word.Clean())
+                .WithDescription($"{bestDef.Author.Clean()}")
+                .AddField("Definition", bestDef.Definition.Clean())
+                .AddField("Example", bestDef.Example.Clean())
+                .WithFooter($"👍{bestDef.ThumbsUp} | 👎 {bestDef.ThumbsDown}");
+            await Context.Channel.SendMessageAsync("", false, builder.Build());
+        }
     }
 }
