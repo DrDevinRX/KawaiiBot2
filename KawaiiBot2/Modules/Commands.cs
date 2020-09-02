@@ -102,8 +102,15 @@ namespace KawaiiBot2.Modules
 
         [Command("urban", RunMode = RunMode.Async)]
         [Summary("Gets urban dictionary definitions. +lewd ;-;")]
-        public async Task Urban([Remainder] string word)
+        public async Task Urban([Remainder] string word = null)
         {
+
+            if (word == null)
+            {
+                await ReplyAsync("You need to look something up?");
+                return;
+            }
+
             Request req = await Helpers.Client.SendRequest($"http://api.urbandictionary.com/v0/define?term={Uri.EscapeDataString(word)}");
 
             if (!req.Success)
