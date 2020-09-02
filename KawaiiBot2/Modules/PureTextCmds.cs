@@ -253,7 +253,7 @@ namespace KawaiiBot2.Modules
         private static readonly string[] CoinSides = { "Heads", "Tails" };
 
         [Command("flip")]
-        [Alias("coin")]
+        [Alias("coin", "coinflip")]
         [Summary("Flip a coin!")]
         public Task Flip()
         {

@@ -94,7 +94,9 @@ namespace KawaiiBot2.Modules
 
             var shipName = name1[0..(name1.Length / 2)] + name2[(name2.Length / 2)..^0];
 
-            return ReplyAsync($"Lovely shipping~\nShip name:**{shipName}**");
+            var shipUrl = $"https://api.alexflipnote.dev/ship?user={user1.GetEffectiveAvatarUrl()}&user2={user2.GetEffectiveAvatarUrl()}";
+
+            return ReplyAsync($"Lovely shipping~\nShip name:**{shipName}**\n{shipUrl}");
 
         }
     }

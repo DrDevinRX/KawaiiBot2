@@ -48,8 +48,8 @@ namespace KawaiiBot2.Modules
             IUser baseUser = user ?? (Context.User as IUser);
 
             EmbedBuilder embedBuilder = new EmbedBuilder()
-                .WithDescription($"{Helpers.GetName(baseUser)}'s Avatar\n[Full Image]({baseUser.GetAvatarUrl()})")
-                .WithThumbnailUrl(baseUser.GetAvatarUrl());
+                .WithDescription($"{Helpers.GetName(baseUser)}'s Avatar\n[Full Image]({baseUser.GetEffectiveAvatarUrl()})")
+                .WithThumbnailUrl(baseUser.GetEffectiveAvatarUrl());
 
             return Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
         }
@@ -62,7 +62,7 @@ namespace KawaiiBot2.Modules
             var guildUser = user ?? (Context.Message.Author as IGuildUser);
             EmbedBuilder embedBuilder = new EmbedBuilder()
                 .WithDescription($"**{Helpers.CleanGuildUserDisplayName(guildUser)}** joined {Context.Guild.Name.Clean()} on {guildUser.JoinedAt}")
-                .WithThumbnailUrl(guildUser.GetAvatarUrl())
+                .WithThumbnailUrl(guildUser.GetEffectiveAvatarUrl())
                 .WithTimestamp(guildUser.JoinedAt ?? DateTimeOffset.Now);
 
             return Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
@@ -99,7 +99,7 @@ namespace KawaiiBot2.Modules
 
             EmbedBuilder embedBuilder = new EmbedBuilder()
                 .WithTitle($"ℹ About **{baseUser.Id}**")
-                .WithThumbnailUrl(baseUser.GetAvatarUrl())
+                .WithThumbnailUrl(baseUser.GetEffectiveAvatarUrl())
                 .AddField("Full name", $"{baseUser.Username.Clean()}#{baseUser.Discriminator}", true);
             if (user != null)
                 embedBuilder.AddField("Nickname", user.Nickname?.Clean() ?? "None", true);

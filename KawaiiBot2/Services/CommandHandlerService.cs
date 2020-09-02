@@ -13,7 +13,7 @@ namespace KawaiiBot2.Services
         private readonly CommandService _commands;
         private IServiceProvider _provider;
 
-        public static string Prefix { private get; set; } = "-";
+        public static string Prefix { get; set; } = "-";
 
         public static int CommandsExecuted { get; private set; } = 0;
 
