@@ -44,7 +44,7 @@ namespace KawaiiBot2.Modules
 
         [Command("memegen")]
         [Alias("captcha", "calling", "facts", "scroll", "supreme", "achievement", "challenge")]
-        [Summary("Makes memes. Has a lot of aliases because code magic.")]
+        [Summary("Makes memes. capcha, calling, facts, scroll, supreme, achievement, challenge. So many!")]
         public Task GetMeme([Remainder] string args = null)
         {
             var name = Context.Message.ToString().Substring(CommandHandlerService.Prefix.Length).Split(" ")[0].ToLower();
@@ -58,7 +58,7 @@ namespace KawaiiBot2.Modules
 
         [Command("meme2")]
         [Alias("drake", "didyoumean")]
-        [Summary("Makes a meme with a top and bottom. Has a lot of aliases because code magic.")]
+        [Summary("Makes a meme with a top and bottom. drake, didyoumean. Very code. Much magic.")]
         public Task GetMeme2([Remainder] string args = null)
         {
             var name = Context.Message.ToString().Substring(CommandHandlerService.Prefix.Length).Split(" ")[0].ToLower();
