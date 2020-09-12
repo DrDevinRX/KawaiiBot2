@@ -11,8 +11,8 @@ namespace KawaiiBot2
     static class Helpers
     {
         private static readonly Random random = new Random();
-        //                                  hitoccchi               yin             friendshipcannon            rodg             myth
-        public static ulong[] devIDs = { 173529942431236096L, 132557773987643392L, 423574500513284098L, 184038953920233472L, 133736400385212416L };
+        //                                  hitoccchi               yin
+        public static ulong[] devIDs = { 173529942431236096L, 132557773987643392L };
 
         public static Client Client { get; set; } = null;
 

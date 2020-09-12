@@ -15,4 +15,10 @@ namespace KawaiiBot2
     {
 
     }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    public sealed class HitoOnlyCmdAttribute : Attribute
+    {
+
+    }
 }

@@ -28,22 +28,27 @@ namespace KawaiiBot2.Modules
 
             //get commands
             bool isDeveloper = Helpers.devIDs.Contains(Context.User.Id);
+            bool isHito = Context.User.Id == 173529942431236096;
             var commandDescs = (from command in Commands.Commands
                                 where isDeveloper || !command.Attributes.Any(a => a.GetType() == typeof(HiddenCmdAttribute))
-                                where isDeveloper || !command.Attributes.Any(async => async.GetType() == typeof(DevOnlyCmdAttribute))
+                                where isDeveloper || !command.Attributes.Any(a => a.GetType() == typeof(DevOnlyCmdAttribute))
+                                where isHito || !command.Attributes.Any(a => a.GetType() == typeof(HitoOnlyCmdAttribute))
                                 orderby command.Name
                                 select Helpers.Pad(command.Name, 20) + command.Summary).ToArray();
-            var halflen = commandDescs.Length / 2;
-            var firstMsg = "```" + string.Join("\n", commandDescs[0..halflen]) + "```";
-            var secondMsg = "```" + string.Join("\n", commandDescs[halflen..^1]) + "```";
+            var firstThird = commandDescs.Length / 3;
+            var secondThird = firstThird * 2;
+            var firstMsg = "Thank you for consulting me to receive help~" +
+                "```" + string.Join("\n", commandDescs[0..firstThird]) + "```";
+            var secondMsg = "```" + string.Join("\n", commandDescs[firstThird..secondThird]) + "```";
+            var thirdMsg = "```" + string.Join("\n", commandDescs[secondThird..^1]) + "```";
 
             //get dms
             var dms = await Context.User.GetOrCreateDMChannelAsync();
 
             //send the help to DMs
-            await dms.SendMessageAsync("Thank you for consulting me to receive help~");
             await dms.SendMessageAsync(firstMsg);
             await dms.SendMessageAsync(secondMsg);
+            await dms.SendMessageAsync(thirdMsg);
 
 
         }
