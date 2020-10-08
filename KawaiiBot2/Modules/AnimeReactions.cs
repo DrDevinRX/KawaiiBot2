@@ -32,7 +32,7 @@ namespace KawaiiBot2.Modules
                     if (botUserReplyMsg != null)
                         await ReplyAsync(botUserReplyMsg);
                     if (botUserReplyImg != null)
-                        await Context.Channel.SendFileAsync(botUserReplyImg);
+                        await ReplyAsync(botUserReplyImg);
                 });
             }
             else if (user.Id == context.User.Id)
@@ -42,7 +42,7 @@ namespace KawaiiBot2.Modules
                     if (sameUserReplyMsg != null)
                         await ReplyAsync(sameUserReplyMsg);
                     if (sameUserReplyImg != null)
-                        await Context.Channel.SendFileAsync(sameUserReplyImg);
+                        await ReplyAsync(sameUserReplyImg);
                 });
             }
             return Task.Run(async () =>
@@ -69,7 +69,7 @@ namespace KawaiiBot2.Modules
                 $"**{AuthorName}** how could you :'(",
                 null,
                 null,
-                "Resources/images/selfbaka.jpg",
+                "https://cdn.discordapp.com/attachments/763105251393536000/763781592426217502/selfbaka.jpg",
                 "S-sorry, n-no bakas...",
                  $"**{AuthorName}**, called **{mentionedUserName}** a baka",
                  "baka",
@@ -111,7 +111,7 @@ namespace KawaiiBot2.Modules
                 $"*Hugs **{AuthorName}** back* ❤",
                 null,
                 "Sorry to see you alone...",
-                "Resources/images/selfhug.gif",
+                "https://cdn.discordapp.com/attachments/763105251393536000/763781731298836511/selfhug.gif",
                 "I-I can't find any hug gifs... I'm sorry ;-;",
                 $"**{mentionedUserName}**, you got a hug from **{AuthorName}**",
                 "hug",
@@ -150,9 +150,9 @@ namespace KawaiiBot2.Modules
             return AnimeReactCommand(
                 "Are you trying to pat air...?",
                 null,
-                "Resources/images/kawaiipat.gif",
+                "https://cdn.discordapp.com/attachments/763105251393536000/763781987630448680/kawaiipat.gif",
                 "Don't be like that ;-;",
-                "Resources/images/selfpat.gif",
+                "https://cdn.discordapp.com/attachments/763105251393536000/763782020441702401/selfpat.gif",
                 "Sorry, couldn't locate headpats...",
                 $"**{mentionedUserName}**,you got a pat from **{AuthorName}**",
                 "pat",
@@ -193,7 +193,7 @@ namespace KawaiiBot2.Modules
                 $"**{AuthorName}** we can no longer be friends ;-;",
                 null,
                 null,
-                "Resources/images/butwhy.gif",
+                "https://cdn.discordapp.com/attachments/763105251393536000/763781337609666560/butwhy.gif",
                 "No slaps!",
                 $"**{mentionedUserName}**,you got a slap from **{AuthorName}**",
                 "slap",
@@ -213,7 +213,7 @@ namespace KawaiiBot2.Modules
                 "*giggles* ❤",
                 null,
                 null,
-                "Resources/images/tickle.gif",
+                "https://cdn.discordapp.com/attachments/763105251393536000/763782373531582474/tickle.gif",
                 "S-sorry, can't find tickles...",
                 $"**{mentionedUserName}**, you got tickled by **{AuthorName}**",
                 "tickle",

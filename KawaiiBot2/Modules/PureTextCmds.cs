@@ -15,6 +15,14 @@ namespace KawaiiBot2.Modules
 {
     public class PureTextCmds : ModuleBase<SocketCommandContext>
     {
+        [Command("paimon")]
+        [HiddenCmd]
+        [Summary("Paimon isn't emergency food!")]
+        public Task Paimon([Remainder] string s = null)
+        {
+            return ReplyAsync("Paimon isn't emergency food!");
+        }
+
         [Command("death")]
         [Alias("deathcount", "deaths", "youdied", "died")]
         [Summary("Count the streamer's deaths")]
@@ -188,7 +196,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("ratewaifu")]
-        [Alias("rate", "waifu")]
+        [Alias("rate", "waifu", "ratehusbando", "husbando")]
         [Summary("Rates your waifu. She's trash, of course.")]
         [RequireContext(ContextType.Guild, ErrorMessage = "Can't rate users where there are none?")]
         public Task RateWaifu(IGuildUser user)

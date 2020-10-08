@@ -64,8 +64,8 @@ namespace KawaiiBot2.Modules
             }
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-            await ReplyAsync($"**{mentionedUserName}**, you got a {Helpers.ChooseRandom(flowers)} from **{AuthorName}**");
-            await Context.Channel.SendFileAsync("Resources/images/flower.gif");
+            await ReplyAsync($"**{mentionedUserName}**, you got a {Helpers.ChooseRandom(flowers)} from **{AuthorName}**\n" +
+                "https://cdn.discordapp.com/attachments/763105251393536000/763783994877542440/flower.gif");
             return;
 
         }
@@ -78,8 +78,8 @@ namespace KawaiiBot2.Modules
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             if (user == null)
             {
-                await ReplyAsync("Are you trying to lick air ?");
-                await Context.Channel.SendFileAsync("Resources/images/airlick.gif");
+                await ReplyAsync("Are you trying to lick air ?\n"
+                            + "https://cdn.discordapp.com/attachments/763105251393536000/763782657078984724/airlick.gif");
                 return;
             }
             else if (user.Id == Context.Client.CurrentUser.Id)
@@ -89,7 +89,7 @@ namespace KawaiiBot2.Modules
             }
             else if (user.Id == Context.User.Id)
             {
-                await Context.Channel.SendFileAsync("Resources/images/selflick.gif");
+                await ReplyAsync("https://cdn.discordapp.com/attachments/763105251393536000/763782476886704148/selflick.gif");
                 return;
             }
             var url = Helpers.ChooseRandom(urlDictionary["lick"]);
@@ -119,8 +119,8 @@ namespace KawaiiBot2.Modules
             }
             else if (user.Id == Context.User.Id)
             {
-                await ReplyAsync("*awkward...*");
-                await Context.Channel.SendFileAsync("Resources/images/selffive.gif");
+                await ReplyAsync("*awkward...*\n" +
+                        "https://cdn.discordapp.com/attachments/763105251393536000/763782956690964521/selffive.gif");
                 return;
             }
             var url = Helpers.ChooseRandom(urlDictionary["highfive"]);

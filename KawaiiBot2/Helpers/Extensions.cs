@@ -10,7 +10,7 @@ namespace KawaiiBot2
     {
         public static string Clean(this string str)
         {
-            return str?.Replace("@", "@\u200b")?.Replace("`", "ˋ")?.Replace("*", " ⃰ ")?.Replace(">", "﹥")?.Replace("#", "#\u200b")?.Replace("_", " ̲ ");
+            return str?.Replace("@", "@\u200b")?.Replace("`", "ˋ")?.Replace("*", " ⃰ ")?.Replace("#", "#\u200b")?.Replace("_", " ̲ ");
         }
 
         public static string GetEffectiveAvatarUrl(this IGuildUser user)

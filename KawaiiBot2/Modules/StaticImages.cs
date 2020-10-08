@@ -16,21 +16,21 @@ namespace KawaiiBot2.Modules
         [Summary("Doot doot")]
         public Task Doot()
         {
-            return Context.Channel.SendFileAsync("Resources/images/doot.gif");
+            return ReplyAsync("https://cdn.discordapp.com/attachments/763105251393536000/763781191526514708/doot.gif");
         }
 
         [Command("notwork", RunMode = RunMode.Async)]
         [Summary("That's not how it works you little shit")]
         public Task Notwork()
         {
-            return Context.Channel.SendFileAsync("Resources/images/notwork.png");
+            return ReplyAsync("https://cdn.discordapp.com/attachments/763105251393536000/763780718105985074/notwork.png");
         }
 
         [Command("woop", RunMode = RunMode.Async)]
         [Summary("Woop woop!")]
         public Task Woop()
         {
-            return Context.Channel.SendFileAsync("Resources/images/woop.gif");
+            return ReplyAsync("https://cdn.discordapp.com/attachments/763105251393536000/763783588805476352/woop.gif");
         }
     }
 }
