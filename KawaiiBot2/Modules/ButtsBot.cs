@@ -8,20 +8,59 @@ using System.Threading.Tasks;
 using Catalyst;
 using Mosaik.Core;
 using Catalyst.Models;
+using System.Diagnostics;
 
 namespace KawaiiBot2.Modules
 {
     public class ButtsBot : ModuleBase<SocketCommandContext>
     {
-        Random r = new Random();
-        /*[Command("buttsbot", RunMode = RunMode.Async)]*/
-        public async Task ButtsBotTransform([Remainder] string sentence)
+        public ButtsBot()
         {
-            //Turn the sentence into a NLP document
-            var doc = new Document(sentence, Language.English);
+            if (inityes) return;
+            inityes = true;
+            timeouter.Start();
             //some things stolen from example to prepare the NLP thingy
             Storage.Current = new OnlineRepositoryStorage(new DiskStorage("catalyst-models"));
-            var nlp = await Pipeline.ForAsync(Language.English);
+            nlp = Pipeline.For(Language.English);
+        }
+
+        private static bool inityes = false;
+        private static Stopwatch timeouter = new Stopwatch();
+        private static Pipeline nlp;
+        const int defaultTimeoutTime = 3000;
+        int timeoutTime = defaultTimeoutTime;
+
+        Random r = new Random();
+        [Command("buttsbot", RunMode = RunMode.Async)]
+        [Summary("Replaces some nouns with butts in a sentence/paragraph")]
+        public async Task ButtsBotTransform([Remainder] string sentence)
+        {
+            //DANGER THIS RATELIMITS IT BECAUSE THIS CRASHES THE VM HOST REALLY. REALLY. EASILY.
+            //SOLUTIONS:
+            //1: Limit number of characters to below ~750.
+            if (sentence.Length > 750)
+            {
+                await ReplyAsync("Too long!");
+                return;
+            }
+            //2: Timeout implemented with stopwatch.
+            if (timeouter.ElapsedMilliseconds < timeoutTime)
+            {
+                await ReplyAsync("Stop doing it so fast!");
+                return;
+            }
+            else
+            {
+                //big numbers. Wait a looong time.
+                timeoutTime = defaultTimeoutTime + sentence.Length * 5 + sentence.Length * sentence.Length / 500;
+                await ReplyAsync($"Time penalty: {timeoutTime}ms");
+                timeouter.Restart();
+            }
+
+
+            //Turn the sentence into a NLP document
+            var doc = new Document(sentence, Language.English);
+
             //Process it with the NLP thing
             var processed = nlp.ProcessSingle(doc);
 
