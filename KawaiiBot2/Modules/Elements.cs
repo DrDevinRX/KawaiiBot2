@@ -24,7 +24,7 @@ namespace KawaiiBot2.Modules
 
         [Command("giveelement", RunMode = RunMode.Async)]
         [Summary("Give yourself an element role.")]
-        [Alias("giverole", "element", "givelement", "addrole")]
+        [Alias("giverole", "element", "givelement", "addrole", "addelement")]
         public async Task GiveElement([Remainder] string element = null)
         {
             var server = Context.Guild;
