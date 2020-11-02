@@ -15,7 +15,7 @@ namespace KawaiiBot2
     {
         private DiscordSocketClient discord;
         private const string ConfName = "conf.json";
-        private readonly string ConfPath = Path.Combine(Directory.GetCurrentDirectory(), ConfName);
+        private readonly string ConfPath = ConfName;
         public static readonly string BotName = "Awooo v2 (Ver My愛)";
 
         private static void Main()
@@ -23,7 +23,7 @@ namespace KawaiiBot2
 
         private async Task MainAsync()
         {
-
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
             if (!File.Exists(ConfPath))
             {
                 CreateConf();
