@@ -79,7 +79,7 @@ namespace KawaiiBot2.Modules
                 .AddField("Server name", Context.Guild.Name, true)
                 .AddField("Server ID", Context.Guild.Id, true)
                 .AddField("Members", Context.Guild.MemberCount, true)
-                .AddField("Owner", $"{Context.Guild.Owner.Username}#{Context.Guild.Owner.Discriminator}", true)
+                //.AddField("Owner", $"{Context.Guild.Owner.Username}#{Context.Guild.Owner.Discriminator}", true)
                 .AddField("Created", Context.Guild.CreatedAt, true);
             return Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
         }
