@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.IO;
 using KawaiiBot2.Services;
 using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
 
 namespace KawaiiBot2
 {
@@ -15,11 +16,16 @@ namespace KawaiiBot2
     {
         private DiscordSocketClient discord;
         private const string ConfName = "conf.json";
-        private readonly string ConfPath = ConfName;
+        private static string ConfPath = ConfName;
         public static readonly string BotName = "Awooo v2 (Ver My愛)";
 
-        private static void Main()
-            => new Program().MainAsync().GetAwaiter().GetResult();
+        private static void Main(string[] args)
+        {
+            //set confpath if it's given
+            if (args.Length > 0)
+                ConfPath = args[0];
+            new Program().MainAsync().GetAwaiter().GetResult();
+        }
 
         private async Task MainAsync()
         {
