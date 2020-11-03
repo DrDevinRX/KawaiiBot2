@@ -16,7 +16,7 @@ namespace KawaiiBot2.Modules
 {
     public class PureTextCmds : ModuleBase<SocketCommandContext>
     {
-
+        private Random r = new Random();
         private bool[] pattern = new bool[] { true, false, true, true, false, false };
         [Command("hollykeyboard")]
         [Summary("ImITatEs hOLlyWeED's kEYbOarD")]
@@ -24,7 +24,7 @@ namespace KawaiiBot2.Modules
         {
             if (s == null) return ReplyAsync("Needs input");
             //Pattern: UlUUll, repeating
-            int i = 0;
+            int i = r.Next(6);
             var a = from c in s
                     select pattern[(i++) % 6] ? c.ToString().ToUpper() : c.ToString().ToLower();
             return ReplyAsync(string.Join("", a).Clean());
