@@ -5,6 +5,7 @@ using System.Linq;
 using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
+using NeoSmart.Unicode;
 
 namespace KawaiiBot2.Modules
 {
@@ -95,6 +96,7 @@ namespace KawaiiBot2.Modules
         private Task RigCommon(string rigTo, ulong? userID = null)
         {
             rigTo = rigTo.Replace(" ", "").Replace(",", "");
+            
             if (rigTo.Length == 2 && okRig(rigTo))
             {
                 Rig(new string[] { rigTo }, userID);
