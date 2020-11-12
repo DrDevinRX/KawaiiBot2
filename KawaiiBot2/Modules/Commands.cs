@@ -39,10 +39,26 @@ namespace KawaiiBot2.Modules
                 return ReplyAsync("Separate your choices (at least 2) with \"|\"");
             }
 
-            string choice = Helpers.ChooseRandom(choices).Trim().Clean();
+            string choice = (rigChoose ? choices[0] : Helpers.ChooseRandom(choices)).Trim().Clean();
+            if (rigChoose) rigChoose = false;
             string choiceRes = Helpers.ChooseRandom(ChooseResponses);
 
             return ReplyAsync($"I choose this: {string.Format(choiceRes, choice)}");
+        }
+
+        volatile static bool rigChoose;
+
+        [Command("rigchoose")]
+        [Summary("Make choose always choose the first option the next time")]
+        [DevOnlyCmd]
+        public Task RigChoose([Remainder] string s = null)
+        {
+            if (!Helpers.devIDs.Contains(Context.User.Id))
+            {
+                return ReplyAsync("W-what! I would never!");
+            }
+            rigChoose = true;
+            return ReplyAsync("Done.");
         }
 
         [Command("8ball")]
