@@ -9,6 +9,7 @@ using System.IO;
 using KawaiiBot2.Services;
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using KawaiiBot2.JSONClasses;
 
 namespace KawaiiBot2
 {
@@ -35,16 +36,19 @@ namespace KawaiiBot2
                 CreateConf();
             }
 
-            var confdef = new { token = "", prefix = "" };
+            var config = JsonConvert.DeserializeObject<ConfJson>(File.ReadAllText(ConfPath));
 
-            var config = JsonConvert.DeserializeAnonymousType(File.ReadAllText(ConfPath), confdef);
-
-            if (!string.IsNullOrWhiteSpace(config.prefix))
+            if (config.DevIDs != null)
             {
-                CommandHandlerService.Prefix = config.prefix;
+                Helpers.devIDs = config.DevIDs;
             }
 
-            if (string.IsNullOrWhiteSpace(config.token))
+            if (!string.IsNullOrWhiteSpace(config.Prefix))
+            {
+                CommandHandlerService.Prefix = config.Prefix;
+            }
+
+            if (string.IsNullOrWhiteSpace(config.Token))
             {
                 throw new NotSupportedException("Bot token not found in config file");
             }
@@ -57,7 +61,7 @@ namespace KawaiiBot2
             await apiClient.InitializeAsync(services);
             Helpers.Client = apiClient;
 
-            await discord.LoginAsync(TokenType.Bot, config.token);
+            await discord.LoginAsync(TokenType.Bot, config.Token);
             await discord.StartAsync();
 
             await Task.Delay(-1);

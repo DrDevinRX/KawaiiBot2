@@ -31,7 +31,6 @@ namespace KawaiiBot2.Modules
             //only in grace's impact server
             if (server.Id != 761750996610318376)
             {
-                await ReplyAsync("No!");
                 return;
             }
             //need an element
@@ -62,7 +61,6 @@ namespace KawaiiBot2.Modules
             //only in grace's impact server
             if (server.Id != 761750996610318376)
             {
-                await ReplyAsync("No!");
                 return;
             }
             //need an element
@@ -93,7 +91,6 @@ namespace KawaiiBot2.Modules
             //only in grace's impact server
             if (server.Id != 761750996610318376)
             {
-
                 return;
             }
             var userHashCode = Context.User.Id.GetHashCode();

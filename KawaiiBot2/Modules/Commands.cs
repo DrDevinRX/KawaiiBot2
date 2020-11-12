@@ -9,11 +9,31 @@ using KawaiiBot2.APIInterfacing;
 using KawaiiBot2.APIInterfacing.ResultSchemas;
 using System.Diagnostics;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace KawaiiBot2.Modules
 {
     public class Commands : ModuleBase<SocketCommandContext>
     {
+        [RequireContext(ContextType.Guild, ErrorMessage = "You can't hype up noone...")]
+        [Command("hype")]
+        public Task Hype(string twitchname = null, [Remainder] string paceinfo = null)
+        {
+            //require nier/drakengardcord
+            if (Context.Guild.Id != 294690146052472832)
+            {
+                return new Task(() => { });
+            }
+            if (twitchname == null)
+            {
+                //copy servo's error for the meme
+                return ReplyAsync("Correct command usage: +hype <twitch username> <info about current pace (optional)>");
+            }
+            var extra = paceinfo == null ? "" : $", {paceinfo}";
+            var nameandstuff = $"{twitchname}{extra}!\nhttps://www.twitch.tv/{twitchname}".Clean();
+            return ReplyAsync($"Get <@&540274176762839060> for {nameandstuff}");
+        }
+
         [Command("ping", RunMode = RunMode.Async)]
         [Summary("Pong!")]
         public async Task Ping()
