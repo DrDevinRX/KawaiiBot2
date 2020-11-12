@@ -63,6 +63,8 @@ namespace KawaiiBot2
 
             await discord.LoginAsync(TokenType.Bot, config.Token);
             await discord.StartAsync();
+            if (config.StartStatus != null)
+                await discord.SetGameAsync(config.StartStatus);
 
             await Task.Delay(-1);
         }

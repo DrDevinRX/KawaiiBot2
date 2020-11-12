@@ -15,5 +15,8 @@ namespace KawaiiBot2.JSONClasses
 
         [JsonProperty("devIDs")]
         public ulong[] DevIDs { get; set; }
+
+        [JsonProperty("startStatus")]
+        public string StartStatus { get; set; }
     }
 }
