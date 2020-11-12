@@ -10,11 +10,27 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Security;
 using KawaiiBot2.JSONClasses;
+using System.Security.Cryptography;
 
 namespace KawaiiBot2.Modules
 {
     public class PureTextCmds : ModuleBase<SocketCommandContext>
     {
+        private Random r = new Random();
+        private bool[] pattern = new bool[] { true, false, true, true, false, false };
+        [Command("hollykeyboard")]
+        [Summary("ImITatEs hOLlyWeED's kEYbOarD")]
+        public Task HollyKeyboard([Remainder] string s = null)
+        {
+            if (s == null) return ReplyAsync("Needs input");
+            //Pattern: UlUUll, repeating
+            int i = r.Next(6);
+            var a = from c in s
+                    select pattern[(i++) % 6] ? c.ToString().ToUpper() : c.ToString().ToLower();
+            return ReplyAsync(string.Join("", a).Clean());
+        }
+
+
         [Command("paimon")]
         [HiddenCmd]
         [Summary("Paimon isn't emergency food!")]

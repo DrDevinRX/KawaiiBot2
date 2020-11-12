@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace KawaiiBot2.Modules
             //DANGER THIS RATELIMITS IT BECAUSE THIS CRASHES THE VM HOST REALLY. REALLY. EASILY.
             //SOLUTIONS:
             //1: Limit number of characters to below ~750.
-            if (sentence.Length > 750)
+            /*if (sentence.Length > 750)
             {
                 await ReplyAsync("Too long!");
                 return;
@@ -55,8 +55,8 @@ namespace KawaiiBot2.Modules
                 timeoutTime = defaultTimeoutTime + sentence.Length * 5 + sentence.Length * sentence.Length / 500;
                 await ReplyAsync($"Time penalty: {timeoutTime}ms");
                 timeouter.Restart();
-            }
-
+            }*///\
+/*
 
             //Turn the sentence into a NLP document
             var doc = new Document(sentence, Language.English);
@@ -99,4 +99,4 @@ namespace KawaiiBot2.Modules
             ;
         }
     }
-}
+}*/

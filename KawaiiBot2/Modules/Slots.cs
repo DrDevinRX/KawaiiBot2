@@ -5,6 +5,7 @@ using System.Linq;
 using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
+using NeoSmart.Unicode;
 
 namespace KawaiiBot2.Modules
 {
@@ -38,6 +39,7 @@ namespace KawaiiBot2.Modules
 
 
         private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪" };
+        private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲", "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼" };
 
         [Command("slots")]
         [Summary("Roll the slot machine. may rngesus guide your path.")]
@@ -89,23 +91,26 @@ namespace KawaiiBot2.Modules
             riggedUserID = RiggedUserID;
         }
 
+        private bool okRig(string emoji) => SlotIcons.Contains(emoji) || MemeRigAllows.Contains(emoji);
+
         private Task RigCommon(string rigTo, ulong? userID = null)
         {
-            rigTo = rigTo.Replace(" ", "");
-            if (rigTo.Length == 2 && SlotIcons.Contains(rigTo))
+            rigTo = rigTo.Replace(" ", "").Replace(",", "");
+            
+            if (rigTo.Length == 2 && okRig(rigTo))
             {
                 Rig(new string[] { rigTo }, userID);
                 return ReplyAsync($"*Bumps the slots* Feels {rigTo}.");
             }
             else
             {
-                var tmpRig = Enumerable.Range(0, rigTo.Length / 2).Select(i => rigTo.Substring(2 * i, 2)).Where(c => SlotIcons.Contains(c)).ToArray();
+                var tmpRig = Enumerable.Range(0, rigTo.Length / 2).Select(i => rigTo.Substring(2 * i, 2)).Where(c => okRig(c)).ToArray();
                 if (tmpRig.Length < 2)
                     return ReplyAsync("Huh?");
                 if (tmpRig.Length > 100)
                     return ReplyAsync("You've gone batty.");
                 Rig(tmpRig, userID);
-                return ReplyAsync($"*Bumps the slots* Feels {rigTo}.");
+                return ReplyAsync($"*Bumps the slots* Feels {string.Join(" ", tmpRig)}.");
 
             }
         }
@@ -163,6 +168,18 @@ namespace KawaiiBot2.Modules
             }
 
             return RigCommon(rigTo);
+        }
+
+        [Command("rigmemes")]
+        [Summary("Extra emojis that can be used in rigged slots (only)")]
+        [DevOnlyCmd]
+        public Task RigMemes([Remainder] string s = null)
+        {
+            if (!Helpers.devIDs.Contains(Context.User.Id))
+            {
+                return new Task(() => { });
+            }
+            return ReplyAsync(string.Join(", ", MemeRigAllows));
         }
 
     }
