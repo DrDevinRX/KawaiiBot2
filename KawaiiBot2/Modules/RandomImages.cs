@@ -54,6 +54,7 @@ namespace KawaiiBot2.Modules
 
         [Command("dog", RunMode = RunMode.Async)]
         [Summary("Random dogs. mustpatmustpat")]
+        [Alias("doge")]
         public async Task Dog()
         {
             Request req = await Helpers.Client.SendRequest("https://random.dog/woof");
