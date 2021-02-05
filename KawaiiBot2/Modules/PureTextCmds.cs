@@ -191,7 +191,7 @@ namespace KawaiiBot2.Modules
 
         [Command("setstatus")]
         [Summary("Sets playing text.")]
-        [Alias("setplaying")]
+        [Alias("setplaying", "status")]
         [DevOnlyCmd]
         public Task SetStatus([Remainder] string str = null)
         {
