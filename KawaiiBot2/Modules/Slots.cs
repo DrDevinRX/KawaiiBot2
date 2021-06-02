@@ -50,6 +50,8 @@ namespace KawaiiBot2.Modules
 
 
             string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(SlotIcons)).ToArray();
+
+            //rig slots
             if (rigged && (!riggedUserID.HasValue || riggedUserID == Context.User.Id))
             {
                 if (riggedTo.Length == 1)
@@ -63,6 +65,13 @@ namespace KawaiiBot2.Modules
                 rigged = false;
             }
 
+            //Supppress slots wins
+            if (suppression)
+            {
+                var replace = Helpers.ChooseTwoNoReplace(SlotIcons);
+                finalSlots[^1] = replace.Item1;
+                finalSlots[^2] = replace.Item2;
+            }
 
 
             string winMessage = "and lost....";
@@ -96,7 +105,7 @@ namespace KawaiiBot2.Modules
         private Task RigCommon(string rigTo, ulong? userID = null)
         {
             rigTo = rigTo.Replace(" ", "").Replace(",", "");
-            
+
             if (rigTo.Length == 2 && okRig(rigTo))
             {
                 Rig(new string[] { rigTo }, userID);
@@ -180,6 +189,22 @@ namespace KawaiiBot2.Modules
                 return new Task(() => { });
             }
             return ReplyAsync(string.Join(", ", MemeRigAllows));
+        }
+
+        private volatile static bool suppression = false;
+
+        [Command("suppressslotswins")]
+        [Alias("suppressslots", "noslotswins")]
+        [Summary("Supresses slots winning. Easy. Overrides rigging slots.")]
+        [DevOnlyCmd]
+        public Task SuppressSlotsWins(bool suppress = true)
+        {
+            if (!Helpers.devIDs.Contains(Context.User.Id))
+            {
+                return new Task(() => { });
+            }
+            suppression = suppress;
+            return ReplyAsync(suppress ? "Slots wins are now suppressed." : "Slots wins are no longer suppressed.");
         }
 
     }

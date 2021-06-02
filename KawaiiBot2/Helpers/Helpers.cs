@@ -22,6 +22,15 @@ namespace KawaiiBot2
         public static T ChooseRandom<T>(IEnumerable<T> items)
             => items.ElementAt(random.Next(items.Count()));
 
+        public static Tuple<T, T> ChooseTwoNoReplace<T>(IEnumerable<T> items)
+        {
+            int len = items.Count();
+            int r1 = random.Next(len);
+            int r2 = random.Next(len - 1);
+            r2 += r2 >= r1 ? 1 : 0;
+            return new Tuple<T, T>(items.ElementAt(r1), items.ElementAt(r2));
+        }
+
         public static string CleanGuildUserDisplayName(IGuildUser user)
             => (user?.Nickname ?? user?.Username ?? "User").Clean(); // If user is null, return User
 
