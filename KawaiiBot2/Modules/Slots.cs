@@ -246,7 +246,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("riskydice")]
-        [Alias("dice")]
+        [Alias("dice","riskydice?")]
         [Summary("RiskyDice. Increased chances to win slots or be blocked from winning until the bot is restarted.")]
         public Task RiskyDice()
         {
