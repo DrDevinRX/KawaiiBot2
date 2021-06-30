@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Text;
 using System.Linq;
 using Discord;
@@ -11,15 +12,27 @@ namespace KawaiiBot2.Modules
 {
     public class Slots : ModuleBase<SocketCommandContext>
     {
+        private class SlotsUserData
+        {
+            public SlotsUserData() : this(0)
+            { }
+            public SlotsUserData(int Take)
+            {
+                takeThisMany = Take;
+            }
+            public volatile int takeThisMany;
+            public volatile bool suppressed;
+            public volatile string[] riggedTo;
+        }
         [Command("aprilfruits")]
         [Summary("Slots, but how many fruits there are are random. Because more RNG is better, right?")]
         [HiddenCmd]
         public Task AprilFruits()
         {
-            var rand = new Random();
+
             int n = rand.Next(3, 7);
             int fromN = rand.Next(4, 14);
-            var slotsicons = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(fromN);
+            var slotsicons = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(fromN).ToArray();
 
             string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(slotsicons)).ToArray();
             string winMessage = "and lost....";
@@ -37,9 +50,14 @@ namespace KawaiiBot2.Modules
                             $"{winMessage}");
         }
 
+        private static Random rand = new Random();
 
-        private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪" };
-        private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲", "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼" };
+        private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪",
+            "🥮", "🍡", "🍠","🍩","🍨","🎂", "🍭","🍫","🍯","🍵"};
+        private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲",
+            "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼" };
+        private static SlotsUserData global = new SlotsUserData(13);
+        private static ConcurrentDictionary<ulong, SlotsUserData> userData = new ConcurrentDictionary<ulong, SlotsUserData>();
 
         [Command("slots")]
         [Summary("Roll the slot machine. may rngesus guide your path.")]
@@ -48,31 +66,38 @@ namespace KawaiiBot2.Modules
             if (n < 2 || n > 100)
                 return ReplyAsync("Nope. No. Nope. No. No can do.");
 
+            var usersData = userData.GetValueOrDefault(Context.User.Id, global);
+            int iconsAmt = global.takeThisMany + usersData.takeThisMany;
+            if (iconsAmt < 1) iconsAmt = 1;
+            if (iconsAmt > SlotIcons.Length) iconsAmt = SlotIcons.Length;
 
-            string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(SlotIcons)).ToArray();
+
+            var slotsicons = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(iconsAmt).ToArray();
+            string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(slotsicons)).ToArray();
 
             //rig slots
-            if (rigged && (!riggedUserID.HasValue || riggedUserID == Context.User.Id))
+            if (usersData.riggedTo != null || global.riggedTo != null)
             {
-                if (riggedTo.Length == 1)
+                //choose which one we act on, with user specific data taking preference
+                var thisUserData = usersData.riggedTo != null ? usersData : global;
+                if (thisUserData.riggedTo.Length == 1)
                 {
-                    var tmp = riggedTo[0];
-                    riggedTo = new string[n];
-                    for (int i = 0; i < n; i++) riggedTo[i] = tmp;
+                    var tmp = thisUserData.riggedTo[0];
+                    thisUserData.riggedTo = new string[n];
+                    for (int i = 0; i < n; i++) thisUserData.riggedTo[i] = tmp;
                 }
-                finalSlots = riggedTo;
-                n = riggedTo.Length;
-                rigged = false;
+                finalSlots = thisUserData.riggedTo;
+                n = thisUserData.riggedTo.Length;
+                thisUserData.riggedTo = null;
             }
 
             //Supppress slots wins
-            if (suppression)
+            if (usersData.suppressed || global.suppressed)
             {
                 var replace = Helpers.ChooseTwoNoReplace(SlotIcons);
                 finalSlots[^1] = replace.Item1;
                 finalSlots[^2] = replace.Item2;
             }
-
 
             string winMessage = "and lost....";
 
@@ -81,26 +106,27 @@ namespace KawaiiBot2.Modules
             else if (finalSlots.Count(s => s == finalSlots[0]) == n - 1 || finalSlots.Count(s => s == finalSlots[1]) == n - 1)
                 winMessage = $"and almost won ({n - 1}/{n})";
 
-
-
             return ReplyAsync(
                             $"**{Helpers.GetName(Context.User)}** rolled the slots...\n" +
                             $"**[ {string.Join(" ", finalSlots)} ]**\n" +
                             $"{winMessage}");
         }
 
-        private volatile static bool rigged = false;
-        private static ulong? riggedUserID = null;
-        private volatile static string[] riggedTo;
+        private bool okRig(string emoji) => SlotIcons.Contains(emoji) || MemeRigAllows.Contains(emoji);
 
         private void Rig(string[] RiggedTo, ulong? RiggedUserID)
         {
-            rigged = true;
-            riggedTo = RiggedTo;
-            riggedUserID = RiggedUserID;
+            SlotsUserData data;
+            if (RiggedUserID == null)
+            {
+                data = global;
+            }
+            else
+            {
+                data = userData.GetOrAdd(RiggedUserID.Value, new SlotsUserData());
+            }
+            data.riggedTo = RiggedTo;
         }
-
-        private bool okRig(string emoji) => SlotIcons.Contains(emoji) || MemeRigAllows.Contains(emoji);
 
         private Task RigCommon(string rigTo, ulong? userID = null)
         {
@@ -191,8 +217,6 @@ namespace KawaiiBot2.Modules
             return ReplyAsync(string.Join(", ", MemeRigAllows));
         }
 
-        private volatile static bool suppression = false;
-
         [Command("suppressslotswins")]
         [Alias("suppressslots", "noslotswins")]
         [Summary("Supresses slots winning. Easy. Overrides rigging slots.")]
@@ -203,9 +227,41 @@ namespace KawaiiBot2.Modules
             {
                 return new Task(() => { });
             }
-            suppression = suppress;
+            global.suppressed = suppress;
             return ReplyAsync(suppress ? "Slots wins are now suppressed." : "Slots wins are no longer suppressed.");
         }
 
+        [Command("setdifficulty")]
+        [Alias("difficulty", "slotsdifficulty", "setglobaldifficulty", "globaldifficulty")]
+        [Summary("Sets the number of icons to use for slots globally.")]
+        [DevOnlyCmd]
+        public Task SetGlobalDifficulty(int n)
+        {
+            if (!Helpers.devIDs.Contains(Context.User.Id))
+                return ReplyAsync("Maybe try +riskydice?");
+            if (n < 1 || n > SlotIcons.Length)
+                return ReplyAsync("You're crazy. No.");
+            global.takeThisMany = n;
+            return ReplyAsync($"Global number of icons for slots set to {n}.");
+        }
+
+        [Command("riskydice")]
+        [Alias("dice")]
+        [Summary("RiskyDice. Increased chances to win slots or be blocked from winning until the bot is restarted.")]
+        public Task RiskyDice()
+        {
+            bool die = rand.Next(6) == 0;
+            var data = userData.GetOrAdd(Context.User.Id, new SlotsUserData());
+            if (die)
+            {
+                data.suppressed = true;
+                return ReplyAsync(":blue_square:");
+            }
+            else
+            {
+                data.takeThisMany--;
+                return ReplyAsync(":black_large_square:");
+            }
+        }
     }
 }
