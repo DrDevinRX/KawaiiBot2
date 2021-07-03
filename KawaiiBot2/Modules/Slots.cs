@@ -67,7 +67,9 @@ namespace KawaiiBot2.Modules
                 return ReplyAsync("Nope. No. Nope. No. No can do.");
 
             var usersData = userData.GetValueOrDefault(Context.User.Id, global);
-            int iconsAmt = global.takeThisMany + usersData.takeThisMany;
+            int iconsAmt = global.takeThisMany;
+            if (global != usersData)
+                iconsAmt += usersData.takeThisMany;
             if (iconsAmt < 1) iconsAmt = 1;
             if (iconsAmt > SlotIcons.Length) iconsAmt = SlotIcons.Length;
 
@@ -91,12 +93,24 @@ namespace KawaiiBot2.Modules
                 thisUserData.riggedTo = null;
             }
 
-            //Supppress slots wins
+            //Suppress slots wins
             if (usersData.suppressed || global.suppressed)
             {
-                var replace = Helpers.ChooseTwoNoReplace(SlotIcons);
-                finalSlots[^1] = replace.Item1;
-                finalSlots[^2] = replace.Item2;
+
+                if (slotsicons.Length > 1)
+                {
+                    var replace = Helpers.ChooseTwoNoReplace(slotsicons);
+                    finalSlots[^1] = replace.Item1;
+                    finalSlots[^2] = replace.Item2;
+                }
+                else
+                {
+                    var replace = Helpers.ChooseTwoNoReplace(SlotIcons);
+                    var notSoReplace = new string[] { replace.Item1, replace.Item2 };
+                    finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(notSoReplace)).ToArray();
+                    finalSlots[^1] = replace.Item1;
+                    finalSlots[^2] = replace.Item2;
+                }
             }
 
             string winMessage = "and lost....";
@@ -218,7 +232,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("suppressslotswins")]
-        [Alias("suppressslots", "noslotswins")]
+        [Alias("suppressslots", "noslotswins", "suppress")]
         [Summary("Supresses slots winning. Easy. Overrides rigging slots.")]
         [DevOnlyCmd]
         public Task SuppressSlotsWins(bool suppress = true)
@@ -232,13 +246,14 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("setdifficulty")]
-        [Alias("difficulty", "slotsdifficulty", "setglobaldifficulty", "globaldifficulty")]
+        [Alias("difficulty", "slotsdifficulty", "setglobaldifficulty", "globaldifficulty", "global", "globalslots")]
         [Summary("Sets the number of icons to use for slots globally.")]
         [DevOnlyCmd]
-        public Task SetGlobalDifficulty(int n)
+        public Task SetGlobalDifficulty(int n = -659838444)//hacky way to make sure noone ever finds the "print" value by accident
         {
             if (!Helpers.devIDs.Contains(Context.User.Id))
                 return ReplyAsync("Maybe try +riskydice?");
+            if (n == -659838444) return ReplyAsync($"Current global number of icons for slots is {global.takeThisMany}");
             if (n < 1 || n > SlotIcons.Length)
                 return ReplyAsync("You're crazy. No.");
             global.takeThisMany = n;
@@ -246,7 +261,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("riskydice")]
-        [Alias("dice","riskydice?")]
+        [Alias("dice", "riskydice?")]
         [Summary("RiskyDice. Increased chances to win slots or be blocked from winning until the bot is restarted.")]
         public Task RiskyDice()
         {
@@ -255,13 +270,49 @@ namespace KawaiiBot2.Modules
             if (die)
             {
                 data.suppressed = true;
+                data.takeThisMany = 0;
                 return ReplyAsync(":blue_square:");
             }
             else
             {
                 data.takeThisMany--;
+                if (data.takeThisMany <= -20)
+                    data.suppressed = false;
                 return ReplyAsync(":black_large_square:");
             }
+        }
+
+        [Command("riskyslots")]
+        [Summary("Risky dice, multiple times.")]
+        public Task RiskySlots(int n = 3)
+        {
+            if (n < 1)
+                return ReplyAsync("Not very ambitious, are we?");
+            if (n == 1)
+                return ReplyAsync("Maybe try +riskydice?");
+            if (n == 20 && global.takeThisMany < 21)
+                return ReplyAsync("一発で死ぬ。");
+            if (n > 9000)
+                return ReplyAsync("WHY IS IT OVER 9000!???????");
+            if (n > SlotIcons.Length)
+                return ReplyAsync("??? Are you serious???");
+            if (n > global.takeThisMany - 1)
+                return ReplyAsync("Too over the top!!");
+            int[] riskySlots = Enumerable.Range(0, n).Select(i => rand.Next(6)).ToArray();
+            var data = userData.GetOrAdd(Context.User.Id, new SlotsUserData());
+            foreach (var i in riskySlots)
+            {
+                if (i == 0)
+                {
+                    data.suppressed = true;
+                    data.takeThisMany = 0;
+                }
+                else
+                    data.takeThisMany--;
+            }
+            if (data.takeThisMany <= -20)
+                data.suppressed = false;
+            return ReplyAsync(String.Join(" ", riskySlots.Select(i => i == 0 ? ":blue_square:" : ":black_large_square:")));
         }
     }
 }
