@@ -53,6 +53,45 @@ namespace KawaiiBot2.Modules
 
         }
 
+        [Command("help", RunMode = RunMode.Async)]
+        [Summary("Displays help for a specific command~")]
+        public Task GetHelp(string cmd)
+        {
+            bool isDeveloper = Helpers.devIDs.Contains(Context.User.Id);
+            bool isHito = Context.User.Id == 173529942431236096;
+
+            cmd = cmd.ToLower();
+
+            var potentialCommands = from command in Commands.Commands
+                                    where command.Name == cmd || command.Aliases.Contains(cmd)
+                                    select new
+                                    {
+                                        name = command.Name,
+                                        summary = command.Summary,
+                                        isAlias = command.Name != cmd,
+                                        isHidden = command.Attributes.Any(a => a.GetType() == typeof(HiddenCmdAttribute)),
+                                        isDev = command.Attributes.Any(a => a.GetType() == typeof(DevOnlyCmdAttribute)),
+                                        isHitoOnly = command.Attributes.Any(a => a.GetType() == typeof(HitoOnlyCmdAttribute))
+                                    };
+            if (potentialCommands.Count() == 0)
+            {
+                return ReplyAsync("Sorry, no commands with that name found");
+            }
+            //build string
+            var fcmd = potentialCommands.First();
+            string reply = "";
+            if (fcmd.isHidden)
+                reply += "[Hidden]\n";
+            if (fcmd.isDev)
+                reply += "[DevOnly]\n";
+            if (fcmd.isHitoOnly)
+                reply += "[OwnerOnly]\n";
+            if (fcmd.isAlias)
+                reply += $"*{cmd.Clean()}* is an alias of *{fcmd.name}*.\n";
+            return ReplyAsync($"{reply}{fcmd.name}: {fcmd.summary}");
+
+        }
+
 
         [Command("timecmd", RunMode = RunMode.Async)]
         [Alias("time")]

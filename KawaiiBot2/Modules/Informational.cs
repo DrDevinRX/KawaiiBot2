@@ -31,6 +31,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("source")]
+        [Alias("code", "github")]
         [Summary("Source code link!")]
         [HiddenCmd]
         public Task Source()

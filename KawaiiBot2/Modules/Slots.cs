@@ -56,7 +56,7 @@ namespace KawaiiBot2.Modules
             "🥮", "🍡", "🍠","🍩","🍨","🎂", "🍭","🍫","🍯","🍵"};
         private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲",
             "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼" };
-        private static SlotsUserData global = new SlotsUserData(13);
+        private static SlotsUserData global = new SlotsUserData(2);//change back to 13
         private static ConcurrentDictionary<ulong, SlotsUserData> userData = new ConcurrentDictionary<ulong, SlotsUserData>();
 
         [Command("slots")]
@@ -119,6 +119,31 @@ namespace KawaiiBot2.Modules
                 winMessage = "and won! \uD83C\uDF89";
             else if (finalSlots.Count(s => s == finalSlots[0]) == n - 1 || finalSlots.Count(s => s == finalSlots[1]) == n - 1)
                 winMessage = $"and almost won ({n - 1}/{n})";
+
+
+
+            //streak detection
+            if (n >= 25 && iconsAmt < 4 && iconsAmt > 1)
+            {
+                (string, int) maxStreak = ("", -1);
+                (string, int) currentStreak = ("", 0);
+                foreach (string s in finalSlots)
+                {
+                    if (currentStreak.Item1 == s)
+                    {
+                        currentStreak.Item2++;
+                    }
+                    else
+                    {
+                        maxStreak = currentStreak.Item2 > maxStreak.Item2 ? currentStreak : maxStreak;
+                        currentStreak = (s, 1);
+                    }
+                }
+                //haha
+                maxStreak = currentStreak.Item2 > maxStreak.Item2 ? currentStreak : maxStreak;
+                if (maxStreak.Item2 >= 6)
+                    winMessage += $"With a {maxStreak.Item1} streak of {maxStreak.Item2}";
+            }
 
             return ReplyAsync(
                             $"**{Helpers.GetName(Context.User)}** rolled the slots...\n" +

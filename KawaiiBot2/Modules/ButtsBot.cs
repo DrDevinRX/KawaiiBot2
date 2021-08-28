@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace KawaiiBot2.Modules
         private static bool inityes = false;
         private static Stopwatch timeouter = new Stopwatch();
         private static Pipeline nlp;
-        const int defaultTimeoutTime = 3000;
+        const int defaultTimeoutTime = 500;
         int timeoutTime = defaultTimeoutTime;
 
         Random r = new Random();
@@ -35,15 +35,6 @@ namespace KawaiiBot2.Modules
         [Summary("Replaces some nouns with butts in a sentence/paragraph")]
         public async Task ButtsBotTransform([Remainder] string sentence)
         {
-            //DANGER THIS RATELIMITS IT BECAUSE THIS CRASHES THE VM HOST REALLY. REALLY. EASILY.
-            //SOLUTIONS:
-            //1: Limit number of characters to below ~750.
-            /*if (sentence.Length > 750)
-            {
-                await ReplyAsync("Too long!");
-                return;
-            }
-            //2: Timeout implemented with stopwatch.
             if (timeouter.ElapsedMilliseconds < timeoutTime)
             {
                 await ReplyAsync("Stop doing it so fast!");
@@ -52,11 +43,10 @@ namespace KawaiiBot2.Modules
             else
             {
                 //big numbers. Wait a looong time.
-                timeoutTime = defaultTimeoutTime + sentence.Length * 5 + sentence.Length * sentence.Length / 500;
-                await ReplyAsync($"Time penalty: {timeoutTime}ms");
+                timeoutTime = 500;
                 timeouter.Restart();
-            }*///\
-/*
+            }
+
 
             //Turn the sentence into a NLP document
             var doc = new Document(sentence, Language.English);
@@ -96,7 +86,6 @@ namespace KawaiiBot2.Modules
             resultStrings.Add(sentence.Substring(takeIndex, sentence.Length - takeIndex));
 
             await ReplyAsync(string.Join("", resultStrings).Clean());
-            ;
         }
     }
-}*/
+}
