@@ -19,10 +19,16 @@ namespace KawaiiBot2.Modules
             public SlotsUserData(int Take)
             {
                 takeThisMany = Take;
+                longestStreak = 0;
+                longestStreakIcon = "";
             }
             public volatile int takeThisMany;
             public volatile bool suppressed;
             public volatile string[] riggedTo;
+            public int longestStreak;
+            public string longestStreakIcon;
+            public int winsCount;
+            public static SlotsUserData empty => new SlotsUserData();
         }
         [Command("aprilfruits")]
         [Summary("Slots, but how many fruits there are are random. Because more RNG is better, right?")]
@@ -56,23 +62,21 @@ namespace KawaiiBot2.Modules
             "🥮", "🍡", "🍠","🍩","🍨","🎂", "🍭","🍫","🍯","🍵"};
         private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲",
             "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼" };
-        private static SlotsUserData global = new SlotsUserData(2);//change back to 13
+        private static SlotsUserData global = new SlotsUserData(13);
         private static ConcurrentDictionary<ulong, SlotsUserData> userData = new ConcurrentDictionary<ulong, SlotsUserData>();
 
-        [Command("slots")]
+        [Command("slots", RunMode = RunMode.Async)]
         [Summary("Roll the slot machine. may rngesus guide your path.")]
         public Task SlotsCmd(int n = 3)
         {
-            if (n < 2 || n > 100)
+            if (n < 2 || n > 121)
                 return ReplyAsync("Nope. No. Nope. No. No can do.");
 
-            var usersData = userData.GetValueOrDefault(Context.User.Id, global);
-            int iconsAmt = global.takeThisMany;
-            if (global != usersData)
-                iconsAmt += usersData.takeThisMany;
+            var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.empty);
+            int iconsAmt = global.takeThisMany - (n >= 25 ? 11 : 0);
+            iconsAmt += usersData.takeThisMany;
             if (iconsAmt < 1) iconsAmt = 1;
             if (iconsAmt > SlotIcons.Length) iconsAmt = SlotIcons.Length;
-
 
             var slotsicons = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(iconsAmt).ToArray();
             string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(slotsicons)).ToArray();
@@ -113,17 +117,23 @@ namespace KawaiiBot2.Modules
                 }
             }
 
+            bool win = finalSlots.All(s => s == finalSlots[0]);
+
             string winMessage = "and lost....";
 
-            if (finalSlots.All(s => s == finalSlots[0]))
+            if (win)
                 winMessage = "and won! \uD83C\uDF89";
             else if (finalSlots.Count(s => s == finalSlots[0]) == n - 1 || finalSlots.Count(s => s == finalSlots[1]) == n - 1)
                 winMessage = $"and almost won ({n - 1}/{n})";
 
-
+            if (win)
+            {
+                usersData.winsCount++;
+                global.winsCount++;
+            }
 
             //streak detection
-            if (n >= 25 && iconsAmt < 4 && iconsAmt > 1)
+            if (n >= 25 && iconsAmt < 5 && iconsAmt > 1)
             {
                 (string, int) maxStreak = ("", -1);
                 (string, int) currentStreak = ("", 0);
@@ -142,13 +152,58 @@ namespace KawaiiBot2.Modules
                 //haha
                 maxStreak = currentStreak.Item2 > maxStreak.Item2 ? currentStreak : maxStreak;
                 if (maxStreak.Item2 >= 6)
-                    winMessage += $"With a {maxStreak.Item1} streak of {maxStreak.Item2}";
+                    winMessage += $"\nWith a {maxStreak.Item1} streak of {maxStreak.Item2}";
+
+                if (maxStreak.Item2 >= usersData.longestStreak)
+                {
+                    usersData.longestStreak = maxStreak.Item2;
+                    usersData.longestStreakIcon = maxStreak.Item1;
+                }
+                if (maxStreak.Item2 >= global.longestStreak)
+                {
+                    global.longestStreak = maxStreak.Item2;
+                    global.longestStreakIcon = maxStreak.Item1;
+                }
             }
 
             return ReplyAsync(
                             $"**{Helpers.GetName(Context.User)}** rolled the slots...\n" +
                             $"**[ {string.Join(" ", finalSlots)} ]**\n" +
                             $"{winMessage}");
+        }
+
+        [Command("leaderboard", RunMode = RunMode.Async)]
+        [Alias("slotsboard", "board", "winners")]
+        [Summary("LINQ makes everything easy, whaddaya mean this should be hard?")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "Requires a guild because users")]
+        public Task Leaderboard()
+        {
+            var shortlist = from pair in userData
+                            where pair.Value.winsCount > 0
+                            orderby -pair.Value.winsCount
+                            select pair;
+            if (shortlist.Count() == 0)
+            {
+                return ReplyAsync("Noone has won slots yet! So win them to be here!");
+            }
+            var finalList = from pair in shortlist
+                            select $"{Helpers.GetName(Context.Guild.GetUser(pair.Key))}, {pair.Value.winsCount} win{(pair.Value.winsCount > 1 ? "s" : "")} " +
+                                $"({pair.Value.winsCount / (double)global.winsCount * 100:f2}% of total)";
+
+            return ReplyAsync($"Global Slots Leaderboard\n--------------------\n{string.Join("\n", finalList)}");
+        }
+
+        [Command("streakinfo")]
+        [Alias("streak")]
+        [Summary("Gets info about the longest streaks in slots")]
+        public Task GetStreakInfo()
+        {
+            var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.empty);
+            var userStreakInfo = usersData.longestStreak > 0 ? $"Your longest streak was {usersData.longestStreak} with {usersData.longestStreakIcon}" :
+                "You have no streaks.";
+            var globalStreakInfo = global.longestStreak > 0 ? $"The longest streak globally was {global.longestStreak} with {global.longestStreakIcon}" :
+                "There are no streaks globally.";
+            return ReplyAsync($"{userStreakInfo}\n{globalStreakInfo}");
         }
 
         private bool okRig(string emoji) => SlotIcons.Contains(emoji) || MemeRigAllows.Contains(emoji);
