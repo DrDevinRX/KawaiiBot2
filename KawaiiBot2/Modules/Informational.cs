@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Discord.WebSocket;
 using System.Diagnostics;
 using KawaiiBot2.Services;
+using System.Collections.Concurrent;
+using KawaiiBot2.JSONClasses;
 
 namespace KawaiiBot2.Modules
 {
@@ -149,6 +151,40 @@ namespace KawaiiBot2.Modules
                     select $"{Helpers.Pad(stat.Key, 23)}:: {stat.Value}";
 
             return ReplyAsync($"```   ===  {Program.BotName} Statistics  === \n{string.Join('\n', q)}```");
+        }
+
+        public static ConcurrentDictionary<string, int> CommandCount = new ConcurrentDictionary<string, int>();
+
+        [Command("top10commands")]
+        [Alias("top", "top10", "popularity", "howmuchslots")]
+        [Summary("Shows the top 10 most used commands.")]
+        public Task PopularityContest()
+        {
+            var list = (from pair in CommandCount
+                        where pair.Value > 0
+                        orderby -pair.Value
+                        select $"{pair.Key}: {pair.Value} times").Take(10);
+            if (list.Count() == 0)
+                return ReplyAsync("No commands have been used yet. This is most unusual.");
+            return ReplyAsync($"Most Used Commands\n--------------------\n{string.Join("\n", list)}");
+        }
+
+        public static object GetPopularitySave()
+        {
+            return new
+            {
+                commandCount = CommandCount
+            };
+        }
+
+        public static void PerpetuatePopularityPersistance(PopularityPersistanceJson persistanceData)
+        {
+            if (persistanceData == null) return;
+            foreach (var pair in persistanceData.CommandCount)
+            {
+                //i think we can assume this works because it should be empty
+                CommandCount.TryAdd(pair.Key, pair.Value);
+            }
         }
     }
 }

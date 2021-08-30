@@ -15,6 +15,19 @@ namespace KawaiiBot2.Modules
 {
     public class Commands : ModuleBase<SocketCommandContext>
     {
+        [Command("save", RunMode = RunMode.Async)]
+        [DevOnlyCmd]
+        [Summary("Save state to disk. State should be saved automatically, use only when force shutting down.")]
+        public Task Save()
+        {
+            if (!Helpers.devIDs.Contains(Context.User.Id))
+            {
+                return ReplyAsync("Can't save when not a dev.");
+            }
+            Persistance.SaveEverything();
+            return ReplyAsync("Saved");
+        }
+
         [RequireContext(ContextType.Guild, ErrorMessage = "You can't hype up noone...")]
         [Command("hype")]
         public Task Hype(string twitchname = null, [Remainder] string paceinfo = null)

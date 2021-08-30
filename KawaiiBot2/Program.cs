@@ -16,8 +16,7 @@ namespace KawaiiBot2
     class Program
     {
         private DiscordSocketClient discord;
-        private const string ConfName = "conf.json";
-        private static string ConfPath = ConfName;
+        private static string ConfPath = "conf.json";
         public static readonly string BotName = "Awooo v2 (Ver My愛)";
 
         private static void Main(string[] args)
@@ -52,6 +51,11 @@ namespace KawaiiBot2
             {
                 throw new NotSupportedException("Bot token not found in config file");
             }
+
+            //load persistacne
+            Persistance.LoadEverything(ConfPath);
+            //start persistance autosave
+            Persistance.StartSaveScheduler();
 
             discord = new DiscordSocketClient();
             var services = ConfigureServices();

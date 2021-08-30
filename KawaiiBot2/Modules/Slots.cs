@@ -7,29 +7,31 @@ using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using NeoSmart.Unicode;
+using KawaiiBot2.JSONClasses;
 
 namespace KawaiiBot2.Modules
 {
+    public class SlotsUserData
+    {
+        public SlotsUserData() : this(0)
+        { }
+        public SlotsUserData(int Take)
+        {
+            takeThisMany = Take;
+            longestStreak = 0;
+            longestStreakIcon = "";
+        }
+        public volatile int takeThisMany;
+        public volatile bool suppressed;
+        public volatile string[] riggedTo;
+        public int longestStreak;
+        public string longestStreakIcon;
+        public int winsCount;
+        public static SlotsUserData empty => new SlotsUserData();
+    }
     public class Slots : ModuleBase<SocketCommandContext>
     {
-        private class SlotsUserData
-        {
-            public SlotsUserData() : this(0)
-            { }
-            public SlotsUserData(int Take)
-            {
-                takeThisMany = Take;
-                longestStreak = 0;
-                longestStreakIcon = "";
-            }
-            public volatile int takeThisMany;
-            public volatile bool suppressed;
-            public volatile string[] riggedTo;
-            public int longestStreak;
-            public string longestStreakIcon;
-            public int winsCount;
-            public static SlotsUserData empty => new SlotsUserData();
-        }
+
         [Command("aprilfruits")]
         [Summary("Slots, but how many fruits there are are random. Because more RNG is better, right?")]
         [HiddenCmd]
@@ -80,8 +82,7 @@ no more risky dice thing to disallow it and go back
                 return ReplyAsync("Nope. No. Nope. No. No can do.");
 
             var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.empty);
-            int iconsAmt = global.takeThisMany;
-            iconsAmt += usersData.takeThisMany;
+            int iconsAmt = global.takeThisMany + usersData.takeThisMany;
             if (iconsAmt < 1) iconsAmt = 1;
             if (iconsAmt > SlotIcons.Length) iconsAmt = SlotIcons.Length;
             if (iconsAmt == 1 && (usersData.suppressed || global.suppressed))
@@ -126,7 +127,7 @@ no more risky dice thing to disallow it and go back
                 }
                 else
                 {
-                    var replace = Helpers.ChooseTwoNoReplace(SlotIcons);
+                    var replace = Helpers.ChooseTwoNoReplace(iconsUsed);
                     var places = Helpers.TwoNumbersNoReplace(finalSlots.Length);
                     //better stuff here
                     finalSlots[places.Item1] = replace.Item1;
@@ -413,6 +414,43 @@ no more risky dice thing to disallow it and go back
             if (data.takeThisMany <= -20)
                 data.suppressed = false;
             return ReplyAsync(String.Join(" ", riskySlots.Select(i => i == 0 ? ":blue_square:" : ":black_large_square:")));
+        }
+
+        [DevOnlyCmd]
+        [Command("resetriskyslots")]
+        [Alias("resetrisky")]
+        [Summary("Reset a person's risky slot values.")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "Only in a server ok? Gotta publicly name them.")]
+        public Task ResetRiskySlots(IGuildUser user)
+        {
+            if (!Helpers.devIDs.Contains(Context.User.Id))
+            {
+                return ReplyAsync("W-what! I would never!");
+            }
+            var data = userData.GetOrAdd(user.Id, new SlotsUserData());
+            data.suppressed = false;
+            data.takeThisMany = 0;
+            return ReplyAsync($"Reset riskydice data for {Helpers.GetName(user)}");
+        }
+
+        public static object GetSlotsSaveObject()
+        {
+            return new
+            {
+                global,
+                userData
+            };
+        }
+
+        public static void PerpetuatePersistance(SlotsPersistanceJson persistanceData)
+        {
+            if (persistanceData == null) return;
+            global = persistanceData.Global;
+            foreach (var pair in persistanceData.UserData)
+            {
+                //i think we can assume this works because it should be empty
+                userData.TryAdd(pair.Key, pair.Value);
+            }
         }
     }
 }

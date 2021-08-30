@@ -27,6 +27,13 @@ namespace KawaiiBot2.Services
             Help.Provider = provider;
 
             _discord.MessageReceived += MessageReceived;
+
+            _commands.CommandExecuted += (i, c, r) =>
+            {
+                if (!i.IsSpecified) return Task.Run(() => { });
+                Informational.CommandCount.AddOrUpdate(i.Value.Name, 1, (k, c) => c + 1);
+                return Task.Run(() => { });
+            };
         }
 
         private async Task MessageReceived(SocketMessage socketMessage)
