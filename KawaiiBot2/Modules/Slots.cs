@@ -212,7 +212,7 @@ no more risky dice thing to disallow it and go back
         }
 
         [Command("streakinfo")]
-        [Alias("streak")]
+        [Alias("streak", "streakstats")]
         [Summary("Gets info about the longest streaks in slots")]
         public Task GetStreakInfo()
         {

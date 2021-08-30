@@ -156,7 +156,7 @@ namespace KawaiiBot2.Modules
         public static ConcurrentDictionary<string, int> CommandCount = new ConcurrentDictionary<string, int>();
 
         [Command("top10commands")]
-        [Alias("top", "top10", "popularity", "howmuchslots")]
+        [Alias("top", "top10", "popularity", "howmuchslots", "mostused")]
         [Summary("Shows the top 10 most used commands.")]
         public Task PopularityContest()
         {
