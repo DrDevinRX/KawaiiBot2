@@ -57,15 +57,22 @@ namespace KawaiiBot2.Modules
         }
 
         private static Random rand = new Random();
+        //:TODO:
+        /*no riskydice above 25
+persistance -command usage, slots data, string?
+no more risky dice thing to disallow it and go back
+-update discord.net version
+         */
 
         private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪",
             "🥮", "🍡", "🍠","🍩","🍨","🎂", "🍭","🍫","🍯","🍵"};
         private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲",
-            "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼" };
+            "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼","🍕" };
         private static SlotsUserData global = new SlotsUserData(13);
         private static ConcurrentDictionary<ulong, SlotsUserData> userData = new ConcurrentDictionary<ulong, SlotsUserData>();
 
         [Command("slots", RunMode = RunMode.Async)]
+        [Alias("sloots")]
         [Summary("Roll the slot machine. may rngesus guide your path.")]
         public Task SlotsCmd(int n = 3)
         {
@@ -73,17 +80,23 @@ namespace KawaiiBot2.Modules
                 return ReplyAsync("Nope. No. Nope. No. No can do.");
 
             var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.empty);
-            int iconsAmt = global.takeThisMany - (n >= 25 ? 11 : 0);
+            int iconsAmt = global.takeThisMany;
             iconsAmt += usersData.takeThisMany;
             if (iconsAmt < 1) iconsAmt = 1;
             if (iconsAmt > SlotIcons.Length) iconsAmt = SlotIcons.Length;
+            if (iconsAmt == 1 && (usersData.suppressed || global.suppressed))
+                iconsAmt = 2;
+            if (n >= 25)
+                iconsAmt = 1 + Math.Max(1, (int)Math.Round((global.takeThisMany - 11) / 4.0));
 
-            var slotsicons = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(iconsAmt).ToArray();
-            string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(slotsicons)).ToArray();
+            var iconsUsed = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(iconsAmt).ToArray();
+            string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(iconsUsed)).ToArray();
 
+            bool thisRigged = false;
             //rig slots
             if (usersData.riggedTo != null || global.riggedTo != null)
             {
+                thisRigged = true;
                 //choose which one we act on, with user specific data taking preference
                 var thisUserData = usersData.riggedTo != null ? usersData : global;
                 if (thisUserData.riggedTo.Length == 1)
@@ -100,20 +113,24 @@ namespace KawaiiBot2.Modules
             //Suppress slots wins
             if (usersData.suppressed || global.suppressed)
             {
-
-                if (slotsicons.Length > 1)
+                if (thisRigged)
                 {
-                    var replace = Helpers.ChooseTwoNoReplace(slotsicons);
-                    finalSlots[^1] = replace.Item1;
-                    finalSlots[^2] = replace.Item2;
+                    //finalslots position is random because slots can be rigged to not-all-the-same
+                    //but, this has to be not the icon that's replaced.
+                    var finalSlotsTakePut = Helpers.TwoNumbersNoReplace(finalSlots.Length);
+                    //use the two unique numbers algorithm to guarantee that it's not the same icon
+                    int r1 = Array.IndexOf(SlotIcons, finalSlots[finalSlotsTakePut.Item1]);
+                    int r2 = rand.Next(SlotIcons.Length - 1);
+                    r2 += r2 >= r1 ? 1 : 0;
+                    finalSlots[finalSlotsTakePut.Item2] = SlotIcons[r2];
                 }
                 else
                 {
                     var replace = Helpers.ChooseTwoNoReplace(SlotIcons);
-                    var notSoReplace = new string[] { replace.Item1, replace.Item2 };
-                    finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(notSoReplace)).ToArray();
-                    finalSlots[^1] = replace.Item1;
-                    finalSlots[^2] = replace.Item2;
+                    var places = Helpers.TwoNumbersNoReplace(finalSlots.Length);
+                    //better stuff here
+                    finalSlots[places.Item1] = replace.Item1;
+                    finalSlots[places.Item2] = replace.Item2;
                 }
             }
 
@@ -133,7 +150,7 @@ namespace KawaiiBot2.Modules
             }
 
             //streak detection
-            if (n >= 25 && iconsAmt < 5 && iconsAmt > 1)
+            if (n >= 25 && iconsAmt < 5 && iconsAmt > 1 && !thisRigged)
             {
                 (string, int) maxStreak = ("", -1);
                 (string, int) currentStreak = ("", 0);
@@ -173,7 +190,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("leaderboard", RunMode = RunMode.Async)]
-        [Alias("slotsboard", "board", "winners")]
+        [Alias("slotsboard", "board", "winners", "boards")]
         [Summary("LINQ makes everything easy, whaddaya mean this should be hard?")]
         [RequireContext(ContextType.Guild, ErrorMessage = "Requires a guild because users")]
         public Task Leaderboard()
@@ -188,7 +205,7 @@ namespace KawaiiBot2.Modules
             }
             var finalList = from pair in shortlist
                             select $"{Helpers.GetName(Context.Guild.GetUser(pair.Key))}, {pair.Value.winsCount} win{(pair.Value.winsCount > 1 ? "s" : "")} " +
-                                $"({pair.Value.winsCount / (double)global.winsCount * 100:f2}% of total)";
+                                $"({pair.Value.winsCount / (double)global.winsCount * 100:f2}% of total wins)";
 
             return ReplyAsync($"Global Slots Leaderboard\n--------------------\n{string.Join("\n", finalList)}");
         }
@@ -312,7 +329,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("suppressslotswins")]
-        [Alias("suppressslots", "noslotswins", "suppress")]
+        [Alias("suppressslots", "noslotswins", "suppress", "suppressslotwins", "suppresslotswins", "suppresslotwins")]
         [Summary("Supresses slots winning. Easy. Overrides rigging slots.")]
         [DevOnlyCmd]
         public Task SuppressSlotsWins(bool suppress = true)
@@ -366,20 +383,23 @@ namespace KawaiiBot2.Modules
         [Summary("Risky dice, multiple times.")]
         public Task RiskySlots(int n = 3)
         {
+            var data = userData.GetOrAdd(Context.User.Id, new SlotsUserData());
             if (n < 1)
                 return ReplyAsync("Not very ambitious, are we?");
             if (n == 1)
                 return ReplyAsync("Maybe try +riskydice?");
-            if (n == 20 && global.takeThisMany < 21)
+            if (data.suppressed && n > 20)
+                return ReplyAsync("You only need 20 to get back in you know???");
+            if (n == 20 && global.takeThisMany < 21 && !data.suppressed)
                 return ReplyAsync("一発で死ぬ。");
             if (n > 9000)
                 return ReplyAsync("WHY IS IT OVER 9000!???????");
             if (n > SlotIcons.Length)
                 return ReplyAsync("??? Are you serious???");
-            if (n > global.takeThisMany - 1)
+            if (n > global.takeThisMany - 1 && !data.suppressed)
                 return ReplyAsync("Too over the top!!");
+
             int[] riskySlots = Enumerable.Range(0, n).Select(i => rand.Next(6)).ToArray();
-            var data = userData.GetOrAdd(Context.User.Id, new SlotsUserData());
             foreach (var i in riskySlots)
             {
                 if (i == 0)

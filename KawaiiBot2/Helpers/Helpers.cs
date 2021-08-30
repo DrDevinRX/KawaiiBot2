@@ -31,6 +31,15 @@ namespace KawaiiBot2
             return new Tuple<T, T>(items.ElementAt(r1), items.ElementAt(r2));
         }
 
+
+        public static (int, int) TwoNumbersNoReplace(int until)
+        {
+            int r1 = random.Next(until);
+            int r2 = random.Next(until - 1);
+            r2 += r2 >= r1 ? 1 : 0;
+            return (r1, r2);
+        }
+
         public static string CleanGuildUserDisplayName(IGuildUser user)
             => (user?.Nickname ?? user?.Username ?? "User").Clean(); // If user is null, return User
 
