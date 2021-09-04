@@ -190,6 +190,14 @@ no more risky dice thing to disallow it and go back
                             $"{winMessage}");
         }
 
+        [Command("niceslots")]
+        [Summary("nice.")]
+        [HiddenCmd]
+        public Task NiceSlots()
+        {
+            return SlotsCmd(69);
+        }
+
         [Command("leaderboard", RunMode = RunMode.Async)]
         [Alias("slotsboard", "board", "winners", "boards")]
         [Summary("LINQ makes everything easy, whaddaya mean this should be hard?")]

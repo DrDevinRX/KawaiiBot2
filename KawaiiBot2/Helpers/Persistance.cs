@@ -24,7 +24,9 @@ namespace KawaiiBot2
             {
                 replaceName = name.Replace("conf", "db") + "-{0}";
             }
-            return Path.GetDirectoryName(confName) + Path.DirectorySeparatorChar + replaceName + ".json";
+            var dirName = Path.GetDirectoryName(confName);
+
+            return $"{dirName}{(string.IsNullOrEmpty(dirName) ? "" : Path.DirectorySeparatorChar)}{replaceName}.json";
         }
 
 
