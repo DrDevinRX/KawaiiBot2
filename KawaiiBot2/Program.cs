@@ -10,6 +10,7 @@ using KawaiiBot2.Services;
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using KawaiiBot2.JSONClasses;
+using System.Reflection;
 
 namespace KawaiiBot2
 {
@@ -17,7 +18,7 @@ namespace KawaiiBot2
     {
         private DiscordSocketClient discord;
         private static string ConfPath = "conf.json";
-        public static readonly string BotName = "Awooo v2 (Ver My愛)";
+        public static readonly string BotName = $"Awooo v{typeof(Program).Assembly.GetName().Version.ToString(3)} (Ver My愛)";
 
         private static void Main(string[] args)
         {
