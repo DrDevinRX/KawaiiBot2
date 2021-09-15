@@ -198,6 +198,14 @@ no more risky dice thing to disallow it and go back
             return SlotsCmd(69);
         }
 
+        [Command("maxslots")]
+        [Summary("Who needs luck when you have more chances?")]
+        [HiddenCmd]
+        public Task MaxSlots()
+        {
+            return SlotsCmd(121);
+        }
+
         [Command("leaderboard", RunMode = RunMode.Async)]
         [Alias("slotsboard", "board", "winners", "boards")]
         [Summary("LINQ makes everything easy, whaddaya mean this should be hard?")]
