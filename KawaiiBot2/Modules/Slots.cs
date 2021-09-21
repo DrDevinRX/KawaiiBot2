@@ -76,7 +76,7 @@ no more risky dice thing to disallow it and go back
         [Command("slots", RunMode = RunMode.Async)]
         [Alias("sloots")]
         [Summary("Roll the slot machine. may rngesus guide your path.")]
-        public Task SlotsCmd(int n = 3)
+        public Task SlotsCmd(int n = 3, string icon = "")
         {
             if (n < 2 || n > 121)
                 return ReplyAsync("Nope. No. Nope. No. No can do.");
@@ -91,24 +91,45 @@ no more risky dice thing to disallow it and go back
                 iconsAmt = 1 + Math.Max(1, (int)Math.Round((global.takeThisMany - 11) / 4.0));
 
             var iconsUsed = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(iconsAmt).ToArray();
+
+            bool useSpecialIcon = icon != "" && (SlotIcons.Contains(icon) || MemeRigAllows.Contains(icon));
+            if (useSpecialIcon && !iconsUsed.Contains(icon))
+            {
+                iconsUsed[0] = icon;
+            }
+
             string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(iconsUsed)).ToArray();
 
+            if (useSpecialIcon && !finalSlots.Contains(icon))
+            {
+                var replaceThis = Helpers.ChooseRandom(finalSlots);
+                finalSlots = finalSlots.Select(a => a == replaceThis ? icon : a).ToArray();
+            }
+
             bool thisRigged = false;
+            bool fullRigged = false;
+
             //rig slots
             if (usersData.riggedTo != null || global.riggedTo != null)
             {
-                thisRigged = true;
-                //choose which one we act on, with user specific data taking preference
-                var thisUserData = usersData.riggedTo != null ? usersData : global;
-                if (thisUserData.riggedTo.Length == 1)
+                int riggedLength = (usersData.riggedTo ?? global.riggedTo).Length;
+                if (riggedLength == n || riggedLength == 1)
                 {
-                    var tmp = thisUserData.riggedTo[0];
-                    thisUserData.riggedTo = new string[n];
-                    for (int i = 0; i < n; i++) thisUserData.riggedTo[i] = tmp;
+                    thisRigged = true;
+                    fullRigged = riggedLength == n;
+
+                    //choose which one we act on, with user specific data taking preference
+                    var thisUserData = usersData.riggedTo != null ? usersData : global;
+                    if (thisUserData.riggedTo.Length == 1)
+                    {
+                        var tmp = thisUserData.riggedTo[0];
+                        thisUserData.riggedTo = new string[n];
+                        for (int i = 0; i < n; i++) thisUserData.riggedTo[i] = tmp;
+                    }
+                    finalSlots = thisUserData.riggedTo;
+                    n = thisUserData.riggedTo.Length;
+                    thisUserData.riggedTo = null;
                 }
-                finalSlots = thisUserData.riggedTo;
-                n = thisUserData.riggedTo.Length;
-                thisUserData.riggedTo = null;
             }
 
             //Suppress slots wins
@@ -151,7 +172,7 @@ no more risky dice thing to disallow it and go back
             }
 
             //streak detection
-            if (n >= 25 && iconsAmt < 5 && iconsAmt > 1 && !thisRigged)
+            if (n >= 25 && iconsAmt < 5 && iconsAmt > 1 && !(fullRigged ^ thisRigged))
             {
                 (string, int) maxStreak = ("", -1);
                 (string, int) currentStreak = ("", 0);
@@ -170,14 +191,14 @@ no more risky dice thing to disallow it and go back
                 //haha
                 maxStreak = currentStreak.Item2 > maxStreak.Item2 ? currentStreak : maxStreak;
                 if (maxStreak.Item2 >= 6)
-                    winMessage += $"\nWith a {maxStreak.Item1} streak of {maxStreak.Item2}";
+                    winMessage += $"\nWith a {(thisRigged ? "rigged " : "")}{maxStreak.Item1} streak of {maxStreak.Item2}";
 
-                if (maxStreak.Item2 >= usersData.longestStreak)
+                if (!thisRigged && maxStreak.Item2 >= usersData.longestStreak)
                 {
                     usersData.longestStreak = maxStreak.Item2;
                     usersData.longestStreakIcon = maxStreak.Item1;
                 }
-                if (maxStreak.Item2 >= global.longestStreak)
+                if (!thisRigged && maxStreak.Item2 >= global.longestStreak)
                 {
                     global.longestStreak = maxStreak.Item2;
                     global.longestStreakIcon = maxStreak.Item1;
@@ -190,6 +211,22 @@ no more risky dice thing to disallow it and go back
                             $"{winMessage}");
         }
 
+        [Command("slots", RunMode = RunMode.Async)]
+        [Alias("sloots")]
+        [Summary("Slots, but with a specific icon")]
+        public Task SlotsCmd(string icon)
+        {
+            return SlotsCmd(3, icon);
+        }
+
+        [Command("slots", RunMode = RunMode.Async)]
+        [Alias("sloots")]
+        [Summary("Slots, but with a specific icon and number")]
+        public Task SlotsCmd(string icon, int n)
+        {
+            return SlotsCmd(n, icon);
+        }
+
         [Command("niceslots")]
         [Summary("nice.")]
         [HiddenCmd]
@@ -198,12 +235,28 @@ no more risky dice thing to disallow it and go back
             return SlotsCmd(69);
         }
 
+        [Command("niceslots")]
+        [Summary("nice.")]
+        [HiddenCmd]
+        public Task NiceSlots(string icon)
+        {
+            return SlotsCmd(69, icon);
+        }
+
         [Command("maxslots")]
         [Summary("Who needs luck when you have more chances?")]
         [HiddenCmd]
         public Task MaxSlots()
         {
             return SlotsCmd(121);
+        }
+
+        [Command("maxslots")]
+        [Summary("Who needs luck when you have more chances?")]
+        [HiddenCmd]
+        public Task MaxSlots(string icon)
+        {
+            return SlotsCmd(121, icon);
         }
 
         [Command("leaderboard", RunMode = RunMode.Async)]
@@ -228,7 +281,7 @@ no more risky dice thing to disallow it and go back
         }
 
         [Command("streakinfo")]
-        [Alias("streak", "streakstats")]
+        [Alias("streak", "streakstats", "streaks")]
         [Summary("Gets info about the longest streaks in slots")]
         public Task GetStreakInfo()
         {

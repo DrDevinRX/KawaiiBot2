@@ -79,8 +79,8 @@ namespace KawaiiBot2
             {
                 while (true)
                 {
-                    SaveEverything();
                     Thread.Sleep(1000/*ms/s*/ * 60/*s/m*/ * 60/*m/h*/* 1/*hours total*/);
+                    SaveEverything();
                 }
             });
         }
