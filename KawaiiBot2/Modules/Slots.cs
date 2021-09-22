@@ -6,7 +6,6 @@ using System.Linq;
 using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
-using NeoSmart.Unicode;
 using KawaiiBot2.JSONClasses;
 
 namespace KawaiiBot2.Modules
@@ -27,7 +26,7 @@ namespace KawaiiBot2.Modules
         public int longestStreak;
         public string longestStreakIcon;
         public int winsCount;
-        public static SlotsUserData empty => new SlotsUserData();
+        public static SlotsUserData Empty => new SlotsUserData();
     }
     public class Slots : ModuleBase<SocketCommandContext>
     {
@@ -59,29 +58,32 @@ namespace KawaiiBot2.Modules
         }
 
         private static Random rand = new Random();
-        //:TODO:
-        /*no riskydice above 25
-persistance -command usage, slots data, string?
-no more risky dice thing to disallow it and go back
--update discord.net version
-         */
 
         private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪",
-            "🥮", "🍡", "🍠","🍩","🍨","🎂", "🍭","🍫","🍯","🍵"};
+             "🍩","🍨","🎂", "🍭", "🍫", "🍯", "🫐", "🥐", "🧆", "🥞", "🥠", "🍘", "🥧", "🧋", "🥟"};
         private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲",
-            "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼","🍕" };
+            "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼","🍕","🍝" ,"🍢", "🥯", "🍼", "🎯", "🌏", "🌍", "🌎", "🎳", "🥏", "🥌", "🌵", "🌴", "🦠", "🦂", "🧱",
+            "🎈","💡","💴", "💵", "💶", "💷", "💳", "⚙\uFE0F", "🧬", "🔬", "🔭", "🛢", "🪐", "🌊", "🫀", "🛰", "🪁",/*tmp*/"🥮"};
         private static SlotsUserData global = new SlotsUserData(13);
         private static ConcurrentDictionary<ulong, SlotsUserData> userData = new ConcurrentDictionary<ulong, SlotsUserData>();
+
+
+        //TODO: allow DetermineIcons to use MemeRigs and ALL of the extra icons as sources
+        [Command("slotsv2")]
+        public Task SlotsCmd2(int n = 3, string icon = "🥮") => new SlotsRunner(Context, rand).UseIconSet(SlotIcons).AlsoAllowThese(MemeRigAllows)
+                                                .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global)
+                                                .DetermineN(n).DetermineIcons(icon).WithRigging().WithSuppression()
+                                                .WithStreakCounting().Run();
 
         [Command("slots", RunMode = RunMode.Async)]
         [Alias("sloots")]
         [Summary("Roll the slot machine. may rngesus guide your path.")]
-        public Task SlotsCmd(int n = 3, string icon = "")
+        public Task SlotsCmd(int n = 3, string icon = "🥮")
         {
             if (n < 2 || n > 121)
                 return ReplyAsync("Nope. No. Nope. No. No can do.");
 
-            var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.empty);
+            var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty);
             int iconsAmt = global.takeThisMany + usersData.takeThisMany;
             if (iconsAmt < 1) iconsAmt = 1;
             if (iconsAmt > SlotIcons.Length) iconsAmt = SlotIcons.Length;
@@ -92,7 +94,7 @@ no more risky dice thing to disallow it and go back
 
             var iconsUsed = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(iconsAmt).ToArray();
 
-            bool useSpecialIcon = icon != "" && (SlotIcons.Contains(icon) || MemeRigAllows.Contains(icon));
+            bool useSpecialIcon = SlotIcons.Contains(icon) || MemeRigAllows.Contains(icon);
             if (useSpecialIcon && !iconsUsed.Contains(icon))
             {
                 iconsUsed[0] = icon;
@@ -259,8 +261,15 @@ no more risky dice thing to disallow it and go back
             return SlotsCmd(121, icon);
         }
 
+        [Command("nierslots")]
+        [Alias("serverslots")]
+        [Summary("Slots, but with all the emotes in the current server")]
+        public Task NierSlots(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(Context.Guild.Emotes.Select(a => a.ToString()).ToArray())
+                                        .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global).DetermineN(n)
+                                        .DetermineIcons(icon).WithSuppression().WithStreakCounting().Run();
+
         [Command("leaderboard", RunMode = RunMode.Async)]
-        [Alias("slotsboard", "board", "winners", "boards")]
+        [Alias("slotsboard", "board", "winners", "boards", "wins")]
         [Summary("LINQ makes everything easy, whaddaya mean this should be hard?")]
         [RequireContext(ContextType.Guild, ErrorMessage = "Requires a guild because users")]
         public Task Leaderboard()
@@ -285,7 +294,7 @@ no more risky dice thing to disallow it and go back
         [Summary("Gets info about the longest streaks in slots")]
         public Task GetStreakInfo()
         {
-            var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.empty);
+            var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty);
             var userStreakInfo = usersData.longestStreak > 0 ? $"Your longest streak was {usersData.longestStreak} with {usersData.longestStreakIcon}" :
                 "You have no streaks.";
             var globalStreakInfo = global.longestStreak > 0 ? $"The longest streak globally was {global.longestStreak} with {global.longestStreakIcon}" :
@@ -413,7 +422,7 @@ no more risky dice thing to disallow it and go back
         }
 
         [Command("setdifficulty")]
-        [Alias("difficulty", "slotsdifficulty", "setglobaldifficulty", "globaldifficulty", "global", "globalslots")]
+        [Alias("difficulty", "slotsdifficulty", "setglobaldifficulty", "globaldifficulty", "global", "globalslots", "gloal", "gloval", "glov;")]
         [Summary("Sets the number of icons to use for slots globally.")]
         [DevOnlyCmd]
         public Task SetGlobalDifficulty(int n = -659838444)//hacky way to make sure noone ever finds the "print" value by accident
