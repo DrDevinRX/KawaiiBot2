@@ -124,7 +124,7 @@ namespace KawaiiBot2.Modules
             await ReplyAsync($":books: **Fun fact**:\n{ res.Fact}");
         }
 
-        [Command("ship")]
+        /*[Command("ship")]
         [RequireContext(ContextType.Guild, ErrorMessage = "*throws you overboard*")]
         [Summary("Make a lovely ship <3")]
         public Task Ship(IGuildUser user1 = null, IGuildUser user2 = null)
@@ -147,7 +147,7 @@ namespace KawaiiBot2.Modules
 
             return ReplyAsync($"Lovely shipping~\nShip name:**{shipName}**\n{shipUrl}");
 
-        }
+        }*/
 
         [Command("urban", RunMode = RunMode.Async)]
         [Summary("Gets urban dictionary definitions. +lewd ;-;")]

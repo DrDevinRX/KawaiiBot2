@@ -142,7 +142,7 @@ namespace KawaiiBot2.Modules
                 {"☆Paged Memory☆",mbpaged.ToString("f2")+"MB" },
                 {"☆Unpaged Memory☆",mbunpaged.ToString("f2")+"MB" },
                 {"☆Threads☆",proc.Threads.Count.ToString() },
-                {"\nBOT STATISTICS\u200b\u200b","§(*￣▽￣*)§ ::\n" },
+                {"\nBOT STATISTICS\u200b\u200b","( *^-^)ρ(*╯^╰) ::" },//"§(*￣▽￣*)§ ::\n" },
                 {"☆Commands☆", CommandHandlerService.CommandsExecuted.ToString() },
                 {"☆Commands Per Hour☆", cph.ToString("f3") }
             };

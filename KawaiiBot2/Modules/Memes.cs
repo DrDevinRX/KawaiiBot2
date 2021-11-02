@@ -41,7 +41,7 @@ namespace KawaiiBot2.Modules
             if (texts.Length == 2) textPayload += "/" + texts[1];
             return ReplyAsync($"https://memegen.link/custom/{textPayload}.jpg?alt={avaUrl}");
         }
-
+        /*
         [Command("memegen")]
         [Alias("captcha", "calling", "facts", "scroll", "supreme", "achievement", "challenge")]
         [Summary("Makes memes. capcha, calling, facts, scroll, supreme, achievement, challenge. So many!")]
@@ -71,6 +71,6 @@ namespace KawaiiBot2.Modules
             if (args2.Length > 2) return ReplyAsync("T-Too many...");
 
             return ReplyAsync($"https://api.alexflipnote.dev/{name}?top={args2[0]}&bottom={args2[1]}");
-        }
+        }*/
     }
 }

@@ -59,8 +59,8 @@ namespace KawaiiBot2.Modules
 
         private static Random rand = new Random();
 
-        private static readonly string[] SlotIcons = { "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪",
-             "🍩","🍨","🎂", "🍭", "🍫", "🍯", "🫐", "🥐", "🧆", "🥞", "🥠", "🍘", "🥧", "🧋", "🥟"};
+        private static readonly string[] SlotIcons = { "🥮", "🥥" , "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪",
+                                                     "🍩","🍨","🎂", "🍭", "🍫", "🍯", "🫐", "🥐", "🧆", "🥞", "🥠", "🍘", "🥧", "🧋", "🥟"};
         private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲",
             "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼","🍕","🍝" ,"🍢", "🥯", "🍼", "🎯", "🌏", "🌍", "🌎", "🎳", "🥏", "🥌", "🌵", "🌴", "🦠", "🦂", "🧱",
             "🎈","💡","💴", "💵", "💶", "💷", "💳", "⚙\uFE0F", "🧬", "🔬", "🔭", "🛢", "🪐", "🌊", "🫀", "🛰", "🪁",/*tmp*/"🥮"};
@@ -70,163 +70,20 @@ namespace KawaiiBot2.Modules
 
         //TODO: allow DetermineIcons to use MemeRigs and ALL of the extra icons as sources
         [Command("slotsv2")]
+        [Alias("slots", "sloots")]
+        [Summary("Roll the slot machine. may rngesus guide your path. Better code.")]
         public Task SlotsCmd2(int n = 3, string icon = "🥮") => new SlotsRunner(Context, rand).UseIconSet(SlotIcons).AlsoAllowThese(MemeRigAllows)
                                                 .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global)
                                                 .DetermineN(n).DetermineIcons(icon).WithRigging().WithSuppression()
                                                 .WithStreakCounting().Run();
 
-        [Command("slots", RunMode = RunMode.Async)]
-        [Alias("sloots")]
-        [Summary("Roll the slot machine. may rngesus guide your path.")]
-        public Task SlotsCmd(int n = 3, string icon = "🥮")
-        {
-            if (n < 2 || n > 121)
-                return ReplyAsync("Nope. No. Nope. No. No can do.");
-
-            var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty);
-            int iconsAmt = global.takeThisMany + usersData.takeThisMany;
-            if (iconsAmt < 1) iconsAmt = 1;
-            if (iconsAmt > SlotIcons.Length) iconsAmt = SlotIcons.Length;
-            if (iconsAmt == 1 && (usersData.suppressed || global.suppressed))
-                iconsAmt = 2;
-            if (n >= 25)
-                iconsAmt = 1 + Math.Max(1, (int)Math.Round((global.takeThisMany - 11) / 4.0));
-
-            var iconsUsed = ((string[])SlotIcons.Clone()).OrderBy(x => rand.Next()).Take(iconsAmt).ToArray();
-
-            bool useSpecialIcon = SlotIcons.Contains(icon) || MemeRigAllows.Contains(icon);
-            if (useSpecialIcon && !iconsUsed.Contains(icon))
-            {
-                iconsUsed[0] = icon;
-            }
-
-            string[] finalSlots = Enumerable.Range(0, n).Select(i => Helpers.ChooseRandom(iconsUsed)).ToArray();
-
-            if (useSpecialIcon && !finalSlots.Contains(icon))
-            {
-                var replaceThis = Helpers.ChooseRandom(finalSlots);
-                finalSlots = finalSlots.Select(a => a == replaceThis ? icon : a).ToArray();
-            }
-
-            bool thisRigged = false;
-            bool fullRigged = false;
-
-            //rig slots
-            if (usersData.riggedTo != null || global.riggedTo != null)
-            {
-                int riggedLength = (usersData.riggedTo ?? global.riggedTo).Length;
-                if (riggedLength == n || riggedLength == 1)
-                {
-                    thisRigged = true;
-                    fullRigged = riggedLength == n;
-
-                    //choose which one we act on, with user specific data taking preference
-                    var thisUserData = usersData.riggedTo != null ? usersData : global;
-                    if (thisUserData.riggedTo.Length == 1)
-                    {
-                        var tmp = thisUserData.riggedTo[0];
-                        thisUserData.riggedTo = new string[n];
-                        for (int i = 0; i < n; i++) thisUserData.riggedTo[i] = tmp;
-                    }
-                    finalSlots = thisUserData.riggedTo;
-                    n = thisUserData.riggedTo.Length;
-                    thisUserData.riggedTo = null;
-                }
-            }
-
-            //Suppress slots wins
-            if (usersData.suppressed || global.suppressed)
-            {
-                if (thisRigged)
-                {
-                    //finalslots position is random because slots can be rigged to not-all-the-same
-                    //but, this has to be not the icon that's replaced.
-                    var finalSlotsTakePut = Helpers.TwoNumbersNoReplace(finalSlots.Length);
-                    //use the two unique numbers algorithm to guarantee that it's not the same icon
-                    int r1 = Array.IndexOf(SlotIcons, finalSlots[finalSlotsTakePut.Item1]);
-                    int r2 = rand.Next(SlotIcons.Length - 1);
-                    r2 += r2 >= r1 ? 1 : 0;
-                    finalSlots[finalSlotsTakePut.Item2] = SlotIcons[r2];
-                }
-                else
-                {
-                    var replace = Helpers.ChooseTwoNoReplace(iconsUsed);
-                    var places = Helpers.TwoNumbersNoReplace(finalSlots.Length);
-                    //better stuff here
-                    finalSlots[places.Item1] = replace.Item1;
-                    finalSlots[places.Item2] = replace.Item2;
-                }
-            }
-
-            bool win = finalSlots.All(s => s == finalSlots[0]);
-
-            string winMessage = "and lost....";
-
-            if (win)
-                winMessage = "and won! \uD83C\uDF89";
-            else if (finalSlots.Count(s => s == finalSlots[0]) == n - 1 || finalSlots.Count(s => s == finalSlots[1]) == n - 1)
-                winMessage = $"and almost won ({n - 1}/{n})";
-
-            if (win)
-            {
-                usersData.winsCount++;
-                global.winsCount++;
-            }
-
-            //streak detection
-            if (n >= 25 && iconsAmt < 5 && iconsAmt > 1 && !(fullRigged ^ thisRigged))
-            {
-                (string, int) maxStreak = ("", -1);
-                (string, int) currentStreak = ("", 0);
-                foreach (string s in finalSlots)
-                {
-                    if (currentStreak.Item1 == s)
-                    {
-                        currentStreak.Item2++;
-                    }
-                    else
-                    {
-                        maxStreak = currentStreak.Item2 > maxStreak.Item2 ? currentStreak : maxStreak;
-                        currentStreak = (s, 1);
-                    }
-                }
-                //haha
-                maxStreak = currentStreak.Item2 > maxStreak.Item2 ? currentStreak : maxStreak;
-                if (maxStreak.Item2 >= 6)
-                    winMessage += $"\nWith a {(thisRigged ? "rigged " : "")}{maxStreak.Item1} streak of {maxStreak.Item2}";
-
-                if (!thisRigged && maxStreak.Item2 >= usersData.longestStreak)
-                {
-                    usersData.longestStreak = maxStreak.Item2;
-                    usersData.longestStreakIcon = maxStreak.Item1;
-                }
-                if (!thisRigged && maxStreak.Item2 >= global.longestStreak)
-                {
-                    global.longestStreak = maxStreak.Item2;
-                    global.longestStreakIcon = maxStreak.Item1;
-                }
-            }
-
-            return ReplyAsync(
-                            $"**{Helpers.GetName(Context.User)}** rolled the slots...\n" +
-                            $"**[ {string.Join(" ", finalSlots)} ]**\n" +
-                            $"{winMessage}");
-        }
-
-        [Command("slots", RunMode = RunMode.Async)]
-        [Alias("sloots")]
-        [Summary("Slots, but with a specific icon")]
-        public Task SlotsCmd(string icon)
-        {
-            return SlotsCmd(3, icon);
-        }
 
         [Command("slots", RunMode = RunMode.Async)]
         [Alias("sloots")]
         [Summary("Slots, but with a specific icon and number")]
-        public Task SlotsCmd(string icon, int n)
+        public Task SlotsCmd(string icon, int n = 3)
         {
-            return SlotsCmd(n, icon);
+            return SlotsCmd2(n, icon);
         }
 
         [Command("niceslots")]
@@ -234,7 +91,7 @@ namespace KawaiiBot2.Modules
         [HiddenCmd]
         public Task NiceSlots()
         {
-            return SlotsCmd(69);
+            return SlotsCmd2(69);
         }
 
         [Command("niceslots")]
@@ -242,7 +99,7 @@ namespace KawaiiBot2.Modules
         [HiddenCmd]
         public Task NiceSlots(string icon)
         {
-            return SlotsCmd(69, icon);
+            return SlotsCmd2(69, icon);
         }
 
         [Command("maxslots")]
@@ -250,7 +107,7 @@ namespace KawaiiBot2.Modules
         [HiddenCmd]
         public Task MaxSlots()
         {
-            return SlotsCmd(121);
+            return SlotsCmd2(121);
         }
 
         [Command("maxslots")]
@@ -258,7 +115,7 @@ namespace KawaiiBot2.Modules
         [HiddenCmd]
         public Task MaxSlots(string icon)
         {
-            return SlotsCmd(121, icon);
+            return SlotsCmd2(121, icon);
         }
 
         [Command("nierslots")]
