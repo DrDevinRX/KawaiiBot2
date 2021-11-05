@@ -72,7 +72,7 @@ namespace KawaiiBot2.Modules
         [Command("slotsv2")]
         [Alias("slots", "sloots")]
         [Summary("Roll the slot machine. may rngesus guide your path. Better code.")]
-        public Task SlotsCmd2(int n = 3, string icon = "🥮") => new SlotsRunner(Context, rand).UseIconSet(SlotIcons).AlsoAllowThese(MemeRigAllows)
+        public Task SlotsCmd2(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(SlotIcons).AlsoAllowThese(MemeRigAllows)
                                                 .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global)
                                                 .DetermineN(n).DetermineIcons(icon).WithRigging().WithSuppression()
                                                 .WithStreakCounting().Run();
