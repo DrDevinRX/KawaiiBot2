@@ -265,17 +265,23 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("suppressslotswins")]
-        [Alias("suppressslots", "noslotswins", "suppress", "suppressslotwins", "suppresslotswins", "suppresslotwins")]
+        [Alias("suppressslots", "noslotswins", "suppress", "suppressslotwins", "suppresslotswins", "suppresslotwins", "globalsuppressslots",
+            "globalsuppress", "suppresstatus","suppressstatus")]
         [Summary("Supresses slots winning. Easy. Overrides rigging slots.")]
         [DevOnlyCmd]
-        public Task SuppressSlotsWins(bool suppress = true)
+        public Task SuppressSlotsWins(bool? suppress = null)
         {
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return new Task(() => { });
             }
-            global.suppressed = suppress;
-            return ReplyAsync(suppress ? "Slots wins are now suppressed." : "Slots wins are no longer suppressed.");
+            if (!suppress.HasValue)
+            {
+                return ReplyAsync($"Slots wins are currently{(global.suppressed ? "" : " not")} suppressed");
+            }
+            bool changed = global.suppressed != suppress.Value;
+            global.suppressed = suppress.Value;
+            return ReplyAsync($"Slots wins are {(changed ? "now" : "still")}{(global.suppressed ? "" : " not")} suppressed.");
         }
 
         [Command("setdifficulty")]
