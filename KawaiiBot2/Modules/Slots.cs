@@ -26,7 +26,7 @@ namespace KawaiiBot2.Modules
         public int longestStreak;
         public string longestStreakIcon;
         public int winsCount;
-        public static SlotsUserData Empty => new SlotsUserData();
+        public static SlotsUserData Empty => new();
     }
     public class Slots : ModuleBase<SocketCommandContext>
     {
@@ -57,15 +57,15 @@ namespace KawaiiBot2.Modules
                             $"{winMessage}");
         }
 
-        private static Random rand = new Random();
+        private static readonly Random rand = new();
 
         private static readonly string[] SlotIcons = { "🥮", "🥥" , "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪",
                                                      "🍩","🍨","🎂", "🍭", "🍫", "🍯", "🫐", "🥐", "🧆", "🥞", "🥠", "🍘", "🥧", "🧋", "🥟"};
         private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲",
             "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼","🍕","🍝" ,"🍢", "🥯", "🍼", "🎯", "🌏", "🌍", "🌎", "🎳", "🥏", "🥌", "🌵", "🌴", "🦠", "🦂", "🧱",
             "🎈","💡","💴", "💵", "💶", "💷", "💳", "⚙\uFE0F", "🧬", "🔬", "🔭", "🛢", "🪐", "🌊", "🫀", "🛰", "🪁",/*tmp*/"🥮"};
-        private static SlotsUserData global = new SlotsUserData(13);
-        private static ConcurrentDictionary<ulong, SlotsUserData> userData = new ConcurrentDictionary<ulong, SlotsUserData>();
+        private static SlotsUserData global = new(13);
+        private static readonly ConcurrentDictionary<ulong, SlotsUserData> userData = new();
 
 
         //TODO: allow DetermineIcons to use MemeRigs and ALL of the extra icons as sources
@@ -139,7 +139,7 @@ namespace KawaiiBot2.Modules
                             where pair.Value.winsCount > 0
                             orderby -pair.Value.winsCount
                             select pair;
-            if (shortlist.Count() == 0)
+            if (!shortlist.Any())
             {
                 return ReplyAsync("Noone has won slots yet! So win them to be here!");
             }
@@ -163,9 +163,9 @@ namespace KawaiiBot2.Modules
             return ReplyAsync($"{userStreakInfo}\n{globalStreakInfo}");
         }
 
-        private bool okRig(string emoji) => SlotIcons.Contains(emoji) || MemeRigAllows.Contains(emoji);
+        private static bool OkRig(string emoji) => SlotIcons.Contains(emoji) || MemeRigAllows.Contains(emoji);
 
-        private void Rig(string[] RiggedTo, ulong? RiggedUserID)
+        private static void Rig(string[] RiggedTo, ulong? RiggedUserID)
         {
             SlotsUserData data;
             if (RiggedUserID == null)
@@ -183,14 +183,14 @@ namespace KawaiiBot2.Modules
         {
             rigTo = rigTo.Replace(" ", "").Replace(",", "");
 
-            if (rigTo.Length == 2 && okRig(rigTo))
+            if (rigTo.Length == 2 && OkRig(rigTo))
             {
                 Rig(new string[] { rigTo }, userID);
                 return ReplyAsync($"*Bumps the slots* Feels {rigTo}.");
             }
             else
             {
-                var tmpRig = Enumerable.Range(0, rigTo.Length / 2).Select(i => rigTo.Substring(2 * i, 2)).Where(c => okRig(c)).ToArray();
+                var tmpRig = Enumerable.Range(0, rigTo.Length / 2).Select(i => rigTo.Substring(2 * i, 2)).Where(c => OkRig(c)).ToArray();
                 if (tmpRig.Length < 2)
                     return ReplyAsync("Huh?");
                 if (tmpRig.Length > 100)
@@ -259,7 +259,7 @@ namespace KawaiiBot2.Modules
         [Command("rigmemes")]
         [Summary("Extra emojis that can be used in rigged slots (only)")]
         [DevOnlyCmd]
-        public Task RigMemes([Remainder] string s = null)
+        public Task RigMemes()
         {
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {

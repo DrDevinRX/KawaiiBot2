@@ -87,7 +87,7 @@ namespace KawaiiBot2
                 .BuildServiceProvider();
         }
 
-        private void CreateConf()
+        private static void CreateConf()
         {
             Console.Write("Insert bot token: ");
             var token = Console.ReadLine();
