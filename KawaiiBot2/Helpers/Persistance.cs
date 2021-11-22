@@ -49,11 +49,15 @@ namespace KawaiiBot2
             {
                 return;
             }
-            var notNull = omoFile ?? uraFile;
-            var latestFile = notNull.SaveNumber > uraFile?.SaveNumber ? notNull : uraFile;
+            PersistanceDBJson latestFile;
+            if (omoFile is null) latestFile = uraFile;
+            else if (uraFile is null) latestFile = omoFile;
+            else latestFile = omoFile.SaveNumber > uraFile.SaveNumber ? omoFile : uraFile;
+
             saveIter = latestFile.SaveNumber;
             Slots.PerpetuatePersistance(latestFile.Slots);
             Informational.PerpetuatePopularityPersistance(latestFile.CommandCounter);
+            OtherRiggables.PerpetuatePersistance(latestFile.OtherRiggables);
         }
 
 
@@ -63,23 +67,25 @@ namespace KawaiiBot2
 
             var slots = Slots.GetSlotsSaveObject();
             var commandCounter = Informational.GetPopularitySave();
+            var otherRiggables = OtherRiggables.GetOtherRiggablesSaveObject();
             //also for command usage or wherever that comes from
             var persistanceObject = new
             {
                 saveNumber = saveIter,
                 slots,
-                commandCounter
+                commandCounter,
+                otherRiggables
             };
             File.WriteAllText(saveFilename, JsonConvert.SerializeObject(persistanceObject));
         }
 
         public static void StartSaveScheduler()
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 while (true)
                 {
-                    Thread.Sleep(1000/*ms/s*/ * 60/*s/m*/ * 60/*m/h*/* 1/*hours total*/);
+                    /*Thread.Sleep*/await Task.Delay(1000/*ms/s*/ * 60/*s/m*/ * 60/*m/h*/* 1/*hours total*/);
                     SaveEverything();
                 }
             });

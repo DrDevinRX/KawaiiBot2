@@ -12,6 +12,7 @@ using System.Diagnostics;
 
 namespace KawaiiBot2.Modules
 {
+#if !NOBUTTS
     public class ButtsBot : ModuleBase<SocketCommandContext>
     {
         public ButtsBot()
@@ -20,17 +21,16 @@ namespace KawaiiBot2.Modules
             inityes = true;
             timeouter.Start();
             //some things stolen from example to prepare the NLP thingy
-            Storage.Current = new OnlineRepositoryStorage(new DiskStorage("catalyst-models"));
+            Storage.Current = new DiskStorage("catalyst-models");
             nlp = Pipeline.For(Language.English);
         }
 
         private static bool inityes = false;
-        private static Stopwatch timeouter = new Stopwatch();
+        private static readonly Stopwatch timeouter = new Stopwatch();
         private static Pipeline nlp;
         const int defaultTimeoutTime = 500;
         int timeoutTime = defaultTimeoutTime;
-
-        Random r = new Random();
+        readonly Random r = new Random();
         [Command("buttsbot", RunMode = RunMode.Async)]
         [Summary("Replaces some nouns with butts in a sentence/paragraph")]
         public async Task ButtsBotTransform([Remainder] string sentence)
@@ -88,4 +88,5 @@ namespace KawaiiBot2.Modules
             await ReplyAsync(string.Join("", resultStrings).Clean());
         }
     }
+#endif
 }

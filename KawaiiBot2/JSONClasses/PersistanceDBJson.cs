@@ -17,6 +17,9 @@ namespace KawaiiBot2.JSONClasses
 
         [JsonProperty("commandCounter")]
         public PopularityPersistanceJson CommandCounter { get; set; }
+
+        [JsonProperty("otherRiggables")]
+        public OtherRiggablesPersistanceJson OtherRiggables { get; set; }
     }
 
     public class SlotsPersistanceJson
@@ -32,5 +35,17 @@ namespace KawaiiBot2.JSONClasses
     {
         [JsonProperty("commandCount")]
         public Dictionary<string, int> CommandCount { get; set; }
+    }
+
+    public class OtherRiggablesPersistanceJson
+    {
+        [JsonProperty("rigChoose")]
+        public string RigChoose { get; set; }
+
+        [JsonProperty("yesHey")]
+        public bool YesHey { get; set; }
+
+        [JsonProperty("alwaysHey")]
+        public bool AlwaysHey { get; set; }
     }
 }

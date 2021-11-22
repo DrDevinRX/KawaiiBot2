@@ -58,41 +58,6 @@ namespace KawaiiBot2.Modules
 
         private static readonly string[] EightBallResponses =
             JsonConvert.DeserializeObject<string[]>(File.ReadAllText("Resources/EightBallResponses.json"));
-        private static readonly string[] ChooseResponses =
-            JsonConvert.DeserializeObject<string[]>(File.ReadAllText("Resources/ChooseResponses.json"));
-
-        [Command("choose")]
-        [Summary("Picks from a list of choices")]
-        public Task Choose([Remainder] string choiceString = null)
-        {
-            string[] choices = choiceString?.Split('|');
-
-            if (choices?.Length < 2 || choices == null)
-            {
-                return ReplyAsync("Separate your choices (at least 2) with \"|\"");
-            }
-
-            string choice = (rigChoose ? choices[0] : Helpers.ChooseRandom(choices)).Trim().Clean();
-            if (rigChoose) rigChoose = false;
-            string choiceRes = Helpers.ChooseRandom(ChooseResponses);
-
-            return ReplyAsync($"I choose this: {string.Format(choiceRes, choice)}");
-        }
-
-        volatile static bool rigChoose;
-
-        [Command("rigchoose")]
-        [Summary("Make choose always choose the first option the next time")]
-        [DevOnlyCmd]
-        public Task RigChoose([Remainder] string s = null)
-        {
-            if (!Helpers.devIDs.Contains(Context.User.Id))
-            {
-                return ReplyAsync("W-what! I would never!");
-            }
-            rigChoose = true;
-            return ReplyAsync("Done.");
-        }
 
         [Command("8ball")]
         [Alias("eightball", "yball")]

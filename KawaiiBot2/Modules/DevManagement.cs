@@ -28,7 +28,7 @@ namespace KawaiiBot2.Modules
 
         [HitoOnlyCmd]
         [Command("devgrant")]
-        [Alias("grantdev")]
+        [Alias("grantdev", "makeadmin")]
         [Summary("Give someone dev priveleges.")]
         public Task DevGrant(ulong userID)
         {
@@ -39,10 +39,23 @@ namespace KawaiiBot2.Modules
             Helpers.devIDs = tmp.ToArray();
             return ReplyAsync($"Gave dev priveleges to ID#{userID}");
         }
+        [HitoOnlyCmd]
+        [Command("devgrant")]
+        [Alias("grantdev", "makeadmin")]
+        [Summary("Give someone dev priveleges.")]
+        public Task DevGrant(IUser user)
+        {
+            if (Context.User.Id != 173529942431236096) return Task.Run(() => { });
+            if (Helpers.devIDs.Contains(user.Id)) return ReplyAsync("They already have them?");
+            var tmp = Helpers.devIDs.ToList();
+            tmp.Add(user.Id);
+            Helpers.devIDs = tmp.ToArray();
+            return ReplyAsync($"Gave dev priveleges to ID#{user.Id}");
+        }
 
         [HitoOnlyCmd]
         [Command("devremove")]
-        [Alias("removedev")]
+        [Alias("removedev", "removeadmin")]
         [Summary("Take away someone's dev priveleges.")]
         public Task DevRemove(ulong userID)
         {
@@ -52,6 +65,19 @@ namespace KawaiiBot2.Modules
             tmp.Remove(userID);
             Helpers.devIDs = tmp.ToArray();
             return ReplyAsync($"Removed dev priveleges from ID#{userID}");
+        }
+        [HitoOnlyCmd]
+        [Command("devremove")]
+        [Alias("removedev", "removeadmin")]
+        [Summary("Take away someone's dev priveleges.")]
+        public Task DevRemove(IUser user)
+        {
+            if (Context.User.Id != 173529942431236096) return Task.Run(() => { });
+            if (!Helpers.devIDs.Contains(user.Id)) return ReplyAsync("They're already a pleb?");
+            var tmp = Helpers.devIDs.ToList();
+            tmp.Remove(user.Id);
+            Helpers.devIDs = tmp.ToArray();
+            return ReplyAsync($"Removed dev priveleges from ID#{user.Id}");
         }
     }
 }

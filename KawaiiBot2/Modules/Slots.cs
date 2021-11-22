@@ -124,6 +124,10 @@ namespace KawaiiBot2.Modules
         public Task NierSlots(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(Context.Guild.Emotes.Select(a => a.ToString()).ToArray())
                                         .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global).DetermineN(n)
                                         .DetermineIcons(icon).WithSuppression().WithStreakCounting().Run();
+        [Command("nierslots")]
+        [Alias("serverslots")]
+        [Summary("Slots, but with all the emotes in the current server")]
+        public Task NierSlots(string icon) => NierSlots(3, icon);
 
         [Command("leaderboard", RunMode = RunMode.Async)]
         [Alias("slotsboard", "board", "winners", "boards", "wins")]
