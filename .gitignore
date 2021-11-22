@@ -341,3 +341,6 @@ healthchecksdb
 
 #ignore all config files
 conf*.json
+
+# Dotnet trace
+*.nettrace
