@@ -85,7 +85,7 @@ namespace KawaiiBot2
             {
                 while (true)
                 {
-                    /*Thread.Sleep*/await Task.Delay(1000/*ms/s*/ * 60/*s/m*/ * 60/*m/h*/* 1/*hours total*/);
+                    await Task.Delay(1000/*ms/s*/ * 60/*s/m*/ * 10 /*every 10 minutes*/);
                     SaveEverything();
                 }
             });
