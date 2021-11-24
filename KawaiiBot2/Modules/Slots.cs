@@ -107,7 +107,7 @@ namespace KawaiiBot2.Modules
         [HiddenCmd]
         public Task MaxSlots()
         {
-            return SlotsCmd2(121);
+            return SlotsCmd2(100);
         }
 
         [Command("maxslots")]
@@ -115,8 +115,13 @@ namespace KawaiiBot2.Modules
         [HiddenCmd]
         public Task MaxSlots(string icon)
         {
-            return SlotsCmd2(121, icon);
+            return SlotsCmd2(100, icon);
         }
+
+        [HiddenCmd]
+        [Summary("The real max slots")]
+        [Command("ngmaxslots")]
+        public Task NgMaxSlots([Remainder] string icon = "") => SlotsCmd2(195, icon);
 
         [Command("nierslots")]
         [Alias("serverslots", "nierlost")]
