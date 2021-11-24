@@ -161,6 +161,28 @@ namespace KawaiiBot2.Modules
                 );
         }
 
+        [HiddenCmd]
+        [Command("patbutnotlewd")]
+        [Alias("patbutnotinalewdway")]
+        [Summary("Why did the original awooo even think they were?")]
+        public Task PatButNotLewd(IGuildUser user = null)
+        {
+            var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
+            var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
+            return AnimeReactCommand(
+                "Are you trying to pat air...?",
+                null,
+                "https://cdn.nekos.life/v3/sfw/gif/pat/pat_061.gif",
+                "Do you need a hug?",
+                null,
+                "Sorry, couldn't locate headpats",
+                $"**{mentionedUserName}**,you got a pat from **{AuthorName}**",
+                "pat",
+                user,
+                Context
+                );
+        }
+
         [Command("poke", RunMode = RunMode.Async)]
         [Summary("Poke someone :3")]
         public Task Poke(IGuildUser user = null)

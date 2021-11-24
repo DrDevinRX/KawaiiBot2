@@ -119,13 +119,13 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("nierslots")]
-        [Alias("serverslots")]
+        [Alias("serverslots", "nierlost")]
         [Summary("Slots, but with all the emotes in the current server")]
         public Task NierSlots(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(Context.Guild.Emotes.Select(a => a.ToString()).ToArray())
                                         .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global).DetermineN(n)
                                         .DetermineIcons(icon).WithSuppression().WithStreakCounting().Run();
         [Command("nierslots")]
-        [Alias("serverslots")]
+        [Alias("serverslots", "nierlost")]
         [Summary("Slots, but with all the emotes in the current server")]
         public Task NierSlots(string icon) => NierSlots(3, icon);
 
@@ -270,7 +270,7 @@ namespace KawaiiBot2.Modules
 
         [Command("suppressslotswins")]
         [Alias("suppressslots", "noslotswins", "suppress", "suppressslotwins", "suppresslotswins", "suppresslotwins", "globalsuppressslots",
-            "globalsuppress", "suppresstatus","suppressstatus")]
+            "globalsuppress", "suppresstatus", "suppressstatus")]
         [Summary("Supresses slots winning. Easy. Overrides rigging slots.")]
         [DevOnlyCmd]
         public Task SuppressSlotsWins(bool? suppress = null)
