@@ -169,6 +169,40 @@ namespace KawaiiBot2.Modules
             return ReplyAsync($"Most Used Commands\n--------------------\n{string.Join("\n", list)}");
         }
 
+        readonly private static string[] slotcommands = new string[] { "aprilfruits", "slotsv2", "slots", "niceslots", "maxslots", "ngmaxslots",
+                                                                "nierslots", "leaderboard", "streakinfo", "rigslots", "rigmemes", "suppressslotswins",
+                                                                "setdifficulty", "riskydice", "riskyslots", "resetrisky","slotsisoverused","yuuhislots" };
+
+        [Command("slotsisoverused")]
+        [Summary("Slots accounts for how many % of total commands?")]
+        public Task SlotsIsOverused()
+        {
+            var count = (from pair in CommandCount select pair.Value).Sum();
+            var slotscount = (from pair in CommandCount where slotcommands.Contains(pair.Key) select pair.Value).Sum();
+            return ReplyAsync($"Slots accounts for {slotscount / (float)count*100:f0}% of total commands.");
+        }
+
+        [HiddenCmd]
+        [Summary("injoke")]
+        [Command("yuuhislots")]
+        public Task YuuhiSlots()
+        {
+            return ReplyAsync("ゆうひ～#2418: \"Nothing on Awooo is used but slots.\"");
+        }
+        
+        [Command("usecount")]
+            public Task UseCount(string commandName)
+        {
+            if (CommandCount.ContainsKey(commandName))
+            {
+                return ReplyAsync($"{commandName} has been used {CommandCount[commandName]} times.");
+            }
+            else
+            {
+                return ReplyAsync("The command has either never been used, is a nickname, or doesn't exist.");
+            }
+        }
+
         public static object GetPopularitySave()
         {
             return new
