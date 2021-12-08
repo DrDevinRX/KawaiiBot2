@@ -225,9 +225,9 @@ namespace KawaiiBot2.Modules
             Random rn = new Random(user.GetHashCode());
 
             if (hitoRate && selfRate)
-                return ReplyAsync("Hitoccchi, I'd rate you a **100/100!**");
+                return ReplyAsync("Yuuhi, I'd rate you a **100/100!**");
             else if (hitoRate)
-                return ReplyAsync("I'd rate hitoccchi a **100/100!**");
+                return ReplyAsync("I'd rate Yuuhi a **100/100!**");
             else if (botRate)
                 return ReplyAsync("I'd rate me a **110/100!**");
             else if (selfRate)

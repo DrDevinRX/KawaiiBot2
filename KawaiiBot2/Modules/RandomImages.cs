@@ -10,7 +10,7 @@ namespace KawaiiBot2.Modules
     public class RandomImages : ModuleBase<SocketCommandContext>
     {
 
-        [Command("cat", RunMode = RunMode.Async)]
+        /*[Command("cat", RunMode = RunMode.Async)]
         [Summary("cats. Cats. CATS!")]
         public async Task Cat()
         {
@@ -21,7 +21,7 @@ namespace KawaiiBot2.Modules
                 return;
             }
             await ReplyAsync(url);
-        }
+        }*/
 
         [Command("birb", RunMode = RunMode.Async)]
         [Alias("bird")]
