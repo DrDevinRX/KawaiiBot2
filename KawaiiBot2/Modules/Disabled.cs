@@ -15,11 +15,11 @@ namespace KawaiiBot2.Modules
         [Command("unavailable")]
         [Summary("Disabled commands. Run with one to see why it's disabled.")]
         /*First are actual aliases, then buttsbot conditionally, then the actually disabled commands.*/
-        [Alias("disable",
+        [Alias("disable", "disabled",
 #if NOBUTTS
-            "buttsbot", "disabled"
+            "buttsbot",
 #endif
-            "cat", "ship", "memegen", "meme2", "captcha", "calling", "facts", "scroll", "supreme", "achievement", "challenge", "drake", "didyoumean"
+             "ship", "memegen", "meme2", "captcha", "calling", "facts", "scroll", "supreme", "achievement", "challenge", "drake", "didyoumean"
             )]
         public Task DisabledCommand(string commandname = "")
         {

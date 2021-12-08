@@ -344,3 +344,5 @@ conf*.json
 
 # Dotnet trace
 *.nettrace
+
+Censor.json

@@ -4,13 +4,19 @@ using KawaiiBot2.APIInterfacing.Interfaces;
 using KawaiiBot2.APIInterfacing;
 using KawaiiBot2.APIInterfacing.ResultSchemas;
 using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
 
 namespace KawaiiBot2.Modules
 {
     public class RandomImages : ModuleBase<SocketCommandContext>
     {
 
-        /*[Command("cat", RunMode = RunMode.Async)]
+        private readonly static string[] censored = File.Exists("Resources/Censor.json") ?
+                                        JsonConvert.DeserializeObject<string[]>(File.ReadAllText("Resources/Censor.json")) :
+                                        new string[] { };
+
+        [Command("cat", RunMode = RunMode.Async)]
         [Summary("cats. Cats. CATS!")]
         public async Task Cat()
         {
@@ -20,8 +26,9 @@ namespace KawaiiBot2.Modules
                 await ReplyAsync("I-I couldn't find any cats... I'm sorry ;-;");
                 return;
             }
-            await ReplyAsync(url);
-        }*/
+            if (censored.Contains(url)) await ReplyAsync("I'm sorry, but I can't let you see that.");
+            else await ReplyAsync(url);
+        }
 
         [Command("birb", RunMode = RunMode.Async)]
         [Alias("bird")]
