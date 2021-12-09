@@ -32,6 +32,9 @@ namespace KawaiiBot2.JSONClasses
 
         [JsonProperty("protocolcc2")]
         public string ProtocolCC2 { get; set; }
+
+        [JsonProperty("totalIconsRolled")]
+        public int TotalIconsRolled { get; set; }
     }
 
     public class PopularityPersistanceJson

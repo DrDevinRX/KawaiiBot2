@@ -144,7 +144,9 @@ namespace KawaiiBot2.Modules
                 {"☆Threads☆",proc.Threads.Count.ToString() },
                 {"\nBOT STATISTICS\u200b\u200b","( *^-^)ρ(*╯^╰) ::" },//"§(*￣▽￣*)§ ::\n" },
                 {"☆Commands☆", CommandHandlerService.CommandsExecuted.ToString() },
-                {"☆Commands Per Hour☆", cph.ToString("f3") }
+                {"☆Commands Per Hour☆", cph.ToString("f3") },
+                {"☆Commands All Time☆",CommandCount.Sum((a)=>a.Value).ToString() },
+                {"☆Total Slot Icons☆",Slots.totalIconsRolled.ToString() }
             };
 
             var q = from stat in stats
@@ -171,7 +173,8 @@ namespace KawaiiBot2.Modules
 
         readonly private static string[] slotcommands = new string[] { "aprilfruits", "slotsv2", "slots", "niceslots", "maxslots", "ngmaxslots",
                                                                 "nierslots", "leaderboard", "streakinfo", "rigslots", "rigmemes", "suppressslotswins",
-                                                                "setdifficulty", "riskydice", "riskyslots", "resetrisky","slotsisoverused","yuuhislots" };
+                                                                "setdifficulty", "riskydice", "riskyslots", "resetrisky","slotsisoverused","yuuhislots",
+                                                                "totalrolls" };
 
         [Command("slotsisoverused")]
         [Summary("Slots accounts for how many % of total commands?")]
@@ -179,7 +182,7 @@ namespace KawaiiBot2.Modules
         {
             var count = (from pair in CommandCount select pair.Value).Sum();
             var slotscount = (from pair in CommandCount where slotcommands.Contains(pair.Key) select pair.Value).Sum();
-            return ReplyAsync($"Slots accounts for {slotscount / (float)count*100:f0}% of total commands.");
+            return ReplyAsync($"Slots accounts for {slotscount / (float)count * 100:f0}% of total commands.");
         }
 
         [HiddenCmd]
@@ -189,9 +192,9 @@ namespace KawaiiBot2.Modules
         {
             return ReplyAsync("ゆうひ～#2418: \"Nothing on Awooo is used but slots.\"");
         }
-        
+
         [Command("usecount")]
-            public Task UseCount(string commandName)
+        public Task UseCount(string commandName)
         {
             if (CommandCount.ContainsKey(commandName))
             {

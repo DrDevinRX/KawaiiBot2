@@ -243,7 +243,8 @@ namespace KawaiiBot2.Modules
             string prefinal = string.Join(" ", finalSlots);
 
             if (prefinal.Length > 1800) return context.Channel.SendMessageAsync("Too long pls stop!");
-            ;
+            Slots.totalIconsRolled += n;
+
             return context.Channel.SendMessageAsync(
                 $"**{Helpers.GetName(context.User)}** rolled the slots...\n" +
                 $"**[ {prefinal} ]**\n" +

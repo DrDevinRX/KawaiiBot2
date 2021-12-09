@@ -31,6 +31,14 @@ namespace KawaiiBot2.Modules
     }
     public class Slots : ModuleBase<SocketCommandContext>
     {
+        public volatile static int totalIconsRolled;
+
+        [Command("totalrolls")]
+        [Summary("The total amount of slot icons rolled. Way too high.")]
+        public Task TotalRolls()
+        {
+            return ReplyAsync($"A grand total of {totalIconsRolled} slot icons have been rolled. You fools.");
+        }
 
         [Command("aprilfruits")]
         [Summary("Slots, but how many fruits there are are random. Because more RNG is better, right?")]
@@ -75,7 +83,7 @@ namespace KawaiiBot2.Modules
         [Summary("Roll the slot machine. may rngesus guide your path. Better code.")]
         public Task SlotsCmd2(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(SlotIcons).AlsoAllowThese(MemeRigAllows)
                                                 .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global)
-                                                .DetermineN(n).DetermineIcons(icon).WithRigging().WithSuppression()
+                                                .DetermineN(n).DetermineIcons(protocolcc2 == null ? icon : "🥮").WithRigging().WithSuppression()
                                                 .WithStreakCounting().Run();
 
 
@@ -408,7 +416,8 @@ namespace KawaiiBot2.Modules
             {
                 global,
                 userData,
-                protocolcc2
+                protocolcc2,
+                totalIconsRolled
             };
         }
 
@@ -417,6 +426,7 @@ namespace KawaiiBot2.Modules
             if (persistanceData == null) return;
             global = persistanceData.Global;
             protocolcc2 = persistanceData.ProtocolCC2;
+            totalIconsRolled = persistanceData.TotalIconsRolled;
             foreach (var pair in persistanceData.UserData)
             {
                 //i think we can assume this works because it should be empty
