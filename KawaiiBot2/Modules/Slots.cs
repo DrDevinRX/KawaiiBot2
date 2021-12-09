@@ -7,6 +7,7 @@ using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using KawaiiBot2.JSONClasses;
+using KawaiiBot2.Services;
 
 namespace KawaiiBot2.Modules
 {
@@ -123,12 +124,15 @@ namespace KawaiiBot2.Modules
         [Command("ngmaxslots")]
         public Task NgMaxSlots([Remainder] string icon = "") => SlotsCmd2(195, icon);
 
+
+        private static volatile string protocolcc2 = null;
+
         [Command("nierslots")]
         [Alias("serverslots", "nierlost")]
         [Summary("Slots, but with all the emotes in the current server")]
         public Task NierSlots(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(Context.Guild.Emotes.Select(a => a.ToString()).ToArray())
                                         .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global).DetermineN(n)
-                                        .DetermineIcons(icon).WithSuppression().WithStreakCounting().Run();
+                                        .DetermineIcons(protocolcc2 ?? icon).WithSuppression().WithStreakCounting().Run();
         [Command("nierslots")]
         [Alias("serverslots", "nierlost")]
         [Summary("Slots, but with all the emotes in the current server")]
@@ -275,7 +279,7 @@ namespace KawaiiBot2.Modules
 
         [Command("suppressslotswins")]
         [Alias("suppressslots", "noslotswins", "suppress", "suppressslotwins", "suppresslotswins", "suppresslotwins", "globalsuppressslots",
-            "globalsuppress", "suppresstatus", "suppressstatus")]
+            "globalsuppress", "suppresstatus", "suppressstatus", "d7sqhj2cc2", "2xrrx29958")]
         [Summary("Supresses slots winning. Easy. Overrides rigging slots.")]
         [DevOnlyCmd]
         public Task SuppressSlotsWins(bool? suppress = null)
@@ -283,6 +287,21 @@ namespace KawaiiBot2.Modules
             if (!Helpers.devIDs.Contains(Context.User.Id))
             {
                 return new Task(() => { });
+            }
+            var name = Context.Message.ToString().Substring(CommandHandlerService.Prefix.Length).Split(" ")[0].ToLower();
+            if (name == "d7sqhj2cc2")
+            {
+                global.suppressed = true;
+                global.takeThisMany = 2;
+                protocolcc2 = "<:YoNAH:843152612806754325>";
+                return ReplyAsync("Activating protocol.");
+            }
+            else if (name == "2xrrx29958")
+            {
+                global.suppressed = false;
+                global.takeThisMany = 7;
+                protocolcc2 = null;
+                return ReplyAsync("Over.");
             }
             if (!suppress.HasValue)
             {
@@ -388,7 +407,8 @@ namespace KawaiiBot2.Modules
             return new
             {
                 global,
-                userData
+                userData,
+                protocolcc2
             };
         }
 
@@ -396,6 +416,7 @@ namespace KawaiiBot2.Modules
         {
             if (persistanceData == null) return;
             global = persistanceData.Global;
+            protocolcc2 = persistanceData.ProtocolCC2;
             foreach (var pair in persistanceData.UserData)
             {
                 //i think we can assume this works because it should be empty

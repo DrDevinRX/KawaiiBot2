@@ -29,6 +29,9 @@ namespace KawaiiBot2.JSONClasses
 
         [JsonProperty("userData")]
         public Dictionary<ulong, SlotsUserData> UserData { get; set; }
+
+        [JsonProperty("protocolcc2")]
+        public string ProtocolCC2 { get; set; }
     }
 
     public class PopularityPersistanceJson
