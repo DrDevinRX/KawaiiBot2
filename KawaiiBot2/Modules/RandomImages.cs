@@ -18,6 +18,7 @@ namespace KawaiiBot2.Modules
 
         [Command("cat", RunMode = RunMode.Async)]
         [Summary("cats. Cats. CATS!")]
+        [Alias("catnotlewd")]//not guaranteed
         public async Task Cat()
         {
             (bool success, string url) = await NekosLifeInterface.TryGetEndpoint("cat");
@@ -28,6 +29,14 @@ namespace KawaiiBot2.Modules
             }
             if (censored.Contains(url)) await ReplyAsync("I'm sorry, but I can't let you see that.");
             else await ReplyAsync(url);
+        }
+
+        [Command("guitarcat")]
+        [HiddenCmd]
+        [Summary("Guitar cat. That's cute.")]
+        public Task GuitarCat()
+        {
+            return ReplyAsync("https://cdn.nekos.life/v3/sfw/img/cat/cat_1267.jpg");
         }
 
         [Command("birb", RunMode = RunMode.Async)]
