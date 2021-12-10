@@ -92,7 +92,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("doge")]
-        [Alias("shiba")]
+        [Alias("shiba", "shibe")]
         [Summary("Random Shiba Inu")]
         public async Task Doge()
         {
