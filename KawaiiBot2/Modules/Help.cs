@@ -35,12 +35,14 @@ namespace KawaiiBot2.Modules
                                 where isHito || !command.Attributes.Any(a => a.GetType() == typeof(HitoOnlyCmdAttribute))
                                 orderby command.Name
                                 select Helpers.Pad(command.Name, 20) + command.Summary).ToArray();
-            var firstThird = commandDescs.Length / 3;
-            var secondThird = firstThird * 2;
+            var firstFourth = commandDescs.Length / 4;
+            var secondFourth = firstFourth * 2;
+            var thirdFourth = firstFourth * 3;
             var firstMsg = "Thank you for consulting me to receive help~" +
-                "```" + string.Join("\n", commandDescs[0..firstThird]) + "```";
-            var secondMsg = "```" + string.Join("\n", commandDescs[firstThird..secondThird]) + "```";
-            var thirdMsg = "```" + string.Join("\n", commandDescs[secondThird..^1]) + "```";
+                "```" + string.Join("\n", commandDescs[0..firstFourth]) + "```";
+            var secondMsg = "```" + string.Join("\n", commandDescs[firstFourth..secondFourth]) + "```";
+            var thirdMsg = "```" + string.Join("\n", commandDescs[secondFourth..thirdFourth]) + "```";
+            var fourthMsg = "```" + string.Join("\n", commandDescs[thirdFourth..^1]) + "```";
 
             //get dms
             var dms = await Context.User.GetOrCreateDMChannelAsync();
@@ -49,7 +51,7 @@ namespace KawaiiBot2.Modules
             await dms.SendMessageAsync(firstMsg);
             await dms.SendMessageAsync(secondMsg);
             await dms.SendMessageAsync(thirdMsg);
-
+            await dms.SendMessageAsync(fourthMsg);
 
         }
 

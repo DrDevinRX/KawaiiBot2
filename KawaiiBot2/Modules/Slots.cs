@@ -34,6 +34,7 @@ namespace KawaiiBot2.Modules
         public volatile static int totalIconsRolled;
 
         [Command("totalrolls")]
+        [Alias("totalslots", "totalslotrolls")]
         [Summary("The total amount of slot icons rolled. Way too high.")]
         public Task TotalRolls()
         {
