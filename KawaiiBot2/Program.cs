@@ -53,6 +53,15 @@ namespace KawaiiBot2
                 throw new NotSupportedException("Bot token not found in config file");
             }
 
+            if (string.IsNullOrWhiteSpace(config.CatApiToken))
+            {
+                Console.Write("This probably won't fail, but you want to have a cat api token.");
+            }
+            else
+            {
+                KawaiiBot2.APIInterfacing.Interfaces.CatsApiInterface.ApiKey = config.CatApiToken;
+            }
+
             //load persistacne
             Persistance.LoadEverything(ConfPath);
             //start persistance autosave

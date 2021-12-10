@@ -10,6 +10,9 @@ namespace KawaiiBot2.JSONClasses
         [JsonProperty("token")]
         public string Token { get; set; }
 
+        [JsonProperty("catApiToken")]
+        public string CatApiToken { get; set; }
+
         [JsonProperty("prefix")]
         public string Prefix { get; set; }
 

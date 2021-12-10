@@ -12,22 +12,17 @@ namespace KawaiiBot2.Modules
     public class RandomImages : ModuleBase<SocketCommandContext>
     {
 
-        private readonly static string[] censored = File.Exists("Resources/Censor.json") ?
-                                        JsonConvert.DeserializeObject<string[]>(File.ReadAllText("Resources/Censor.json")) :
-                                        new string[] { };
-
         [Command("cat", RunMode = RunMode.Async)]
         [Summary("cats. Cats. CATS!")]
         [Alias("catnotlewd")]//not guaranteed
         public async Task Cat()
         {
-            (bool success, string url) = await NekosLifeInterface.TryGetEndpoint("cat");
+            (bool success, string url) = await CatsApiInterface.GetCat();
             if (!success)
             {
                 await ReplyAsync("I-I couldn't find any cats... I'm sorry ;-;");
                 return;
             }
-            if (censored.Contains(url)) await ReplyAsync("I'm sorry, but I can't let you see that.");
             else await ReplyAsync(url);
         }
 

@@ -49,9 +49,6 @@
     <None Update="Resources\BootResponses.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Censor.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Resources\ChooseResponses">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
