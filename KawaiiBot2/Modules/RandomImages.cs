@@ -80,7 +80,6 @@ namespace KawaiiBot2.Modules
 
         [Command("dog", RunMode = RunMode.Async)]
         [Summary("Random dogs. mustpatmustpat")]
-        [Alias("doge")]
         public async Task Dog()
         {
             Request req = await Helpers.Client.SendRequest("https://random.dog/woof");
@@ -90,6 +89,20 @@ namespace KawaiiBot2.Modules
                 return;
             }
             await ReplyAsync($"https://random.dog/{req.Content}");
+        }
+
+        [Command("doge")]
+        [Alias("shiba")]
+        [Summary("Random Shiba Inu")]
+        public async Task Doge()
+        {
+            Request req = await Helpers.Client.SendRequest("https://shibe.online/api/shibes?count=1&urls=true&httpsUrls=true");
+            if (!req.Success)
+            {
+                await ReplyAsync("Lack doge");
+                return;
+            }
+            await ReplyAsync($"{JsonConvert.DeserializeObject<string[]>(req.Content)[0]}");
         }
 
         [Command("duck", RunMode = RunMode.Async)]
