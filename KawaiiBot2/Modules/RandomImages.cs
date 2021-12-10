@@ -68,6 +68,21 @@ namespace KawaiiBot2.Modules
 
         }
 
+        [Command("axolotl", RunMode = RunMode.Async)]
+        [Alias("axltl", "axoltl", "axlotl")]
+        [Summary("Fetches Axolotl images. Cute!")]
+        public async Task Axolotl()
+        {
+            Request req = await Helpers.Client.SendRequest("https://axoltlapi.herokuapp.com/");
+            AxolotlRes res = JsonConvert.DeserializeObject<AxolotlRes>(req.Content);
+            if (!req.Success)
+            {
+                await ReplyAsync("N-No axolotls;;;");
+                return;
+            }
+            await ReplyAsync(res.Url);
+        }
+
         [Command("dog", RunMode = RunMode.Async)]
         [Summary("Random dogs. mustpatmustpat")]
         [Alias("doge")]
