@@ -20,7 +20,7 @@ namespace KawaiiBot2.Modules
             (bool success, string url) = await CatsApiInterface.GetCat();
             if (!success)
             {
-                await ReplyAsync("I-I couldn't find any cats... I'm sorry ;-;");
+                await ReplyAsync("https://http.cat/404.jpg");
                 return;
             }
             else await ReplyAsync(url);

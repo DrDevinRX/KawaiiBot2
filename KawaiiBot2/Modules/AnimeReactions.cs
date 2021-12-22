@@ -337,7 +337,7 @@ namespace KawaiiBot2.Modules
             return WaifuPicsAnimeReactCommand(
                 "Are you trying to high-five atoms...?",
                 $"*High-fives **{AuthorName}** back*",
-                "https://cdn.weeb.sh/images/H1Lj9ymsW.gif",
+                "https://i.waifu.pics/8hlGcTI.gif",
                 "*awkward...*",
                 "https://cdn.discordapp.com/attachments/763105251393536000/763782956690964521/selffive.gif",
                 "You high five the air...",

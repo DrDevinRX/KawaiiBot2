@@ -35,6 +35,21 @@ namespace KawaiiBot2.JSONClasses
 
         [JsonProperty("totalIconsRolled")]
         public int TotalIconsRolled { get; set; }
+
+        [JsonProperty("sidesData")]
+        public SlotsSidesData SidesData { get; set; }
+    }
+
+    public class SlotsSidesData
+    {
+        [JsonProperty("leftDoubles")]
+        public int LeftDoubles { get; set; }
+
+        [JsonProperty("rightDoubles")]
+        public int RightDoubles { get; set; }
+
+        [JsonProperty("sidesDoubles")]
+        public int SidesDoubles { get; set; }
     }
 
     public class PopularityPersistanceJson

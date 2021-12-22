@@ -8,6 +8,7 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using KawaiiBot2.JSONClasses;
 using KawaiiBot2.Services;
+using MathNet.Numerics.Distributions;
 
 namespace KawaiiBot2.Modules
 {
@@ -33,12 +34,52 @@ namespace KawaiiBot2.Modules
     {
         public volatile static int totalIconsRolled;
 
+        public volatile static int leftDoubles;
+        public volatile static int rightDoubles;
+        public volatile static int sidesDoubles;
+
         [Command("totalrolls")]
         [Alias("totalslots", "totalslotrolls")]
         [Summary("The total amount of slot icons rolled. Way too high.")]
         public Task TotalRolls()
         {
             return ReplyAsync($"A grand total of {totalIconsRolled} slot icons have been rolled. You fools.");
+        }
+
+        [Command("sidesrolls")]
+        [Alias("sideroll", "siderolls", "rollsides", "rollside", "sideslots", "slotsides")]
+        [Summary("Hypothesis: 2/3s in 3-slots tend not to be the two sides.")]
+        [HiddenCmd]
+        public Task SidesRolls()
+        {
+            //Binomial hypothesis test (from https://en.wikipedia.org/wiki/Binomial_test), using normal distribution approximation:
+            var n = leftDoubles + rightDoubles + sidesDoubles;
+            var expectedRatio = 1 / 3.0;
+            Binomial b = new Binomial(expectedRatio, n);
+            Binomial rb = new Binomial(1 - expectedRatio, n);
+            var x = sidesDoubles;
+            var p = b.CumulativeDistribution(x);
+            var rp = rb.CumulativeDistribution(n - sidesDoubles);//can be used for the other hypothesis
+            var rj = p < .05;
+            return ReplyAsync($"**Roll Sides**\nLeft: {leftDoubles}\nRight: {rightDoubles}\nSides: {sidesDoubles}\n" +
+                $"p(sides≤{sidesDoubles})={p:f2}\nBecause p {(rj ? "is" : "is not")} less than .05, we {(rj ? "reject" : "do not reject")} the null hypothesis.");
+        }
+
+        [Command("clearwins")]
+        [DevOnlyCmd]
+        [Summary("Remove everyone's wins. They were all +rigslots anyways.")]
+        public Task ClearWins()
+        {
+            if (!Helpers.devIDs.Contains(Context.User.Id))
+            {
+                return ReplyAsync("You ain't got the *authority* to do that.");
+            }
+            global.winsCount = 0;
+            foreach (var pair in userData)
+            {
+                pair.Value.winsCount = 0;
+            }
+            return ReplyAsync("Master! I have cleaned out the filth!");
         }
 
         [Command("aprilfruits")]
@@ -137,7 +178,7 @@ namespace KawaiiBot2.Modules
         private static volatile string protocolcc2 = null;
 
         [Command("nierslots")]
-        [Alias("serverslots", "nierlost")]
+        [Alias("serverslots", "nierlost", "nierslotsç", "niersots")]
         [Summary("Slots, but with all the emotes in the current server")]
         public Task NierSlots(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(Context.Guild.Emotes.Select(a => a.ToString()).ToArray())
                                         .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global).DetermineN(n)
@@ -418,7 +459,8 @@ namespace KawaiiBot2.Modules
                 global,
                 userData,
                 protocolcc2,
-                totalIconsRolled
+                totalIconsRolled,
+                sidesData = new { leftDoubles, rightDoubles, sidesDoubles }
             };
         }
 
@@ -428,6 +470,12 @@ namespace KawaiiBot2.Modules
             global = persistanceData.Global;
             protocolcc2 = persistanceData.ProtocolCC2;
             totalIconsRolled = persistanceData.TotalIconsRolled;
+            if (persistanceData.SidesData is not null)
+            {
+                leftDoubles = persistanceData.SidesData.LeftDoubles;
+                rightDoubles = persistanceData.SidesData.RightDoubles;
+                sidesDoubles = persistanceData.SidesData.SidesDoubles;
+            }
             foreach (var pair in persistanceData.UserData)
             {
                 //i think we can assume this works because it should be empty

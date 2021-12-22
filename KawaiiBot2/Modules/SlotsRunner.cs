@@ -226,13 +226,22 @@ namespace KawaiiBot2.Modules
                 return context.Channel.SendMessageAsync("Nope. No. Nope. No. No can do.");
 
             bool win = finalSlots.All(s => s == finalSlots[0]);
+            bool almostWin = finalSlots.Count(s => s == finalSlots[0]) == n - 1 || finalSlots.Count(s => s == finalSlots[1]) == n - 1;
 
             string winMessage = "and lost....";
 
             if (win)
                 winMessage = "and won! \uD83C\uDF89";
-            else if (finalSlots.Count(s => s == finalSlots[0]) == n - 1 || finalSlots.Count(s => s == finalSlots[1]) == n - 1)
+            else if (almostWin)
                 winMessage = $"and almost won ({n - 1}/{n})";
+
+            //For statistical data collection
+            if (almostWin && n == 3)
+            {
+                if (finalSlots[0] == finalSlots[1]) Slots.leftDoubles++;
+                else if (finalSlots[1] == finalSlots[2]) Slots.rightDoubles++;
+                else Slots.sidesDoubles++;
+            }
 
             if (win)
             {
