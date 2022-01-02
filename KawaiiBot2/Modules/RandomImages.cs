@@ -6,6 +6,7 @@ using KawaiiBot2.APIInterfacing.ResultSchemas;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using System;
 
 namespace KawaiiBot2.Modules
 {
@@ -117,6 +118,15 @@ namespace KawaiiBot2.Modules
                 return;
             }
             await ReplyAsync(res.Url);
+        }
+
+        Random rand = new Random();
+
+        [Command("bear")]
+        [Summary("Random bear.")]
+        public Task Bear()
+        {
+            return ReplyAsync($"https://placebear.com/10{rand.Next(100):d2}/11{rand.Next(100):d2}.jpg");
         }
     }
 }

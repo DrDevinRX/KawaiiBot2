@@ -58,6 +58,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("joinedat")]
+        [Alias("joined")]
         [Summary("Check when a user joined the current server")]
         [RequireContext(ContextType.Guild, ErrorMessage = "W-what? I-I don't know when you joined because this is nowhere!")]
         public Task JoinedAt(IGuildUser user = null)
