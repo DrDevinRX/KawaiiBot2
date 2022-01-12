@@ -449,6 +449,14 @@ namespace KawaiiBot2.Modules
             return SingularPictureWaifuPics("dance");
         }
 
+        [Command("2bdance")]
+        [Alias("2bdancce")]
+        [Summary("Posts the gif of 2b dancing")]
+        public Task _2BDance()
+        {
+            return ReplyAsync("https://c.tenor.com/LtlUSsWNS5sAAAAd/2b.gif");
+        }
+
         [Command("smug")]
         [Summary("Posts a smug pic.")]
         public Task Smug()

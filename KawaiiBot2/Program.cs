@@ -55,7 +55,7 @@ namespace KawaiiBot2
 
             if (string.IsNullOrWhiteSpace(config.CatApiToken))
             {
-                Console.Write("This probably won't fail, but you want to have a cat api token.");
+                Console.WriteLine("This probably won't fail, but you want to have a cat api token.");
             }
             else
             {
