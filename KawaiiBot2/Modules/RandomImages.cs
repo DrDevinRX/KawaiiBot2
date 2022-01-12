@@ -80,6 +80,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("dog", RunMode = RunMode.Async)]
+        [Alias("dawg")]
         [Summary("Random dogs. mustpatmustpat")]
         public async Task Dog()
         {
@@ -93,7 +94,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("doge")]
-        [Alias("shiba", "shibe")]
+        [Alias("shiba", "shibe", "dopge")]
         [Summary("Random Shiba Inu")]
         public async Task Doge()
         {

@@ -194,7 +194,14 @@ namespace KawaiiBot2.Modules
             return ReplyAsync("ゆうひ～#2418: \"Nothing on Awooo is used but slots.\"");
         }
 
+        [HiddenCmd]
+        [Summary("not a cat.")]
+        [Command("yuuhi")]
+        public Task Yuuhi() => ReplyAsync("Yuuhi is not a cat.");
+
         [Command("usecount")]
+        [Alias("count")]
+        [Summary("Number of times a command has been used.")]
         public Task UseCount(string commandName)
         {
             if (CommandCount.ContainsKey(commandName))

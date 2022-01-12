@@ -178,7 +178,7 @@ namespace KawaiiBot2.Modules
         private static volatile string protocolcc2 = null;
 
         [Command("nierslots")]
-        [Alias("serverslots", "nierlost", "nierslotsç", "niersots")]
+        [Alias("serverslots", "nierlost", "nierslotsç", "niersots", "nierislost", "mierslots")]
         [Summary("Slots, but with all the emotes in the current server")]
         public Task NierSlots(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(Context.Guild.Emotes.Select(a => a.ToString()).ToArray())
                                         .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global).DetermineN(n)
