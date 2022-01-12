@@ -15,31 +15,6 @@ namespace KawaiiBot2.Modules
         readonly Dictionary<string, string[]> urlDictionary =
             JsonConvert.DeserializeObject<Dictionary<string, string[]>>(File.ReadAllText("Resources/StaticURLImages.json"));
 
-        private Task StaticAnimeReactCommand(
-            string noUserReply,
-            string botUserReply,
-            string sameUserReply,
-            string nominalReply,
-            string name,
-            IGuildUser user,
-            SocketCommandContext context)
-        {
-            if (user == null)
-            {
-                return ReplyAsync(noUserReply);
-            }
-            else if (user.Id == context.Client.CurrentUser.Id)
-            {
-                return ReplyAsync(botUserReply);
-            }
-            else if (user.Id == context.User.Id)
-            {
-                return ReplyAsync(sameUserReply);
-            }
-            var url = Helpers.ChooseRandom(urlDictionary[name]);
-            return Context.Channel.SendMessageAsync("", false, Helpers.ImgStrEmbed(url, nominalReply));
-        }
-
 
         private readonly string[] flowers = { "\uD83C\uDF37", "\uD83C\uDF3C", "\uD83C\uDF38", "\uD83C\uDF3A", "\uD83C\uDF3B", "\uD83C\uDF39" };
         [Command("flower", RunMode = RunMode.Async)]

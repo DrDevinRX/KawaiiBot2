@@ -17,7 +17,7 @@ namespace KawaiiBot2.Modules
         public static IServiceProvider Provider { private get; set; }
 
         [Command("help", RunMode = RunMode.Async)]
-        [Alias("commands")]
+        [Alias("commands", "he;p", "hel;p")]
         [Summary("Displays all of my available commands~")]
 
         public async Task GetHelp()
@@ -45,7 +45,7 @@ namespace KawaiiBot2.Modules
             var fourthMsg = "```" + string.Join("\n", commandDescs[thirdFourth..^1]) + "```";
 
             //get dms
-            var dms = await Context.User.GetOrCreateDMChannelAsync();
+            var dms = await Context.User.CreateDMChannelAsync();
 
             //send the help to DMs
             await dms.SendMessageAsync(firstMsg);
@@ -75,7 +75,7 @@ namespace KawaiiBot2.Modules
                                         isDev = command.Attributes.Any(a => a.GetType() == typeof(DevOnlyCmdAttribute)),
                                         isHitoOnly = command.Attributes.Any(a => a.GetType() == typeof(HitoOnlyCmdAttribute))
                                     };
-            if (potentialCommands.Count() == 0)
+            if (!potentialCommands.Any() )
             {
                 return ReplyAsync("Sorry, no commands with that name found");
             }
@@ -112,7 +112,7 @@ namespace KawaiiBot2.Modules
             var x = await Commands.ExecuteAsync(Context, cmd, Provider);
             s.Stop();
             if (x.IsSuccess)
-                await Context.Channel.SendMessageAsync($"Took {s.Elapsed.TotalMilliseconds.ToString("f2")}ms to execute {cmd.Clean()}");
+                await Context.Channel.SendMessageAsync($"Took {s.Elapsed.TotalMilliseconds:f2}ms to execute {cmd.Clean()}");
             else
                 await Context.Channel.SendMessageAsync("Didn't work.");
         }

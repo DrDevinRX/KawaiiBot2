@@ -121,7 +121,7 @@ namespace KawaiiBot2.Modules
             await ReplyAsync(res.Url);
         }
 
-        Random rand = new Random();
+        readonly Random rand = new Random();
 
         [Command("bear")]
         [Summary("Random bear.")]

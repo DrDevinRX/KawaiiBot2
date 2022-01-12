@@ -60,9 +60,11 @@ namespace KawaiiBot2.Modules
             var x = sidesDoubles;
             var p = b.CumulativeDistribution(x);
             var rp = rb.CumulativeDistribution(n - sidesDoubles);//can be used for the other hypothesis
+            var pl = b.CumulativeDistribution(leftDoubles);
             var rj = p < .05;
             return ReplyAsync($"**Roll Sides**\nLeft: {leftDoubles}\nRight: {rightDoubles}\nSides: {sidesDoubles}\n" +
-                $"p(sides≤{sidesDoubles})={p:f2}\nBecause p {(rj ? "is" : "is not")} less than .05, we {(rj ? "reject" : "do not reject")} the null hypothesis.");
+                $"p(sides≤{sidesDoubles})={p:f2}\nBecause p {(rj ? "is" : "is not")} less than .05, we {(rj ? "reject" : "do not reject")} the null hypothesis." +
+                $"\np(left≤{leftDoubles})={rp:f2}");
         }
 
         [Command("clearwins")]

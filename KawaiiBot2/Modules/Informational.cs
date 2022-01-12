@@ -167,7 +167,7 @@ namespace KawaiiBot2.Modules
                         where pair.Value > 0
                         orderby -pair.Value
                         select $"{pair.Key}: {pair.Value} times").Take(10);
-            if (list.Count() == 0)
+            if (!list.Any())
                 return ReplyAsync("No commands have been used yet. This is most unusual.");
             return ReplyAsync($"Most Used Commands\n--------------------\n{string.Join("\n", list)}");
         }

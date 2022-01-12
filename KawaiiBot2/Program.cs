@@ -66,8 +66,11 @@ namespace KawaiiBot2
             Persistance.LoadEverything(ConfPath);
             //start persistance autosave
             Persistance.StartSaveScheduler();
-
-            discord = new DiscordSocketClient();
+            GatewayIntents intents = GatewayIntents.GuildEmojis | GatewayIntents.GuildMessageReactions | GatewayIntents.GuildMessages |
+                GatewayIntents.DirectMessages | GatewayIntents.Guilds | GatewayIntents.GuildMembers | GatewayIntents.GuildPresences;
+            //shut up discord.net guildpresences is necessary
+            var disconfig = new DiscordSocketConfig() { GatewayIntents = intents };
+            discord = new DiscordSocketClient(disconfig);
             var services = ConfigureServices();
             services.GetRequiredService<Services.LoggingService>();
             await services.GetRequiredService<Services.CommandHandlerService>().InitializeAsync(services);
