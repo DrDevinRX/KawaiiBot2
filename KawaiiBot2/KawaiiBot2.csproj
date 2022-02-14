@@ -4,27 +4,29 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>preview</LangVersion>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
+    <IsPublishable>False</IsPublishable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NOBUTTS</DefineConstants>
-    <NoWarn>1701;1702;IDE0046,IDE0045</NoWarn>
+    <NoWarn>1701;1702;IDE0046,IDE0045;IDE0090;IDE0057</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;NOBUTTS</DefineConstants>
+    <NoWarn>1701;1702;IDE0046,IDE0045;IDE0090;IDE0057</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Catalyst" Version="1.0.23862" />
-    <PackageReference Include="Catalyst.Models.English" Version="1.0.23255" />
-    <PackageReference Include="Discord.Net" Version="3.1.0" />
+    <PackageReference Include="Catalyst" Version="1.0.25056" />
+    <PackageReference Include="Catalyst.Models.English" Version="1.0.24970" />
+    <PackageReference Include="Discord.Net" Version="3.3.0" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0-alpha08" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.2-mauipre.1.22054.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.2-mauipre.1.22054.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.2-mauipre.1.22054.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.2-mauipre.1.22054.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 

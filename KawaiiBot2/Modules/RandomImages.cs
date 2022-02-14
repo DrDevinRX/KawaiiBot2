@@ -15,7 +15,7 @@ namespace KawaiiBot2.Modules
 
         [Command("cat", RunMode = RunMode.Async)]
         [Summary("cats. Cats. CATS!")]
-        [Alias("catnotlewd")]//not guaranteed
+        [Alias("catnotlewd", "caty")]//not guaranteed
         public async Task Cat()
         {
             (bool success, string url) = await CatsApiInterface.GetCat();

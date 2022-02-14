@@ -108,6 +108,7 @@ namespace KawaiiBot2.Modules
 
 
         [Command("hug", RunMode = RunMode.Async)]
+        [Alias("hjug")]
         [Summary("Give someone a hug o////o")]
         public Task Hug(IGuildUser user = null)
         {

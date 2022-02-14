@@ -52,7 +52,7 @@ namespace KawaiiBot2.Modules
         [HiddenCmd]
         public Task SidesRolls()
         {
-            //Binomial hypothesis test (from https://en.wikipedia.org/wiki/Binomial_test), using normal distribution approximation:
+            //Binomial hypothesis test (from https://en.wikipedia.org/wiki/Binomial_test)
             var n = leftDoubles + rightDoubles + sidesDoubles;
             var expectedRatio = 1 / 3.0;
             Binomial b = new Binomial(expectedRatio, n);
@@ -62,9 +62,9 @@ namespace KawaiiBot2.Modules
             var rp = rb.CumulativeDistribution(n - sidesDoubles);//can be used for the other hypothesis
             var pl = b.CumulativeDistribution(leftDoubles);
             var rj = p < .05;
-            return ReplyAsync($"**Roll Sides**\nLeft: {leftDoubles}\nRight: {rightDoubles}\nSides: {sidesDoubles}\n" +
+            return ReplyAsync($"**Roll Sides**\nTotal: {n}\nLeft: {leftDoubles}\nRight: {rightDoubles}\nSides: {sidesDoubles}\n" +
                 $"p(sides≤{sidesDoubles})={p:f2}\nBecause p {(rj ? "is" : "is not")} less than .05, we {(rj ? "reject" : "do not reject")} the null hypothesis." +
-                $"\np(left≤{leftDoubles})={rp:f2}");
+                $"\np(left≤{leftDoubles})={pl:f2}");
         }
 
         [Command("clearwins")]
@@ -180,7 +180,7 @@ namespace KawaiiBot2.Modules
         private static volatile string protocolcc2 = null;
 
         [Command("nierslots")]
-        [Alias("serverslots", "nierlost", "nierslotsç", "niersots", "nierislost", "mierslots")]
+        [Alias("serverslots", "nierlost", "nierslotsç", "niersots", "nierislost", "mierslots", "nierslolts")]
         [Summary("Slots, but with all the emotes in the current server")]
         public Task NierSlots(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(Context.Guild.Emotes.Select(a => a.ToString()).ToArray())
                                         .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global).DetermineN(n)

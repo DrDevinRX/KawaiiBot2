@@ -16,6 +16,7 @@ namespace KawaiiBot2.Modules
     public class Informational : ModuleBase<SocketCommandContext>
     {
         [Command("about")]
+        [Alias("version")]
         [Summary("About me~ You want to know more~?")]
         public Task About()
         {
