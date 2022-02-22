@@ -171,7 +171,7 @@ namespace KawaiiBot2.Modules
 
         [HiddenCmd]
         [Command("patbutnotlewd")]
-        [Alias("patbutnotinalewdway")]
+        [Alias("patbutnotinalewdway", "patnotlewd")]
         [Summary("Why did the original awooo even think they were?")]
         public Task PatButNotLewd(IGuildUser user = null)
         {

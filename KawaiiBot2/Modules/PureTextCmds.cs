@@ -73,7 +73,7 @@ namespace KawaiiBot2.Modules
         [HiddenCmd]
         public Task TouchButt([Remainder] string s = null)
         {
-            return ReplyAsync("<:PaimonCookies:763110521691176970>");
+            return ReplyAsync("<:2Bgasm:358561754009042955>");
         }
 
 

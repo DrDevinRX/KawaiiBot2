@@ -60,7 +60,6 @@ namespace KawaiiBot2.Modules
         public Task GetHelp(string cmd)
         {
             bool isDeveloper = Helpers.devIDs.Contains(Context.User.Id);
-            bool isHito = Context.User.Id == 173529942431236096;
 
             cmd = cmd.ToLower();
 
