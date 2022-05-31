@@ -63,7 +63,7 @@ namespace KawaiiBot2.Modules
             await ReplyAsync(url);
 
         }
-
+        /*
         [Command("axolotl", RunMode = RunMode.Async)]
         [Alias("axltl", "axoltl", "axlotl")]
         [Summary("Fetches Axolotl images. Cute!")]
@@ -77,7 +77,7 @@ namespace KawaiiBot2.Modules
                 return;
             }
             await ReplyAsync(res.Url);
-        }
+        }*/
 
         [Command("dog", RunMode = RunMode.Async)]
         [Alias("dawg")]

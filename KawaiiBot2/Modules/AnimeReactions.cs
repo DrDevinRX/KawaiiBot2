@@ -92,7 +92,8 @@ namespace KawaiiBot2.Modules
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-            return AnimeReactCommand(
+
+            return WaifuPicsAnimeReactCommand(
                 "Are you trying to cuddle the void...?",
                 $"*Cuddles **{AuthorName}** back*",
                 null,
@@ -114,7 +115,8 @@ namespace KawaiiBot2.Modules
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-            return AnimeReactCommand(
+
+            return WaifuPicsAnimeReactCommand(
                 "Are you trying to hug thin air...?",
                 $"*Hugs **{AuthorName}** back* ❤",
                 null,
@@ -135,7 +137,7 @@ namespace KawaiiBot2.Modules
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-            return AnimeReactCommand(
+            return WaifuPicsAnimeReactCommand(
                 "Are you trying to kiss the void...?",
                 $"*Kisses **{AuthorName}** back* ❤",
                 null,
@@ -155,7 +157,7 @@ namespace KawaiiBot2.Modules
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-            return AnimeReactCommand(
+            return WaifuPicsAnimeReactCommand(
                 "Are you trying to pat air...?",
                 null,
                 "https://cdn.discordapp.com/attachments/763105251393536000/763781987630448680/kawaiipat.gif",
@@ -177,7 +179,7 @@ namespace KawaiiBot2.Modules
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-            return AnimeReactCommand(
+            return WaifuPicsAnimeReactCommand(
                 "Are you trying to pat air...?",
                 null,
                 "https://cdn.nekos.life/v3/sfw/gif/pat/pat_061.gif",
@@ -197,7 +199,7 @@ namespace KawaiiBot2.Modules
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-            return AnimeReactCommand(
+            return WaifuPicsAnimeReactCommand(
                 "Are you trying to poke thin air...?",
                 "Don't poke me ;-;",
                 null,
@@ -218,7 +220,7 @@ namespace KawaiiBot2.Modules
         {
             var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
             var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-            return AnimeReactCommand(
+            return WaifuPicsAnimeReactCommand(
                 "Are you trying to slap a ghost...?",
                 $"**{AuthorName}** we can no longer be friends ;-;",
                 null,
@@ -291,7 +293,7 @@ namespace KawaiiBot2.Modules
             }
             return Task.Run(async () =>
             {
-                Request req = await Helpers.Client.SendRequest("https://api.waifu.pics/sfw/" + endpointPlainName);
+                Request req = await Helpers.Client.SendRequest("https://waifu.pics/api/sfw/" + endpointPlainName);
                 WaifuPicsRes res = JsonConvert.DeserializeObject<WaifuPicsRes>(req.Content);
 
                 if (!req.Success)
@@ -417,7 +419,7 @@ namespace KawaiiBot2.Modules
         {
             return Task.Run(async () =>
             {
-                Request req = await Helpers.Client.SendRequest("https://api.waifu.pics/sfw/" + endpoint);
+                Request req = await Helpers.Client.SendRequest("https://waifu.pics/api/sfw/" + endpoint);
                 WaifuPicsRes res = JsonConvert.DeserializeObject<WaifuPicsRes>(req.Content);
 
                 if (!req.Success)
@@ -438,7 +440,7 @@ namespace KawaiiBot2.Modules
 
         [Command("cry")]
         [Summary("Posts a crying picture when you're sad ;-;")]
-        public Task Cry()
+        public Task Cry([Remainder] string _)
         {
             return SingularPictureWaifuPics("cry");
         }
