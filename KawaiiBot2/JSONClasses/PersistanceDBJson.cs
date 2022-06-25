@@ -12,6 +12,9 @@ namespace KawaiiBot2.JSONClasses
         [JsonProperty("saveNumber")]
         public uint SaveNumber { get; set; }
 
+        [JsonProperty("totalUptime")]
+        public TimeSpan TotalUptime { get; set; }
+
         [JsonProperty("slots")]
         public SlotsPersistanceJson Slots { get; set; }
 

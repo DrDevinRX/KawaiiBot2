@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using KawaiiBot2.Modules;
 using KawaiiBot2.JSONClasses;
+using System.Diagnostics;
 
 namespace KawaiiBot2
 {
@@ -55,6 +56,7 @@ namespace KawaiiBot2
             else latestFile = omoFile.SaveNumber > uraFile.SaveNumber ? omoFile : uraFile;
 
             saveIter = latestFile.SaveNumber;
+            Informational.TotalUptime=latestFile.TotalUptime;
             Slots.PerpetuatePersistance(latestFile.Slots);
             Informational.PerpetuatePopularityPersistance(latestFile.CommandCounter);
             OtherRiggables.PerpetuatePersistance(latestFile.OtherRiggables);
@@ -72,6 +74,7 @@ namespace KawaiiBot2
             var persistanceObject = new
             {
                 saveNumber = saveIter,
+                totalUptime = Informational.TotalUptime+(DateTime.Now - Process.GetCurrentProcess().StartTime),
                 slots,
                 commandCounter,
                 otherRiggables

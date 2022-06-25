@@ -115,6 +115,8 @@ namespace KawaiiBot2.Modules
             return Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
         }
 
+        public static TimeSpan TotalUptime;
+
         [Command("stats")]
         [DevOnlyCmd]
         [Summary("View internal information")]
@@ -138,6 +140,7 @@ namespace KawaiiBot2.Modules
             {
                 {"\nPROCESS STATISTICS\u200b\u200b","ヾ(•ω•`)o ::\n" },
                 { "☆Uptime☆",uptime.ToString()},
+                {"☆Total Uptime☆",(TotalUptime+uptime).ToString() },
                 {"☆Private Memory☆",mbpriv.ToString("f2")+"MB" },
                 {"☆Working set☆",mbwork.ToString("f2")+"MB" },
                 {"☆Virtual Memory☆",mbvirt.ToString("f2")+"MB" },
