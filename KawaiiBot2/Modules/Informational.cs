@@ -154,7 +154,7 @@ namespace KawaiiBot2.Modules
             var q = from stat in stats
                     select $"{Helpers.Pad(stat.Key, 23)}:: {stat.Value}";
 
-            return ReplyAsync($"```   ===  {Program.BotName} Statistics  === \n{string.Join('\n', q)}```");
+            return ReplyAsync($"```   ===  {Program.BotName} Statistics  === \n       << running on .NET {Environment.Version.Major} >>\n{string.Join('\n', q)}```");
         }
 
         public static ConcurrentDictionary<string, int> CommandCount = new ConcurrentDictionary<string, int>();
