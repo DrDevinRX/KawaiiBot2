@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
 using KawaiiBot2.Modules;
 
@@ -11,22 +12,27 @@ namespace KawaiiBot2.Services
     {
         private readonly DiscordSocketClient _discord;
         private readonly CommandService _commands;
+        private readonly InteractionService _interactions;
         private IServiceProvider _provider;
 
         public static string Prefix { get; set; } = "-";
 
         public static int CommandsExecuted { get; private set; } = 0;
 
-        public CommandHandlerService(DiscordSocketClient discord, CommandService commands, IServiceProvider provider)
+        public CommandHandlerService(DiscordSocketClient discord, CommandService commands, InteractionService interactions, IServiceProvider provider)
         {
             _discord = discord;
             _commands = commands;
             _provider = provider;
+            _interactions = interactions;
 
             Help.Commands = commands;
             Help.Provider = provider;
 
             _discord.MessageReceived += MessageReceived;
+            _discord.InteractionCreated += InteractionCreated;
+
+            _discord.Ready += ClientReady;
 
             _commands.CommandExecuted += (i, c, r) =>
             {
@@ -34,6 +40,17 @@ namespace KawaiiBot2.Services
                 Informational.CommandCount.AddOrUpdate(i.Value.Name, 1, (k, c) => c + 1);
                 return Task.Run(() => { });
             };
+        }
+
+        private async Task InteractionCreated(SocketInteraction socketInteraction)
+        {
+            
+            if (socketInteraction.Type == Discord.InteractionType.ApplicationCommand)
+            {
+                var context = new SocketInteractionContext(_discord, socketInteraction);
+                await _interactions.ExecuteCommandAsync(context, _provider);
+            }
+
         }
 
         private async Task MessageReceived(SocketMessage socketMessage)
@@ -108,6 +125,22 @@ namespace KawaiiBot2.Services
         {
             _provider = provider;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), provider);
+        }
+
+        public async Task ClientReady()
+        {
+            await _interactions.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
+            await _interactions.RegisterCommandsGloballyAsync();
+            
+            /*foreach(var guild in _discord.Guilds)
+            {
+                
+                try { await _interactions.RegisterCommandsToGuildAsync(guild.Id); }
+                catch
+                {
+                    Console.Write($"Could not register commands for guild {guild.Name}");
+                }
+            }*/
         }
     }
 }

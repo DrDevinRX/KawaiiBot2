@@ -11,6 +11,7 @@ using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using KawaiiBot2.JSONClasses;
 using System.Reflection;
+using Discord.Interactions;
 
 namespace KawaiiBot2
 {
@@ -91,6 +92,7 @@ namespace KawaiiBot2
             return new ServiceCollection()
                 .AddSingleton(discord)
                 .AddSingleton<CommandService>()
+                .AddSingleton<InteractionService>()
                 .AddSingleton<CommandHandlerService>()
                 .AddLogging()
                 .AddSingleton<LoggingService>()
