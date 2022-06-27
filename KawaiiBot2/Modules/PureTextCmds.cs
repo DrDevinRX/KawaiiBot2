@@ -16,6 +16,13 @@ namespace KawaiiBot2.Modules
 {
     public class PureTextCmds : ModuleBase<SocketCommandContext>
     {
+        [Command("grün")]
+        [Summary("Grün facts for the autoscroller")]
+        [Alias("grun", "grunfacts", "grünfacts")]
+        public Task GrunFacts()
+            => ReplyAsync(Grun.GrunFacts());
+
+
         private Random r = new Random();
         private bool[] pattern = new bool[] { true, false, true, true, false, false };
         [Command("hollykeyboard")]

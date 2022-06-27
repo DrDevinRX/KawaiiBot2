@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Newtonsoft.Json;
 using System.IO;
+using KawaiiBot2.Services;
 
 namespace KawaiiBot2.Modules
 {
@@ -19,18 +20,17 @@ namespace KawaiiBot2.Modules
 #if NOBUTTS
             "buttsbot",
 #endif
-             "ship", "memegen", "meme2", "captcha", "calling", "facts", "scroll", "supreme", "achievement", "challenge", "drake", "didyoumean"
+             "ship", "memegen", "meme2", "captcha", "calling", "facts", "scroll", "supreme", "achievement", "challenge", "drake", "didyoumean", "axolotl"
             )]
-        public Task DisabledCommand(string commandname = "")
+        public Task DisabledCommand([Remainder]string _ ="")
         {
-            if (commandname == "")
-                return ReplyAsync("This command is unfortunately currently unavailable. Run this again with the command as an argument to see why.");
-            else if (whyDisabled.ContainsKey(commandname))
+            var commandname = Context.Message.ToString().Substring(CommandHandlerService.Prefix.Length).Split(" ")[0].ToLower();
+            if (whyDisabled.ContainsKey(commandname))
                 return ReplyAsync($"This command is unavailable because {whyDisabled[commandname]}.");
             else if (commandname is "disable" or "disabled" or "unavailable")
                 return ReplyAsync("This is a functioning command to show which commands have been disabled.");
             else
-                return ReplyAsync("Huh? That's not an unavailable command?");
+                return ReplyAsync("There's no reason available, but this command is unavailable.");
         }
     }
 }

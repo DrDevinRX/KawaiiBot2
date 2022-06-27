@@ -49,12 +49,14 @@ namespace KawaiiBot2.Services
             {
                 var context = new SocketInteractionContext(_discord, socketInteraction);
                 await _interactions.ExecuteCommandAsync(context, _provider);
+                //find some way to use _commands.ExecuteAsync instead...
             }
 
         }
 
         private async Task MessageReceived(SocketMessage socketMessage)
         {
+            
             if (!(socketMessage is SocketUserMessage message))
             {
                 return;
@@ -131,8 +133,8 @@ namespace KawaiiBot2.Services
         {
             await _interactions.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
             await _interactions.RegisterCommandsGloballyAsync();
-            
-            /*foreach(var guild in _discord.Guilds)
+            //may have to make something where it stores what's been registered with Persistance
+            foreach(var guild in _discord.Guilds)
             {
                 
                 try { await _interactions.RegisterCommandsToGuildAsync(guild.Id); }
@@ -140,7 +142,7 @@ namespace KawaiiBot2.Services
                 {
                     Console.Write($"Could not register commands for guild {guild.Name}");
                 }
-            }*/
+            }
         }
     }
 }
