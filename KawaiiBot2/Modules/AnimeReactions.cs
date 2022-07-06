@@ -440,7 +440,7 @@ namespace KawaiiBot2.Modules
 
         [Command("cry")]
         [Summary("Posts a crying picture when you're sad ;-;")]
-        public Task Cry([Remainder] string _)
+        public Task Cry([Remainder] string _ = "")
         {
             return SingularPictureWaifuPics("cry");
         }
