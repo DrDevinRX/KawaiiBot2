@@ -15,6 +15,6 @@ namespace KawaiiBot2.Modules.TextTriggered
         [Summary("Throw something at someone >:3")]
         [RequireContext(ContextType.Guild, ErrorMessage = "I throw it right back at you!")]
         public Task Throw(IGuildUser user = null)
-    => ReplyAsync(Actions.Throw(Helpers.CleanGuildUserDisplayName(Context.User as IGuildUser), Helpers.CleanGuildUserDisplayName(user)));
+    => ReplyAsync(Actions.Throw(Helpers.CleanGuildUserDisplayName(Context.User as IGuildUser), user));
     }
 }

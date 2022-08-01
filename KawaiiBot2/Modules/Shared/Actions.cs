@@ -18,9 +18,15 @@ namespace KawaiiBot2.Modules.Shared
     internal static class Actions
     {
         private static ThrowJson throwJson = JsonConvert.DeserializeObject<ThrowJson>(File.ReadAllText("Resources/ThrowResponses.json"));
-        internal static string Throw(string authorname, string targetname)
+        internal static string Throw(string authorname, IGuildUser target)
         {
+            if (target == null)
+            {
+                return "You need to throw stuff at someone...?";
+            }
 
+
+            var targetname = Helpers.CleanGuildUserDisplayName(target);
             if (targetname == null) return "You need to throw stuff at someone...?";
 
             var authorQuote = Helpers.ChooseRandom(throwJson.AuthorQuotes);

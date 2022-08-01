@@ -20,6 +20,6 @@ namespace KawaiiBot2.Modules.SlashCommands
     {
         [SlashCommand("throw", "Throw something at someone >:3")]
         public Task Throw(IGuildUser user = null)
-            => RespondAsync(Actions.Throw(Helpers.CleanGuildUserDisplayName(Context.User as IGuildUser), Helpers.CleanGuildUserDisplayName(user)));
+            => RespondAsync(Actions.Throw(Helpers.CleanGuildUserDisplayName(Context.User as IGuildUser), user));
     }
 }
