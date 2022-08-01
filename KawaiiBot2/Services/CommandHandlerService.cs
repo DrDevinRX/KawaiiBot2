@@ -40,11 +40,17 @@ namespace KawaiiBot2.Services
                 Informational.CommandCount.AddOrUpdate(i.Value.Name, 1, (k, c) => c + 1);
                 return Task.Run(() => { });
             };
+
+            _interactions.SlashCommandExecuted += (i, c, r) =>
+            {
+                Informational.CommandCount.AddOrUpdate(i.Name, 1, (k, c) => c + 1);
+                return Task.Run(() => { });
+            };
         }
 
         private async Task InteractionCreated(SocketInteraction socketInteraction)
         {
-            
+
             if (socketInteraction.Type == Discord.InteractionType.ApplicationCommand)
             {
                 var context = new SocketInteractionContext(_discord, socketInteraction);
@@ -56,7 +62,7 @@ namespace KawaiiBot2.Services
 
         private async Task MessageReceived(SocketMessage socketMessage)
         {
-            
+
             if (!(socketMessage is SocketUserMessage message))
             {
                 return;
@@ -134,9 +140,9 @@ namespace KawaiiBot2.Services
             await _interactions.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
             await _interactions.RegisterCommandsGloballyAsync();
             //may have to make something where it stores what's been registered with Persistance
-            foreach(var guild in _discord.Guilds)
+            foreach (var guild in _discord.Guilds)
             {
-                
+
                 try { await _interactions.RegisterCommandsToGuildAsync(guild.Id); }
                 catch
                 {

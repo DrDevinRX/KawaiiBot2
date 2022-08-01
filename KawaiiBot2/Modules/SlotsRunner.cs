@@ -12,10 +12,10 @@ namespace KawaiiBot2.Modules
     class SlotsRunner
     {
         Random rand;
-        SocketCommandContext context;
-        public SlotsRunner(SocketCommandContext Context, Random Rand)
+        IUser _user;
+        public SlotsRunner(IUser User, Random Rand)
         {
-            context = Context;
+            _user = User;
             rand = Rand;
         }
 
@@ -220,10 +220,10 @@ namespace KawaiiBot2.Modules
             return this;
         }
 
-        public Task Run()
+        public string Run()
         {
             if (n < 2 || n > upperLimit)
-                return context.Channel.SendMessageAsync("Nope. No. Nope. No. No can do.");
+                return "Nope. No. Nope. No. No can do.";
 
             bool win = finalSlots.All(s => s == finalSlots[0]);
             bool almostWin = finalSlots.Count(s => s == finalSlots[0]) == n - 1 || finalSlots.Count(s => s == finalSlots[1]) == n - 1;
@@ -251,13 +251,13 @@ namespace KawaiiBot2.Modules
 
             string prefinal = string.Join(" ", finalSlots);
 
-            if (prefinal.Length > 1800) return context.Channel.SendMessageAsync("Too long pls stop!");
+            if (prefinal.Length > 1800) return "Too long pls stop!";
             Slots.totalIconsRolled += n;
 
-            return context.Channel.SendMessageAsync(
-                $"**{Helpers.GetName(context.User)}** rolled the slots...\n" +
+            return
+                $"**{Helpers.GetName(_user)}** rolled the slots...\n" +
                 $"**[ {prefinal} ]**\n" +
-                $"{winMessage}{streakMessage}");
+                $"{winMessage}{streakMessage}";
         }
     }
 }

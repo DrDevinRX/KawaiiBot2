@@ -11,40 +11,13 @@ using Newtonsoft.Json;
 using System.Security;
 using KawaiiBot2.JSONClasses;
 using System.Security.Cryptography;
+using KawaiiBot2.Modules.Shared;
 
 namespace KawaiiBot2.Modules
 {
     public class PureTextCmds : ModuleBase<SocketCommandContext>
     {
-        [Command("grün")]
-        [Summary("Grün facts for the autoscroller")]
-        [Alias("grun", "grunfacts", "grünfacts")]
-        public Task GrunFacts()
-            => ReplyAsync(Grun.GrunFacts());
-
-
-        private Random r = new Random();
-        private bool[] pattern = new bool[] { true, false, true, true, false, false };
-        [Command("hollykeyboard")]
-        [Summary("ImITatEs hOLlyWeED's kEYbOarD")]
-        public Task HollyKeyboard([Remainder] string s = null)
-        {
-            if (s == null) return ReplyAsync("Needs input");
-            //Pattern: UlUUll, repeating
-            int i = r.Next(6);
-            var a = from c in s
-                    select pattern[(i++) % 6] ? c.ToString().ToUpper() : c.ToString().ToLower();
-            return ReplyAsync(string.Join("", a).Clean());
-        }
-
-
-        [Command("paimon")]
-        [HiddenCmd]
-        [Summary("Paimon isn't emergency food!")]
-        public Task Paimon([Remainder] string s = null)
-        {
-            return ReplyAsync("Paimon isn't emergency food!");
-        }
+        private static volatile uint deathCount = 0;
 
         [Command("death")]
         [Alias("deathcount", "deaths", "youdied", "died")]
@@ -61,50 +34,26 @@ namespace KawaiiBot2.Modules
         [Alias("resetdeath", "resetdeaths")]
         [Summary("Reset death count.")]
         [DevOnlyCmd]
-
         public Task ResetDeathCount([Remainder] string s = null)
         {
-            if (!Helpers.devIDs.Contains(Context.User.Id))
+            if (Helpers.devIDs.Contains(Context.User.Id))
+            {
+                deathCount = 0;
+                return ReplyAsync("Reset death count.");
+            }
+            else
             {
                 return ReplyAsync("No u ;-;");
             }
-            deathCount = 0;
-            return ReplyAsync("Reset death count.");
-        }
-
-        private static volatile uint deathCount = 0;
-
-
-        [Command("touchbutt")]
-        [Summary("Touch someone's butt. What a pervert!")]
-        [HiddenCmd]
-        public Task TouchButt([Remainder] string s = null)
-        {
-            return ReplyAsync("<:2Bgasm:358561754009042955>");
         }
 
 
-        private ThrowJson throwJson = JsonConvert.DeserializeObject<ThrowJson>(File.ReadAllText("Resources/ThrowResponses.json"));
-        [Command("throw")]
-        [Summary("Throw something at someone >:3")]
-        [RequireContext(ContextType.Guild, ErrorMessage = "I throw it right back at you!")]
-        public Task Throw(IGuildUser user = null)
-        {
-
-            if (user == null) return ReplyAsync("You need to throw stuff at someone...?");
-            var AuthorName = Helpers.CleanGuildUserDisplayName(Context.Message.Author as IGuildUser);
-            var mentionedUserName = Helpers.CleanGuildUserDisplayName(user);
-
-            var authorQuote = Helpers.ChooseRandom(throwJson.AuthorQuotes);
-            var targetQuote = Helpers.ChooseRandom(throwJson.TargetQuotes);
-            var item = Helpers.ChooseRandom(throwJson.Items);
-
-            return ReplyAsync($"**{AuthorName}** threw {item} at **{mentionedUserName}**\n\n" +
-                $"{mentionedUserName}: {targetQuote}\n{AuthorName}: {authorQuote}");
-        }
 
 
-        [Command("roll")]
+
+
+
+            [Command("roll")]
         [Summary("Rolls a number in a given range")]
         public Task Roll(int upperBound = 10, int lowerBound = 0)
         {

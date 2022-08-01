@@ -15,6 +15,19 @@ namespace KawaiiBot2.Modules
 {
     public class Commands : ModuleBase<SocketCommandContext>
     {
+        private Random r = new Random();
+        private bool[] pattern = new bool[] { true, false, true, true, false, false };
+        [Command("hollykeyboard")]
+        [Summary("ImITatEs hOLlyWeED's kEYbOarD")]
+        public Task HollyKeyboard([Remainder] string s = null)
+        {
+            if (s == null) return ReplyAsync("Needs input");
+            //Pattern: UlUUll, repeating
+            int i = r.Next(6);
+            var a = from c in s
+                    select pattern[(i++) % 6] ? c.ToString().ToUpper() : c.ToString().ToLower();
+            return ReplyAsync(string.Join("", a).Clean());
+        }
         [Command("save", RunMode = RunMode.Async)]
         [DevOnlyCmd]
         [Summary("Save state to disk. State should be saved automatically, use only when force shutting down.")]

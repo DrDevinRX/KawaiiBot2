@@ -110,25 +110,25 @@ namespace KawaiiBot2.Modules
                             $"{winMessage}");
         }
 
-        private static readonly Random rand = new();
+        internal static readonly Random rand = new();
 
-        private static readonly string[] SlotIcons = { "🥮", "🥥" , "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪",
+        internal static readonly string[] SlotIcons = { "🥮", "🥥" , "🍎", "🍊", "🍐", "🍋", "🍉", "🍇", "🍓", "🍒", "🍌", "🍈", "🥭", "🥝", "🍍", "🥥", "🍏", "🍑", "🍪",
                                                      "🍩","🍨","🎂", "🍭", "🍫", "🍯", "🫐", "🥐", "🧆", "🥞", "🥠", "🍘", "🥧", "🧋", "🥟"};
-        private static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲",
+        internal static readonly string[] MemeRigAllows = { "🥔", "⚗\uFE0F", "🩸", "🚮", "💧", "🔥", "☄\uFE0F", "🎏", "🎐", "🥌", "🔮", "🎮", "🎰", "🎲",
             "♟\uFE0F", "🀄", "🎨", "💎", "💍", "🎼","🍕","🍝" ,"🍢", "🥯", "🍼", "🎯", "🌏", "🌍", "🌎", "🎳", "🥏", "🥌", "🌵", "🌴", "🦠", "🦂", "🧱",
             "🎈","💡","💴", "💵", "💶", "💷", "💳", "⚙\uFE0F", "🧬", "🔬", "🔭", "🛢", "🪐", "🌊", "🫀", "🛰", "🪁",/*tmp*/"🥮"};
-        private static SlotsUserData global = new(13);
-        private static readonly ConcurrentDictionary<ulong, SlotsUserData> userData = new();
+        internal static SlotsUserData global = new(13);
+        internal static readonly ConcurrentDictionary<ulong, SlotsUserData> userData = new();
 
 
         //TODO: allow DetermineIcons to use MemeRigs and ALL of the extra icons as sources
         [Command("slotsv2")]
         [Alias("slots", "sloots")]
         [Summary("Roll the slot machine. may rngesus guide your path. Better code.")]
-        public Task SlotsCmd2(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(SlotIcons).AlsoAllowThese(MemeRigAllows)
+        public Task SlotsCmd2(int n = 3, string icon = "") => ReplyAsync(new SlotsRunner(Context.User, rand).UseIconSet(SlotIcons).AlsoAllowThese(MemeRigAllows)
                                                 .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global)
                                                 .DetermineN(n).DetermineIcons(protocolcc2 == null ? icon : "🥮").WithRigging().WithSuppression()
-                                                .WithStreakCounting().Run();
+                                                .WithStreakCounting().Run());
 
 
         [Command("slots", RunMode = RunMode.Async)]
@@ -177,21 +177,21 @@ namespace KawaiiBot2.Modules
         public Task NgMaxSlots([Remainder] string icon = "") => SlotsCmd2(195, icon);
 
 
-        private static volatile string protocolcc2 = null;
+        internal static volatile string protocolcc2 = null;
 
         [Command("nierslots")]
         [Alias("serverslots", "nierlost", "nierslotsç", "niersots", "nierislost", "mierslots", "nierslolts")]
         [Summary("Slots, but with all the emotes in the current server")]
-        public Task NierSlots(int n = 3, string icon = "") => new SlotsRunner(Context, rand).UseIconSet(Context.Guild.Emotes.Select(a => a.ToString()).ToArray())
+        public Task NierSlots(int n = 3, string icon = "") => ReplyAsync(new SlotsRunner(Context.User, rand).UseIconSet(Context.Guild.Emotes.Select(a => a.ToString()).ToArray())
                                         .AddUserData(userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty), global).DetermineN(n)
-                                        .DetermineIcons(protocolcc2 ?? icon).WithSuppression().WithStreakCounting().Run();
+                                        .DetermineIcons(protocolcc2 ?? icon).WithSuppression().WithStreakCounting().Run());
         [Command("nierslots")]
         [Alias("serverslots", "nierlost")]
         [Summary("Slots, but with all the emotes in the current server")]
         public Task NierSlots(string icon) => NierSlots(3, icon);
 
         [Command("leaderboard", RunMode = RunMode.Async)]
-        [Alias("slotsboard", "board", "winners", "boards", "wins")]
+        [Alias("slotsboard", "board", "winners", "boards", "wins", "slotswins")]
         [Summary("LINQ makes everything easy, whaddaya mean this should be hard?")]
         [RequireContext(ContextType.Guild, ErrorMessage = "Requires a guild because users")]
         public Task Leaderboard()
@@ -331,7 +331,7 @@ namespace KawaiiBot2.Modules
 
         [Command("suppressslotswins")]
         [Alias("suppressslots", "noslotswins", "suppress", "suppressslotwins", "suppresslotswins", "suppresslotwins", "globalsuppressslots",
-            "globalsuppress", "suppresstatus", "suppressstatus", "d7sqhj2cc2", "2xrrx29958")]
+            "globalsuppress", "suppresstatus", "suppressstatus", "d7sqhj2cc2", "2xrrx29958", "disableslotswins", "disablewins")]
         [Summary("Supresses slots winning. Easy. Overrides rigging slots.")]
         [DevOnlyCmd]
         public Task SuppressSlotsWins(bool? suppress = null)

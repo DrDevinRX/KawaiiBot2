@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>preview</LangVersion>
-    <Version>2.1.1</Version>
+    <Version>2.1.2</Version>
     <IsPublishable>False</IsPublishable>
   </PropertyGroup>
 
@@ -91,6 +91,10 @@
     <None Update="Resources\WhyDisabled.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modules\TextTriggered\" />
   </ItemGroup>
 
 </Project>

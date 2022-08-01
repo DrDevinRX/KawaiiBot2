@@ -15,7 +15,7 @@ namespace KawaiiBot2.Modules
 
         [Command("cat", RunMode = RunMode.Async)]
         [Summary("cats. Cats. CATS!")]
-        [Alias("catnotlewd", "caty")]//not guaranteed
+        [Alias("catnotlewd", "caty", "chat")]//not guaranteed
         public async Task Cat()
         {
             (bool success, string url) = await CatsApiInterface.GetCat();
@@ -80,7 +80,7 @@ namespace KawaiiBot2.Modules
         }*/
 
         [Command("dog", RunMode = RunMode.Async)]
-        [Alias("dawg")]
+        [Alias("dawg", "doggo")]
         [Summary("Random dogs. mustpatmustpat")]
         public async Task Dog()
         {
@@ -94,7 +94,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("doge")]
-        [Alias("shiba", "shibe", "dopge")]
+        [Alias("shiba", "shibe", "dopge", "doige", "dolge")]
         [Summary("Random Shiba Inu")]
         public async Task Doge()
         {

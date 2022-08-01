@@ -45,13 +45,26 @@ namespace KawaiiBot2.Modules
             var fourthMsg = "```" + string.Join("\n", commandDescs[thirdFourth..^1]) + "```";
 
             //get dms
-            var dms = await Context.User.CreateDMChannelAsync();
+            try
+            {
+                var dms = await Context.User.CreateDMChannelAsync();
+                
+
+                await dms.SendMessageAsync(firstMsg);
+                await dms.SendMessageAsync(secondMsg);
+                await dms.SendMessageAsync(thirdMsg);
+                await dms.SendMessageAsync(fourthMsg);
+            }
+            catch(Exception e)
+            {
+                if(e.Message=="The server responded with error 50007: Cannot send messages to this user")
+                {
+                    await ReplyAsync("You need to allow DMs from this server to get help!");
+                }
+            }
 
             //send the help to DMs
-            await dms.SendMessageAsync(firstMsg);
-            await dms.SendMessageAsync(secondMsg);
-            await dms.SendMessageAsync(thirdMsg);
-            await dms.SendMessageAsync(fourthMsg);
+            
 
         }
 
