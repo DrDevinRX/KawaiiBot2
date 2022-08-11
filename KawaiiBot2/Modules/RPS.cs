@@ -56,21 +56,21 @@ namespace KawaiiBot2.Modules
         [Command("rps")]
         [Summary("Rock, paper, Scissors")]
 
-        public Task RockPaperScissors(string userSelected = null)
+        public Task RockPaperScissors([Remainder] string userSelected = null)
         {
             return RPSPlus(userSelected, basicOptions, basicTable);
         }
 
         [Command("rpsls")]
         [Summary("Rock, Paper, Scissors, Lizard, Spock")]
-        public Task RPSLS(string userSelected = null)
+        public Task RPSLS([Remainder] string userSelected = null)
         {
             return RPSPlus(userSelected, LSOptions, LSTable);
         }
 
         [Command("rps101")]
         [Summary("Rock, Paper, Scissors 101 from https://www.umop.com/rps101.htm")]
-        public Task RPS101(string userSelected = null)
+        public Task RPS101([Remainder] string userSelected = null)
         {
             return RPSPlus(userSelected, _101Options, _101Table);
         }

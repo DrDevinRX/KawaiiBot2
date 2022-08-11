@@ -24,7 +24,7 @@ namespace KawaiiBot2.Modules
 
             embedBuilder
                 .WithTitle($"ℹ {Program.BotName}")
-                .AddField("Developers", "Hitoccchi (and Yin somewhat)")
+                .AddField("Developers", "Yuuhi (and Yin somewhat)")
                 .AddField("Base", "KawaiiiBot (now offline) and the nier speedruns Awooo")
                 .AddField("My Server!", "https://discord.nierspeedrun.com", true)
                 .WithThumbnailUrl(Context.Client.CurrentUser.GetAvatarUrl());
@@ -74,7 +74,7 @@ namespace KawaiiBot2.Modules
         }
 
         [Command("server")]
-        [RequireContext(ContextType.Guild, ErrorMessage = "I'm running on hitoccchi's custom 8 EPYC CPU, 6TB RAM server! It's so spacious!")]
+        [RequireContext(ContextType.Guild, ErrorMessage = "I'm running on yuuhi's custom 8 EPYC CPU, 6TB RAM server! It's so spacious!")]
         [Summary("Information about the current server")]
         public Task Server()
         {
