@@ -23,7 +23,7 @@ namespace KawaiiBot2.Modules.SlashCommands
         public async Task APOD() => await RespondAsync(await Images.APOD());
 
         [SlashCommand("animal", "Random zoo animal.", runMode: RunMode.Async)]
-        public async Task Animal() => await Images.Animal();
+        public async Task Animal() => await RespondAsync(await Images.Animal());
 
         [SlashCommand("bear", "Random bear.")]
         public Task Bear() => RespondAsync(Images.Bear());
