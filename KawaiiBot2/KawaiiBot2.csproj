@@ -93,8 +93,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\TextTriggered\" />
-  </ItemGroup>
-
 </Project>

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace KawaiiBot2.Modules.Shared
 {
-    internal class PureText
+    internal static class PureText
     {
         readonly static IEnumerable<string> grunfacts = File.ReadLines("Resources/grunfacts.txt");
         internal static string GrunFacts() => Helpers.ChooseRandom(grunfacts);

@@ -13,6 +13,9 @@ namespace KawaiiBot2.JSONClasses
         [JsonProperty("catApiToken")]
         public string CatApiToken { get; set; }
 
+        [JsonProperty("nasaApiToken")]
+        public string NasaApiToken { get; set; }
+
         [JsonProperty("prefix")]
         public string Prefix { get; set; }
 

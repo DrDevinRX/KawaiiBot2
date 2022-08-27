@@ -20,9 +20,13 @@ namespace KawaiiBot2.Modules
 #if NOBUTTS
             "buttsbot",
 #endif
-             "ship", "memegen", "meme2", "captcha", "calling", "facts", "scroll", "supreme", "achievement", "challenge", "drake", "didyoumean", "axolotl"
+#if !HAS_AXOLOTL
+            "axolotl",
+#endif
+             "ship", "memegen", "meme2", "captcha", "calling", "facts", "scroll", "supreme", "achievement",
+            "challenge", "drake", "didyoumean"
             )]
-        public Task DisabledCommand([Remainder]string _ ="")
+        public Task DisabledCommand([Remainder] string _ = "")
         {
             var commandname = Context.Message.ToString().Substring(CommandHandlerService.Prefix.Length).Split(" ")[0].ToLower();
             if (whyDisabled.ContainsKey(commandname))

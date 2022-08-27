@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using KawaiiBot2.JSONClasses;
 using System.Reflection;
 using Discord.Interactions;
+using KawaiiBot2.Modules.Shared;
 
 namespace KawaiiBot2
 {
@@ -61,6 +62,16 @@ namespace KawaiiBot2
             else
             {
                 KawaiiBot2.APIInterfacing.Interfaces.CatsApiInterface.ApiKey = config.CatApiToken;
+            }
+
+            if(string.IsNullOrWhiteSpace(config.NasaApiToken))
+            {
+                Console.WriteLine("using DEMO_KEY for NASA Api, this is very rate limited");
+                Images.NASAApiKey = "DEMO_KEY";
+            }
+            else
+            {
+                Images.NASAApiKey = config.NasaApiToken;
             }
 
             //load persistacne
