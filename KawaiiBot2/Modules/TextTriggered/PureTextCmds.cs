@@ -36,5 +36,10 @@ namespace KawaiiBot2.Modules.TextTriggered
         [HiddenCmd]
         public Task TouchButt([Remainder] string s = null)
         => ReplyAsync(PureText.TouchButt);
+
+        [Command("wha")]
+        [Summary("WHAT ON...")]
+        [HiddenCmd]
+        public Task WHA() => ReplyAsync(PureText.WHA);
     }
 }

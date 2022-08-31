@@ -214,9 +214,18 @@ namespace KawaiiBot2.Modules
         [Command("streakinfo")]
         [Alias("streak", "streakstats", "streaks")]
         [Summary("Gets info about the longest streaks in slots")]
-        public Task GetStreakInfo()
+        public Task GetStreakInfo([Remainder] IGuildUser user = null)
         {
-            var usersData = userData.GetOrAdd(Context.User.Id, SlotsUserData.Empty);
+            var uid = user?.Id ?? Context.User.Id;
+            var usersData = userData.GetOrAdd(uid, SlotsUserData.Empty);
+            if (user != null)
+            {
+                var uname = Helpers.CleanGuildUserDisplayName(user);
+                return ReplyAsync(usersData.longestStreak > 0 ? $"{uname}'s longest streak was {usersData.longestStreak} with {usersData.longestStreakIcon}" :
+                    "That user has no streaks."
+                );
+            }
+
             var userStreakInfo = usersData.longestStreak > 0 ? $"Your longest streak was {usersData.longestStreak} with {usersData.longestStreakIcon}" :
                 "You have no streaks.";
             var globalStreakInfo = global.longestStreak > 0 ? $"The longest streak globally was {global.longestStreak} with {global.longestStreakIcon}" :

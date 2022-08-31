@@ -35,5 +35,9 @@ namespace KawaiiBot2.Modules.SlashCommands
         public async Task TouchButt()
             => await RespondAsync(PureText.TouchButt);
 
+        [SlashCommand("wha", "what the...")]
+        public async Task WHA()
+            => await RespondAsync(PureText.WHA);
+
     }
 }
