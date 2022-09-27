@@ -23,6 +23,23 @@ namespace KawaiiBot2.JSONClasses
 
         [JsonProperty("otherRiggables")]
         public OtherRiggablesPersistanceJson OtherRiggables { get; set; }
+
+        [JsonProperty("management")]
+        public ManagementPersistanceJson Management { get; set; }
+
+        [JsonProperty("noUse")]
+        [Obsolete("literally just here for backwards compat. Will remove sometime in the future.")]
+        public Dictionary<ulong, string[]> NoUse { get; set; }
+    }
+
+    public class ManagementPersistanceJson
+    {
+        [JsonProperty("devs")]
+        public ulong[] Devs { get; set; }
+
+        [JsonProperty("noUse")]
+        public Dictionary<ulong, string[]> NoUse { get; set; }
+
     }
 
     public class SlotsPersistanceJson

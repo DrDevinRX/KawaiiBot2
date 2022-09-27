@@ -56,10 +56,21 @@ namespace KawaiiBot2
             else latestFile = omoFile.SaveNumber > uraFile.SaveNumber ? omoFile : uraFile;
 
             saveIter = latestFile.SaveNumber;
-            Informational.TotalUptime=latestFile.TotalUptime;
+            Informational.TotalUptime = latestFile.TotalUptime;
             Slots.PerpetuatePersistance(latestFile.Slots);
             Informational.PerpetuatePopularityPersistance(latestFile.CommandCounter);
             OtherRiggables.PerpetuatePersistance(latestFile.OtherRiggables);
+
+            //fun thing - REMOVE in the future.
+            if(latestFile.Management==null && latestFile.NoUse != null)
+            {
+                latestFile.Management = new()
+                {
+                    NoUse= latestFile.NoUse
+                };
+            }
+
+            DevManagement.PerpetuatePersistance(latestFile.Management);
         }
 
 
@@ -70,14 +81,16 @@ namespace KawaiiBot2
             var slots = Slots.GetSlotsSaveObject();
             var commandCounter = Informational.GetPopularitySave();
             var otherRiggables = OtherRiggables.GetOtherRiggablesSaveObject();
+            var management = DevManagement.GetManagementSaveObj();
             //also for command usage or wherever that comes from
             var persistanceObject = new
             {
                 saveNumber = saveIter,
-                totalUptime = Informational.TotalUptime+(DateTime.Now - Process.GetCurrentProcess().StartTime),
+                totalUptime = Informational.TotalUptime + (DateTime.Now - Process.GetCurrentProcess().StartTime),
                 slots,
                 commandCounter,
-                otherRiggables
+                otherRiggables,
+                management
             };
             File.WriteAllText(saveFilename, JsonConvert.SerializeObject(persistanceObject));
         }

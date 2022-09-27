@@ -87,9 +87,9 @@ namespace KawaiiBot2.Modules
                             $"**Answer: ** {Helpers.ChooseRandom(EightBallResponses)}");
         }
 
-        [Command("fact", RunMode = RunMode.Async)]
-        [Alias("facts", "funfact", "funfacts")]
-        [Summary("Fun fact, did you know...")]
+        [Command("factoid", RunMode = RunMode.Async)]
+        [Alias("notfact")]
+        [Summary("Factualness not guaranteed.")]
         public async Task FunFacts()
         {
             Request req = await Helpers.Client.SendRequest("https://nekos.life/api/v2/fact");

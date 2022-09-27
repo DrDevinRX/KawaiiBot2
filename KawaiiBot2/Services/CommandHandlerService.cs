@@ -5,6 +5,7 @@ using Discord.Commands;
 using Discord.Interactions;
 using Discord.WebSocket;
 using KawaiiBot2.Modules;
+using System.Collections.Generic;
 
 namespace KawaiiBot2.Services
 {
@@ -86,6 +87,27 @@ namespace KawaiiBot2.Services
             }
 
             var context = new SocketCommandContext(_discord, message);
+
+            var commandname = context.Message.ToString().Substring(Prefix.Length).Split(" ")[0].ToLower();
+
+            HashSet<string> a = new();
+
+            if (DevManagement.NoUsingThis.TryGetValue(context.User.Id, out a))
+            {
+                if (a.Contains(commandname))
+                {
+                    return;
+                }
+            }
+            if (DevManagement.NoUsingThis.TryGetValue(ulong.MaxValue, out a))
+            {
+                if (a.Contains(commandname))
+                {
+                    return;
+                }
+            }
+
+
             var result = await _commands.ExecuteAsync(context, argPos, _provider);
 
             if (!result.Error.HasValue)

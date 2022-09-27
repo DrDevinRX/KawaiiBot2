@@ -110,7 +110,7 @@ namespace KawaiiBot2.Modules
         [Command("timecmd", RunMode = RunMode.Async)]
         [Alias("time")]
         [DevOnlyCmd]
-        [Summary("Time how long a command takes to complete.")]
+        [Summary("Time how long a command takes to complete.\nWARNING: inaccurate for async commands.")]
         public async Task TimeCmd([Remainder] string cmd)
         {
 
