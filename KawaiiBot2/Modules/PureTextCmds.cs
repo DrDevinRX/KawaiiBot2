@@ -12,6 +12,7 @@ using System.Security;
 using KawaiiBot2.JSONClasses;
 using System.Security.Cryptography;
 using KawaiiBot2.Modules.Shared;
+using MathNet.Numerics.Distributions;
 
 namespace KawaiiBot2.Modules
 {
@@ -53,7 +54,7 @@ namespace KawaiiBot2.Modules
 
 
 
-            [Command("roll")]
+        [Command("roll")]
         [Summary("Rolls a number in a given range")]
         public Task Roll(int upperBound = 10, int lowerBound = 0)
         {
@@ -180,6 +181,36 @@ namespace KawaiiBot2.Modules
             bool botRate = user.Id == Context.Client.CurrentUser.Id;
             Random rn = new Random(user.GetHashCode());
 
+
+            int flattened_userid = (int)(0xFFFFFFFF & (user.Id ^ ((user.Id & 0x00000000) >> 32)));
+            // determined through experimention with a julia notebook
+            const double α = 3.58;
+            const double β = 2.29;
+            var n = new Beta(α, β, new Random(flattened_userid));
+            // the distribution looks like this ↓
+            /*
+     ┌────────────────────────────────────────┐
+   2 │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠔⠒⠒⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⠊⠀⠀⠀⠀⠀⠈⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⢣⡀⠀⠀⠀⠀⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢣⠀⠀⠀⠀⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢣⠀⠀⠀⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡆⠀⠀⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡀⠀⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢣⠀⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡆⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡀⠀│
+     │⠀⠀⠀⠀⠀⠀⠀⠀⡔⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢇⠀│
+     │⠀⠀⠀⠀⠀⠀⡠⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡀│
+   0 │⣀⣀⣀⡠⠔⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢱│
+     └─────────────────────────────────────────┘
+     ⠀0⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀1⠀⠀*/
+
+
+            var rating = Math.Round(n.Sample() * 100);
+
             if (hitoRate && selfRate)
                 return ReplyAsync("Yuuhi, I'd rate you a **100/100!**");
             else if (hitoRate)
@@ -187,9 +218,9 @@ namespace KawaiiBot2.Modules
             else if (botRate)
                 return ReplyAsync("I'd rate me a **110/100!**");
             else if (selfRate)
-                return ReplyAsync($"I'd rate you a **{rn.Next(90 - 1) + 11} / 100**");
+                return ReplyAsync($"I'd rate you a **{rating} / 100**");
             else
-                return ReplyAsync($"I'd rate `{Helpers.CleanGuildUserDisplayName(user)}` a **{rn.Next(90 - 1) + 11} / 100**");
+                return ReplyAsync($"I'd rate `{Helpers.CleanGuildUserDisplayName(user)}` a **{rating} / 100**");
         }
 
         [Command("ratewaifu")]
@@ -199,7 +230,10 @@ namespace KawaiiBot2.Modules
         {
             if (str == null)
                 return ReplyAsync("You have to rate something..?");
-            Random rn = new Random(str.GetHashCode());
+
+            var h = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(str));
+            var b = h[0] << 24 + h[1] << 16 + h[3] << 8 + h[4];
+            Random rn = new Random(b);
             return ReplyAsync($"I'd rate `{str.Clean()}` a **{rn.Next(100 - 1) + 1} / 100**");
         }
 
