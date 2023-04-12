@@ -232,7 +232,7 @@ namespace KawaiiBot2.Modules
                 return ReplyAsync("You have to rate something..?");
 
             var h = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(str));
-            var b = h[0] << 24 + h[1] << 16 + h[3] << 8 + h[4];
+            var b = (h[0] << 24) + (h[1] << 16) + (h[3] << 8) + h[4];
             Random rn = new Random(b);
             return ReplyAsync($"I'd rate `{str.Clean()}` a **{rn.Next(100 - 1) + 1} / 100**");
         }
