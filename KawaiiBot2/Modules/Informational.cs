@@ -179,7 +179,7 @@ namespace KawaiiBot2.Modules
         readonly private static string[] slotcommands = new string[] { "aprilfruits", "slotsv2", "slots", "niceslots", "maxslots", "ngmaxslots",
                                                                 "nierslots", "leaderboard", "streakinfo", "rigslots", "rigmemes", "suppressslotswins",
                                                                 "setdifficulty", "riskydice", "riskyslots", "resetrisky","slotsisoverused","yuuhislots",
-                                                                "totalrolls", "sidesrolls" };
+                                                                "totalrolls", "sidesrolls", "ubermaxslots" };
 
         [Command("slotsisoverused")]
         [Summary("Slots accounts for how many % of total commands?")]

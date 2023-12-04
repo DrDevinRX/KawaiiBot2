@@ -174,6 +174,7 @@ namespace KawaiiBot2.Modules
         [HiddenCmd]
         [Summary("The real max slots")]
         [Command("ngmaxslots")]
+        [Alias("ubermaxslots")]
         public Task NgMaxSlots([Remainder] string icon = "") => SlotsCmd2(195, icon);
 
 
