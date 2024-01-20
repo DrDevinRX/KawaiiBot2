@@ -5,14 +5,16 @@ using System.Linq;
 using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
+/*
 using Catalyst;
 using Mosaik.Core;
 using Catalyst.Models;
+*/
 using System.Diagnostics;
 
 namespace KawaiiBot2.Modules
 {
-#if !NOBUTTS
+/*
     public class ButtsBot : ModuleBase<SocketCommandContext>
     {
         public ButtsBot()
@@ -88,5 +90,5 @@ namespace KawaiiBot2.Modules
             await ReplyAsync(string.Join("", resultStrings).Clean());
         }
     }
-#endif
+*/
 }
