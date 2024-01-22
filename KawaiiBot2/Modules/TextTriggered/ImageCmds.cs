@@ -23,9 +23,9 @@ namespace KawaiiBot2.Modules.TextTriggered
         [Summary("NASA's Astronomy Picture Of the Day")]
         public async Task APOD() => await ReplyAsync(await Images.APOD());
 
-        [Command("animal", RunMode = RunMode.Async)]
+        /*[Command("animal", RunMode = RunMode.Async)]
         [Summary("Random zoo animal.")]
-        public async Task Animal() => await ReplyAsync(await Images.Animal());
+        public async Task Animal() => await ReplyAsync(await Images.Animal());*/
 
         [Command("bear")]
         [Summary("Random bear.")]
@@ -70,5 +70,9 @@ namespace KawaiiBot2.Modules.TextTriggered
         [Summary("cats. Cats. CATS!")]
         [Alias("catnotlewd", "caty", "chat")]//not guaranteed
         public async Task Cat() => await ReplyAsync(await Images.Cat());
+
+        [Command("fox", RunMode=RunMode.Async)]
+        [Summary("what does the...")]
+        public async Task Fox() => await ReplyAsync(await Images.Fox());
     }
 }

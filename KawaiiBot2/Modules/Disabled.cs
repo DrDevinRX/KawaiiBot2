@@ -24,7 +24,7 @@ namespace KawaiiBot2.Modules
             "axolotl",
 #endif
              "ship", "memegen", "meme2", "captcha", "calling", "facts", "scroll", "supreme", "achievement",
-            "challenge", "drake", "didyoumean"
+            "challenge", "drake", "didyoumean", "animal"
             )]
         public Task DisabledCommand([Remainder] string _ = "")
         {

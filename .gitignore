@@ -346,3 +346,7 @@ conf*.json
 *.nettrace
 
 Censor.json
+
+#some stuff the vscode extension wanted
+launch.json
+tasks.json

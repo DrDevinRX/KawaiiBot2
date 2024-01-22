@@ -86,5 +86,12 @@ namespace KawaiiBot2.Modules.Shared
             return success ? url : "https://http.cat/404.jpg";
         }
 
+        public static async Task<string> Fox()
+        {
+            Request req = await Helpers.Client.SendRequest("https://randomfox.ca/floof/");
+            FoxRes res = JsonConvert.DeserializeObject<FoxRes>(req.Content);
+            return req.Success ? res.Image : "No foxes ;-;";
+        }
+
     }
 }

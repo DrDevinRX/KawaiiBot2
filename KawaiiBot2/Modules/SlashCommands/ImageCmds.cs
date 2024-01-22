@@ -22,8 +22,8 @@ namespace KawaiiBot2.Modules.SlashCommands
         [SlashCommand("apod", "NASA's Astronomy Picture Of the Day", runMode: RunMode.Async)]
         public async Task APOD() => await RespondAsync(await Images.APOD());
 
-        [SlashCommand("animal", "Random zoo animal.", runMode: RunMode.Async)]
-        public async Task Animal() => await RespondAsync(await Images.Animal());
+        /*[SlashCommand("animal", "Random zoo animal.", runMode: RunMode.Async)]
+        public async Task Animal() => await RespondAsync(await Images.Animal());*/
 
         [SlashCommand("bear", "Random bear.")]
         public Task Bear() => RespondAsync(Images.Bear());
@@ -53,5 +53,8 @@ namespace KawaiiBot2.Modules.SlashCommands
 
         [SlashCommand("cat", "cats. Cats. CATS!", runMode: RunMode.Async)]
         public async Task Cat() => await RespondAsync(await Images.Cat());
+
+        [SlashCommand("fox", "what does the...", runMode: RunMode.Async)]
+        public async Task Fox() => await RespondAsync(await Images.Fox());
     }
 }
